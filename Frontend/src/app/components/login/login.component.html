@@ -1,1 +1,18 @@
-<p>login works!</p>
+<div class="loginContainer">
+    <div class="loginBox">
+        <div class="logoContainer">
+            <img src="momentLogo.png" alt="">
+            <h1>MOMENT</h1>
+        </div>
+        <div class="itemsContainer">
+            <div class="inputsContainer">
+                <input type="email" placeholder="Email cím" [(ngModel)]="user.email">
+                <input type="password" placeholder="Jelszó" [(ngModel)]="user.password">
+    
+                <button (click)="login()">Bejelentkezés</button>
+            </div>
+            
+            <a routerLink="/forget-passwd">Elfelejtetem a jelszavam..</a>
+        </div>
+    </div>
+</div>
