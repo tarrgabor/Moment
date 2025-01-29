@@ -1,1 +1,20 @@
-<p>registration works!</p>
+<div class="registrationContainer">
+    <div class="registrationBox">
+        <div class="logoContainer">
+            <img src="momentLogo.png" alt="">
+            <h1>MOMENT</h1>
+        </div>
+        <div class="itemsContainer">
+            <div class="inputsContainer">
+                <input type="text" placeholder="Felhasználónév" [(ngModel)]="user.username">
+                <input type="email" placeholder="Email cím" [(ngModel)]="user.email">
+                <input type="password" placeholder="Jelszó" [(ngModel)]="user.password">
+                <input type="password" placeholder="Jelszó megerősítése" [(ngModel)]="user.confirm">
+    
+                <button (click)="registration()">Regisztráció</button>
+            </div>
+            
+            <a routerLink="/login">Már van fiókom..</a>
+        </div>
+    </div>
+</div>
