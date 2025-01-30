@@ -26,7 +26,7 @@ router.post("/", async (req, res) => {
         return;
     }
 
-    if (!req.body.title, !req.body.description, !req.body.visible)
+    if (!req.body.title || !req.body.description || !req.body.visible)
     {
         res.status(400).send("Hiányzó adatok!");
         return;

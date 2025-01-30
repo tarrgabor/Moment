@@ -1,4 +1,5 @@
 // Importing main tables
+const db = require("./database");
 const {User} = require("./Entities/Main/User");
 const {Post} = require("./Entities/Main/Post");
 const {Image} = require("./Entities/Main/Image");
@@ -96,60 +97,13 @@ function ConnectTables()
 
 async function SyncDatabase()
 {
-    // Set to "true" to delete all data from tables and reset connections
-    let force = false;
-
     // Connecting main tables with connecting tables
     ConnectTables();
 
-    if (force)
-    {
-        // Syncing main tables
-        await User.sync({force: true});
-        await Post.sync({force: true});
-        await Image.sync({force: true})
-        await Comment.sync({force: true});
-        //await Folder.sync({force: true});
-        await Report.sync({force: true});
-        await Category.sync({force: true});
-
-        // Syncing connecting tables
-        await UsersPost.sync({force: true});
-        await PostsImage.sync({force: true});
-        await UsersComment.sync({force: true});
-        await PostsComment.sync({force: true});
-        //await UsersFolder.sync({force: true});
-        await PostsReport.sync({force: true});
-        await PostsCategory.sync({force: true});
-        //await FoldersImage.sync({force: true});
-        await UsersLike.sync({force: true});
-        await UsersImage.sync({force: true});
-    }
-    else
-    {
-        // Syncing main tables
-        await User.sync({alter: true});
-        await Post.sync({alter: true});
-        await Image.sync({alter: true})
-        await Comment.sync({alter: true});
-        //await Folder.sync({alter: true});
-        await Report.sync({alter: true});
-        await Category.sync({alter: true});
-
-        // Syncing connecting tables
-        await UsersPost.sync({alter: true});
-        await PostsImage.sync({alter: true});
-        await UsersComment.sync({alter: true});
-        await PostsComment.sync({alter: true});
-        //await UsersFolder.sync({alter: true});
-        await PostsReport.sync({alter: true});
-        await PostsCategory.sync({alter: true});
-        //await FoldersImage.sync({alter: true});
-        await UsersLike.sync({alter: true});
-        await UsersImage.sync({alter: true});
-    }
+    // Syncing all tables
+    await db.sync({ alter: true });
 }
 
 SyncDatabase().then(() => {
-    console.log("All tables synced!");
+    console.log("All tables are connected and synced!");
 });
