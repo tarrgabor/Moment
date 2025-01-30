@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 
@@ -10,7 +10,10 @@ import { ApiService } from '../../services/api.service';
   styleUrl: './registration.component.scss'
 })
 export class RegistrationComponent {
-  constructor(private api: ApiService){}
+  constructor(
+    private api: ApiService,
+    private router: Router
+  ){}
 
   user = {
     username: "",
@@ -21,9 +24,8 @@ export class RegistrationComponent {
 
   registration(){
     this.api.registration('users', this.user).subscribe((res:any) => {
-      const invalidFields = res.invalid;
 
-      if (invalidFields.length == 0)
+      if (res.status == 200)
       {
         this.user = {
           username: '',
@@ -31,6 +33,8 @@ export class RegistrationComponent {
           password: '',
           confirm: '',
         }
+
+        this.router.navigate(["/login"]);
       }
     });
   }

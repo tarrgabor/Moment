@@ -10,18 +10,20 @@ const User = db.define('user', {
     },
     username: {
         type: DataTypes.STRING(40),
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     fullName: {
         type: DataTypes.STRING(50),
-        allowNull: false
+        allowNull: true
     },
     email: {
         type: DataTypes.STRING(60),
         validate: {
             isEmail: true
         },
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     password: {
         type: DataTypes.STRING(60),
@@ -35,7 +37,8 @@ const User = db.define('user', {
     },
     phoneNumber: {
         type: DataTypes.STRING(30),
-        allowNull: true
+        allowNull: true,
+        unique: true
     },
     status: {
         type: DataTypes.ENUM,
