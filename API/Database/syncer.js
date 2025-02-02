@@ -101,9 +101,18 @@ async function SyncDatabase()
     ConnectTables();
 
     // Syncing all tables
-    await db.sync({ alter: true });
+    try
+    {
+        await db.sync({ alter: true }).then(() => {
+            console.log("All tables are connected and synced!");
+        });
+    }
+    catch (error)
+    {
+        await db.sync({ force: true }).then(() => {
+            console.log("Error during syncing the database! Database sync forced!");
+        });
+    }
 }
 
-SyncDatabase().then(() => {
-    console.log("All tables are connected and synced!");
-});
+SyncDatabase();
