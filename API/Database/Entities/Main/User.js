@@ -37,8 +37,8 @@ const User = db.define('user', {
     },
     phoneNumber: {
         type: DataTypes.STRING(30),
-        allowNull: true,
-        unique: true
+        unique: true,
+        allowNull: true
     },
     status: {
         type: DataTypes.ENUM,

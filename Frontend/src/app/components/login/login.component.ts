@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -10,27 +11,30 @@ import { ApiService } from '../../services/api.service';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  constructor(private api: ApiService){}
+  constructor(
+    private api: ApiService,
+    private auth: AuthService,
+    private router: Router
+  ){}
 
   user = {
-
     email: "",
     password: "",
-
   };
 
   login(){
     this.api.login('users', this.user).subscribe((res:any) => {
-      const invalidFields = res.invalid;
-
-      if (invalidFields.length == 0)
+      if (res.status == 200)
       {
         this.user = {
-
-          email: '',
-          password: '',
-
+          email: "",
+          password: ""
         }
+
+        this.auth.saveTokenAndLogin(res.token);
+        this.router.navigate(["/"]); // navigating to main page, where the posts are displayed
+
+        return;
       }
     });
   }

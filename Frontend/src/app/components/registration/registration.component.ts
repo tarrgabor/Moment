@@ -24,17 +24,17 @@ export class RegistrationComponent {
 
   registration(){
     this.api.registration('users', this.user).subscribe((res:any) => {
-
       if (res.status == 200)
       {
         this.user = {
-          username: '',
-          email: '',
-          password: '',
-          confirm: '',
+          username: "",
+          email: "",
+          password: "",
+          confirm: "",
         }
 
         this.router.navigate(["/login"]);
+        return;
       }
     });
   }

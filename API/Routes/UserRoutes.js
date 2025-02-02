@@ -2,7 +2,7 @@ const router = require("express").Router();
 const { Op } = require("sequelize");
 const { User } = require("../Database/Entities/Main/User");
 const CryptoJS = require("crypto-js");
-const { sendMessage } = require("../utils");
+const { sendMessage, sendMessageAndGenerateToken, tokenCheck } = require("../utils");
 const passwdRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
 // Create a user
@@ -38,9 +38,9 @@ router.post("/registration", async (req, res) => {
 
         return sendMessage(res, 200, "Sikeres regisztráció!");
     }
-    catch (error)
+    catch
     {
-        return sendMessage(res, 500, "Hiba az adatbázis művelet közben!" + error);
+        return sendMessage(res, 500, "Hiba az adatbázis művelet közben!");
     }
 })
 
@@ -53,15 +53,42 @@ router.post("/login", async (req, res) => {
 
     try
     {
-        const user = await User.findOne({where: {email: req.body.email, password: String(CryptoJS.SHA1(req.body.password))}});
+        const user = await User.findOne({
+            where: 
+            {
+                email: req.body.email, 
+                password: String(CryptoJS.SHA1(req.body.password))
+            },
+            attributes:
+            {
+                exclude: ["fullName", "password", "phoneNumber", "warnings"]
+            }
+        });
 
         if (user == null)
         {
-            sendMessage(res, 203, "Hibás belépési adatok!");
-            return;
+            return sendMessage(res, 203, "Hibás belépési adatok!");
         }
 
-        return sendMessage(res, 200, user); // need to generate and send back a token instead of the user data
+        if (user.status == "banned")
+        {
+            return sendMessage(res, 203, "A felhasználó ki van tiltva!");
+        }
+
+        return sendMessageAndGenerateToken(res, 200, "Sikeres bejelentkezés!", user)
+    }
+    catch
+    {
+        return sendMessage(res, 500, "Hiba az adatbázis művelet közben!");
+    }
+})
+
+
+// TOKENCHECK TEST
+router.get("/", tokenCheck, async (req, res) => {
+    try
+    {
+        return res.json(await User.findAll());
     }
     catch
     {
