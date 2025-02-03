@@ -1,11 +1,11 @@
-.forgotPwContainer{
+.verificationContainer{
     width: 100vw;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.forgotPwBox{
+.verificationBox{
     width: 350px;
 }
 .logoContainer{
@@ -98,7 +98,7 @@ a:active{
     
 }
 @media screen and (max-height: 550px) {
-    .forgotPwContainer{
+    .verificationContainer{
         max-width: fit-content;
         display: block;
         margin-left: auto;
