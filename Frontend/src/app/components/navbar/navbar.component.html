@@ -1,1 +1,29 @@
-<p>navbar works!</p>
+<nav>
+    <div class="navbar">
+        <a routerLink="/" class="logo">
+            <img src="momentLogo.png">
+            <h1>MOMENT</h1>
+        </a>
+    
+        <div class="navbarProfile" (click)="openSidebarMenu()">
+            <img src="momentLogo.png" alt="">
+        </div>
+    </div>
+
+    <div class="linksContainer">
+        <div class="linksHeader">
+            <img src="momentLogo.png" alt="">
+            <p id="username">Hosszú felhasználónév hogy teszteljem</p>
+
+            <i class="bi bi-x-lg closeMenuButton" (click)="closeSidebarMenu()"></i>
+        </div>
+
+        <hr>
+
+        <a href="#"><i class="bi bi-person"></i> Saját profil</a>
+        <a href=""><i class="bi bi-gear"></i> Beállítások</a>
+        <a href=""><i class="bi bi-box-arrow-right"></i> Kijelentkezés</a>
+    </div>
+
+    <div id="overlay" (click)="closeSidebarMenu()"></div>
+</nav>

@@ -1,0 +1,131 @@
+.openFilterButton{
+    display: none;
+    position: fixed;
+    align-items: center;
+    font-size: 25px;
+    margin-top: 2px;
+    padding: 2px;
+    border-radius: 10px;
+    transition: .5s;
+}
+
+.openFilterButton:hover{
+    background-color: lightgrey;
+}
+
+.closeFilterButton{
+    display: none;
+    justify-self: flex-end;
+    font-size: 22px;
+    border-radius: 5px;
+    margin: 2px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.closeFilterButton:hover{
+    background-color: lightgrey;
+}
+
+
+aside{
+    position: sticky;
+    top: 55px;
+}
+
+.sidebarContainer{
+    width: 250px;
+    height: calc(100vh - 55px);
+    background-color: #E5E7EB;
+    border-right: 1px solid grey;
+    box-shadow: .5px 0 .5px 0 grey;
+    padding: 5px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    overscroll-behavior: contain;
+    transition: .2s;
+}
+
+.sidebarContainer hr{
+    margin: 0;
+    padding: 0;
+}
+
+.searchBar i{
+    position: absolute;
+    text-indent: 5px;
+    font-size: 20px;
+}
+
+.searchBar input{
+    width: 100%;
+    border-radius: 20px;
+    border: 1px solid grey;
+    text-indent: 35px;
+    font-size: 18px;
+    user-select: none;
+}
+
+.searchBar input:hover{
+    border: 1px solid black;
+}
+
+.selectedCategoriesContainer{
+    margin: 5px;
+}
+
+.filterButton{
+    background-color: #335CB5;
+    width: 100%;
+    height: 30px;
+    border: none;
+    border-radius: 50px;
+    color: white;
+    transition: .2s;
+}
+
+.filterButton:hover{
+    background-color: #284a94;
+}
+
+.categoryContainer{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.category{
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-size: 15px;
+    border: 1px solid grey;
+    border-radius: 20px;
+    margin: 5px;
+    box-shadow: .5px .5px 1.5px 0 black;
+    user-select: none;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.category:hover{
+    border: 1px solid black;
+    background-color: lightgrey;
+}
+
+@media screen and (max-width: 750px){
+    .openFilterButton, .closeFilterButton{
+        display: flex;
+    }
+
+    .sidebarContainer{
+        position: fixed;
+        left: -100%;
+        opacity: 0;
+    }
+
+    .sidebarContainer.open{
+        left: 0;
+        opacity: 1;
+    }
+}
