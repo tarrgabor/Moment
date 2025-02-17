@@ -22,7 +22,7 @@ export function tokenCheck(req, res, next){
 
     try
     {
-        jwt.verify(authHeader.split(' ')[1], process.env.JWT_SECRET);
+        req.user = jwt.verify(authHeader.split(' ')[1], process.env.JWT_SECRET);
         next();
     }
     catch

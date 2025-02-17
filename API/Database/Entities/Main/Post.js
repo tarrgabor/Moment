@@ -23,9 +23,12 @@ const Post = db.define('post', {
     },
     likes: {
         type: DataTypes.INTEGER,
-        defaultValue: 0,
-        allowNull: false
+        defaultValue: 0
     },
+    createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
+    }
 });
 
 module.exports = {Post};
