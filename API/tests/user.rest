@@ -24,9 +24,3 @@ Content-Type: application/json
     "password": "Titkosjelszo123",
     "confirm": "Titkosjelszo123"
 }
-
-### get all users - TOKENCHECK TEST
-
-GET {{serverURL}}/users
-Content-Type: application/json
-Authorization: Bearer {{token}}

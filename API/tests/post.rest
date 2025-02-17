@@ -1,0 +1,64 @@
+@serverURL = http://localhost:3000
+
+@token = {{login.response.body.token}}
+
+@postID = {{posts.response.body.0.id}}
+
+
+### login (only for token)
+# @name login
+
+POST {{serverURL}}/users/login
+Content-Type: application/json
+
+{
+    "email": "jani@gmail.com",
+    "password": "Titkosjelszo123"
+}
+
+### get few posts with pagination
+GET {{serverURL}}/posts?lastPost=2025-02-16+00:54:14|0c29bd1f-8c39-4af1-acfe-e8adf36dd997
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### get all posts
+# @name posts
+GET {{serverURL}}/posts/all
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### get post by postID
+
+GET {{serverURL}}/posts/{{postID}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### create post
+
+POST {{serverURL}}/posts/create
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "title": "Teszt cím",
+    "description": "Teszt leírás",
+    "visible": 1
+}
+
+### update post by postID
+
+PATCH {{serverURL}}/posts/update/{{postID}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "title": "Teszt cím2",
+    "description": "Teszt leírás2",
+    "visible": 1
+}
+
+### delete post by postID
+
+DELETE {{serverURL}}/posts/delete/{{postID}}
+Content-Type: application/json
+Authorization: Bearer {{token}}

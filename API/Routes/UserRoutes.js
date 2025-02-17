@@ -2,7 +2,7 @@ const router = require("express").Router();
 const { Op } = require("sequelize");
 const { User } = require("../Database/Entities/Main/User");
 const CryptoJS = require("crypto-js");
-const { sendMessage, sendMessageAndGenerateToken, tokenCheck } = require("../utils");
+const { sendMessage, sendMessageAndGenerateToken } = require("../utils");
 const passwdRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
 // Create a user
@@ -76,19 +76,6 @@ router.post("/login", async (req, res) => {
         }
 
         return sendMessageAndGenerateToken(res, 200, "Sikeres bejelentkezés!", user)
-    }
-    catch
-    {
-        return sendMessage(res, 500, "Hiba az adatbázis művelet közben!");
-    }
-})
-
-
-// TOKENCHECK TEST
-router.get("/", tokenCheck, async (req, res) => {
-    try
-    {
-        return res.json(await User.findAll());
     }
     catch
     {
