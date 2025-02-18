@@ -1,3 +1,7 @@
+$bg-color: #101216;
+$blueBrandColor: #335CB5;
+$border:#222425;
+
 .openFilterButton{
     display: none;
     position: fixed;
@@ -8,7 +12,9 @@
     border-radius: 10px;
     transition: .5s;
 }
-
+label{
+    color: #F9FAFB;
+}
 .openFilterButton:hover{
     background-color: lightgrey;
 }
@@ -29,6 +35,7 @@
 
 
 aside{
+    background-color: $bg-color;
     position: sticky;
     top: 55px;
 }
@@ -36,9 +43,9 @@ aside{
 .sidebarContainer{
     width: 250px;
     height: calc(100vh - 55px);
-    background-color: #E5E7EB;
-    border-right: 1px solid grey;
-    box-shadow: .5px 0 .5px 0 grey;
+    background-color:$bg-color;
+    border-right: 1px solid $border;
+    //box-shadow: .5px 0 .5px 0 grey;
     padding: 5px;
     overflow-y: scroll;
     scrollbar-width: none;
@@ -67,7 +74,7 @@ aside{
 }
 
 .searchBar input:hover{
-    border: 1px solid black;
+    border: 1px solid $border;
 }
 
 .selectedCategoriesContainer{
@@ -99,17 +106,18 @@ aside{
     padding-top: 2px;
     padding-bottom: 2px;
     font-size: 15px;
-    border: 1px solid grey;
+    border: 1px solid $border;
     border-radius: 20px;
     margin: 5px;
-    box-shadow: .5px .5px 1.5px 0 black;
+    color: #F9FAFB;
+    //box-shadow: .5px .5px 1.5px 0 black;
     user-select: none;
     cursor: pointer;
     transition: .2s;
 }
 
 .category:hover{
-    border: 1px solid black;
+    border: 1px solid $border;
     background-color: lightgrey;
 }
 

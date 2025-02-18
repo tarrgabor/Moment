@@ -1,5 +1,6 @@
-$bg-color: #E5E7EB;
+$bg-color: #101216;
 $blueBrandColor: #335CB5;
+$border:#222425;
 
 *{
     margin: 0;
@@ -8,7 +9,7 @@ $blueBrandColor: #335CB5;
 
 a{
     text-decoration: none;
-    color: black;
+    color: #F9FAFB;
 }
 
 nav{
@@ -17,19 +18,20 @@ nav{
     z-index: 100;
 }
 
+    
 .navbar{
-    //display: flex;
+    display: flex;
     justify-content: space-between;
     align-items: center;
     height: 55px;
     background-color: $bg-color;
-    border-bottom: 1px solid grey;
-    box-shadow: 0 0 .5px .5px black;
-    top: 0;
+    border-bottom: 1px solid $border;
+    //box-shadow: 0 0 .5px .5px black;
+    //top: 0;
 }
 
-.navbar .logo{
-    display: flex;
+.logo{
+   display: flex;
     width: fit-content;
     height: 100%;
     margin-left: 10px;
@@ -37,12 +39,14 @@ nav{
     -webkit-user-drag: none;
 }
 
-.navbar .logo img{
+ .logo img{
+    filter: invert(85%);
+
     height: 55px;
     -webkit-user-drag: none;
 }
 
-.navbar .logo h1{
+.logo h1{
     color: $blueBrandColor;
     font-size: 30px;
     font-family: "Lilita One", serif;
@@ -51,29 +55,31 @@ nav{
     text-indent: 10px;
     user-select: none;
 }
-
+.navbarProfile{
+    margin-right: 10px;
+}
 .navbarProfile img{
     width: 50px;
     height: 50px;
     border-radius: 100%;
-    border: 1px solid grey;
+    border: 1px solid $border;
     cursor: pointer;
 }
 
 
 .linksContainer{
     display: flex;
-    flex-direction: column;
+   flex-direction: column;
     position: fixed;
     top: 0;
-    right: -100%;
+    //right: -100%;
     width: 250px;
     height: 100%;
-    padding: 5px;
-    background-color: $bg-color;
-    border-left: 1px solid grey;
+    padding: 10px;
+   // background-color: $bg-color;
+    border-left: 1px solid $border;
     border-radius: 10px 0 0 10px ;
-    box-shadow: 0 0 5px .5px black;
+    //box-shadow: 0 0 5px .5px black;
     opacity: 0;
     transition: .35s;
     z-index: 102;
@@ -82,7 +88,7 @@ nav{
 }
 
 .linksContainer hr{
-    margin-top: 5px;
+   margin-top: 5px;
 }
 
 .linksContainer a{
@@ -106,28 +112,29 @@ nav{
     background-color: lightgrey;
 }
 
-.linksContainer .linksHeader{
+.linksHeader{
     display: flex;
     justify-content: space-between;
     align-items: center;
     white-space: nowrap;
 }
 
-.linksContainer .linksHeader img{
+.linksHeader img{
     width: 50px;
     height: 50px;
     border-radius: 100%;
-    border: 1px solid grey;
+    border: 1px solid $border;
     margin-left: -2px;
 }
 
-.linksContainer .linksHeader #username{
+ .linksHeader #username{
+    color: #F9FAFB;
     max-width: 150px;
     height: fit-content;
     overflow: hidden;
 }
 
-.linksContainer.open{
+.open{
     opacity: 1;
     right: 0;
 }
