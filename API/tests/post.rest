@@ -17,13 +17,13 @@ Content-Type: application/json
 }
 
 ### get few posts with pagination
-GET {{serverURL}}/posts?lastPost=2025-02-16+00:54:14|0c29bd1f-8c39-4af1-acfe-e8adf36dd997
+GET {{serverURL}}/posts?lastPost=2025-02-16+00:54:14|0c29bd1f-8c39-4af1-acfe-e8adf36dd997&categories=Megbeszélés|Tájkép
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### get all posts
 # @name posts
-GET {{serverURL}}/posts/all
+GET {{serverURL}}/posts/get/all
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -42,7 +42,8 @@ Authorization: Bearer {{token}}
 {
     "title": "Teszt cím",
     "description": "Teszt leírás",
-    "visible": 1
+    "visible": 1,
+    "categoryID": "def0c945-9c53-4f5b-9846-852497d731d4"
 }
 
 ### update post by postID
@@ -54,7 +55,8 @@ Authorization: Bearer {{token}}
 {
     "title": "Teszt cím2",
     "description": "Teszt leírás2",
-    "visible": 1
+    "visible": 1,
+    "categoryID": "5c33518e-fa00-439b-92cb-6ab865c459ff"
 }
 
 ### delete post by postID

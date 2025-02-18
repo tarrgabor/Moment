@@ -3,6 +3,7 @@ const db = require("../Database/database");
 const uuid = require("uuid");
 const { Post } = require("../Database/Entities/Main/Post");
 const { UsersPost } = require("../Database/Entities/Binders/UsersPost");
+const { PostsCategory } = require("../Database/Entities/Binders/PostsCategory");
 const { sendMessage, tokenCheck } = require("../utils");
 const { QueryTypes } = require("sequelize");
 
@@ -10,10 +11,24 @@ const { QueryTypes } = require("sequelize");
 router.get('/', tokenCheck, async (req, res) => {
     const lastPost = req.query.lastPost?.split('|');
 
-    const query = `SELECT id, title, description, visible, likes, DATE_FORMAT(createdAt, '%Y-%m-%d %H:%i:%s') AS createdAt
-        FROM posts 
-        ${lastPost ? `WHERE createdAt > :createdAt OR (createdAt = :createdAt AND id > :id)`: ``}
-        ORDER BY createdAt DESC, id DESC LIMIT 10`;
+    let filterByCategories = false;
+
+    let categories = [];
+
+    if (req.query.categories)
+    {
+        filterByCategories = true;
+
+        req.query.categories.split('|').forEach(category => {
+            categories.push(`"${category}"`);
+        });
+    }
+
+    const query = `SELECT posts.id, posts.title, posts.description, posts.visible, posts.likes, DATE_FORMAT(posts.createdAt, '%Y-%m-%d %H:%i:%s') AS createdAt
+        FROM posts, categories, postscategories WHERE posts.id = postscategories.postID AND postscategories.categoryID = categories.id
+        ${filterByCategories ? `AND categories.name IN (${categories})` : ``}
+        ${lastPost ? `AND posts.createdAt > :createdAt OR (posts.createdAt = :createdAt AND posts.id > :id)`: ``}
+        ORDER BY posts.createdAt DESC, posts.id DESC LIMIT 10`;
 
     try {
         const posts = await db.query(query, {
@@ -22,24 +37,24 @@ router.get('/', tokenCheck, async (req, res) => {
         })
 
         const nextPost = posts.length ? `${posts.at(-1).createdAt}|${posts.at(-1).id}` : null;
-        res.status(200).json({ posts: posts, nextPost });
+        res.status(200).json({ posts, nextPost });
     }
-    catch
+    catch (err)
     {
-        return sendMessage(res, 500, "Hiba az adatbázis művelet közben!");
+        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!" + err);
     }
 });
 
 
 // Get all posts
-router.get("/all", tokenCheck, async (req, res) => {
+router.get("/get/all", tokenCheck, async (req, res) => {
     try
     {
         res.status(200).send(await Post.findAll());
     }
     catch
     {
-        return sendMessage(res, 500, "Hiba az adatbázis művelet közben!");
+        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
     }
 })
 
@@ -48,7 +63,7 @@ router.get("/all", tokenCheck, async (req, res) => {
 router.get("/:postID", tokenCheck, async (req, res) => {
     if (!req.params.postID)
     {
-        return sendMessage(res, 203, "Nem található poszt azonosító!");
+        return sendMessage(res, 400, false, "Nem található poszt azonosító!");
     }
 
     try
@@ -57,16 +72,16 @@ router.get("/:postID", tokenCheck, async (req, res) => {
     }
     catch
     {
-        return sendMessage(res, 500, "Hiba az adatbázis művelet közben!");
+        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
     }
 })
 
 
 // Create a post
 router.post("/create", tokenCheck, async (req, res) => {
-    if (!req.body.title || !req.body.description || !req.body.visible)
+    if (!req.body.title || !req.body.description || !req.body.visible || !req.body.categoryID)
     {
-        return sendMessage(res, 203, "Hiányzó adatok!");
+        return sendMessage(res, 400, false, "Hiányzó adatok!");
     }
 
     const transaction = await db.transaction();
@@ -86,13 +101,20 @@ router.post("/create", tokenCheck, async (req, res) => {
             postID: postID
         }, {transaction: transaction});
 
-        await transaction.commit()
-        return sendMessage(res, 200, "Poszt létrehozva!");
+        await PostsCategory.create({
+            postID: postID,
+            categoryID: req.body.categoryID
+        }, {transaction: transaction});
+
+        await transaction.commit();
+
+        sendMessage(res, 200, true, "Poszt létrehozva!");
     }
     catch
     {
         await transaction.rollback()
-        return sendMessage(res, 500, "Hiba az adatbázis művelet közben!");
+
+        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
     }
 })
 
@@ -100,13 +122,15 @@ router.post("/create", tokenCheck, async (req, res) => {
 router.patch("/update/:postID", tokenCheck, async (req, res) => {
     if (!req.params.postID)
     {
-        return sendMessage(res, 203, "Nem található poszt azonosító!");
+        return sendMessage(res, 400, false, "Nem található poszt azonosító!");
     }
 
-    if (!req.body.title || !req.body.description || !req.body.visible)
+    if (!req.body.title || !req.body.description || !req.body.visible || !req.body.categoryID)
     {
-        return sendMessage(res, 203, "Hiányzó adatok!");
+        return sendMessage(res, 400, false, "Hiányzó adatok!");
     }
+
+    const transaction = await db.transaction();
 
     try
     {
@@ -117,21 +141,38 @@ router.patch("/update/:postID", tokenCheck, async (req, res) => {
 
         if (post == null)
         {
-            return sendMessage(res, 203, "Poszt nem található!");
+            return sendMessage(res, 400, false, "Poszt nem található!");
         }
 
         await Post.update({
                 title: req.body.title,
                 description: req.body.description,
                 visible: req.body.visible
+            }, {
+                where: {id: req.params.postID},
+                transaction: transaction
             },
-            {where: {id: req.params.postID}});
+        );
 
-        return sendMessage(res, 200, "Poszt frissítve!");
+        await PostsCategory.update({
+            categoryID: req.body.categoryID
+            }, {
+                where: {
+                    postID: req.params.postID,
+                    categoryID: req.body.categoryID
+                }
+            }
+        );
+
+        transaction.commit();
+
+        sendMessage(res, 200, true, "Poszt frissítve!");
     }
     catch
     {
-        return sendMessage(res, 500, "Hiba az adatbázis művelet közben!");
+        transaction.rollback();
+
+        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
     }
 })
 
@@ -139,7 +180,7 @@ router.patch("/update/:postID", tokenCheck, async (req, res) => {
 router.delete("/delete/:postID", tokenCheck, async (req, res) => {
     if (!req.params.postID)
     {
-        return sendMessage(res, 203, "Nem találhatók azonosítók!");
+        return sendMessage(res, 400, false, "Nem találhatók azonosítók!");
     }
 
     try
@@ -151,15 +192,15 @@ router.delete("/delete/:postID", tokenCheck, async (req, res) => {
         
         if (post == null)
         {
-            return sendMessage(res, 203, "Poszt nem található!");
+            return sendMessage(res, 400, false, "Poszt nem található!");
         }
 
         await Post.destroy({where: {id: req.params.postID}})
-        return sendMessage(res, 200, "Poszt törölve!");
+        sendMessage(res, 200, true, "Poszt törölve!");
     }
     catch
     {
-        return sendMessage(res, 500, "Hiba az adatbázis művelet közben!");
+        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
     }
 })
 
