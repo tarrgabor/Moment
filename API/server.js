@@ -9,12 +9,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-//********Routes are not ready********\\
-
 app.use("/users", require("./Routes/UserRoutes"));
 app.use("/posts", require("./Routes/PostRoutes"));
-
-//************************************\\
+app.use("/category", require("./Routes/CategoryRoutes"));
 
 app.listen(process.env.PORT, () => {
     require("./Database/syncer");

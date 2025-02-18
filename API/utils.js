@@ -2,14 +2,9 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 
-export function sendMessage(res, status, message)
+export function sendMessage(res, status, success, message)
 {
-    return res.status(status).json({message: message, status: status});
-};
-
-export function sendMessageAndGenerateToken(res, status, message, user)
-{
-    return res.status(status).json({token: jwt.sign(JSON.parse(JSON.stringify(user)), process.env.JWT_SECRET, {expiresIn: "2h"}), status: status, message: message});
+    return res.status(status).json({success, message});
 };
 
 export function tokenCheck(req, res, next){
@@ -17,7 +12,7 @@ export function tokenCheck(req, res, next){
     
     if (!authHeader)
     {
-        return sendMessage(res, 400, "Jelentkezz be!");
+        return sendMessage(res, 401, false, "Jelentkezz be!");
     }
 
     try
@@ -27,6 +22,6 @@ export function tokenCheck(req, res, next){
     }
     catch
     {
-        return sendMessage(res, 400, "Hibás authentikáció!");
+        return sendMessage(res, 401, false, "Hibás authentikáció!");
     }
 }

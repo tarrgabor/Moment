@@ -4,21 +4,23 @@ const { User } = require("../Database/Entities/Main/User");
 const CryptoJS = require("crypto-js");
 const { sendMessage, sendMessageAndGenerateToken } = require("../utils");
 const passwdRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+require("dotenv").config();
+const jwt = require("jsonwebtoken");
 
 // Create a user
 router.post("/registration", async (req, res) => {
     if (!req.body.username || !req.body.email || !req.body.password || !req.body.confirm)
     {
-        return sendMessage(res, 203, "Hiányzó adatok!");
+        return sendMessage(res, 400, false, "Hiányzó adatok!");
     }
 
     if (req.body.password != req.body.confirm)
     {
-        return sendMessage(res, 203, "A jelszavak nem egyeznek!");
+        return sendMessage(res, 400, false, "A jelszavak nem egyeznek!");
     }
 
     if (!req.body.password.match(passwdRegExp)){
-        return sendMessage(res, 203, "A megadott jelszó nem elég biztonságos!");
+        return sendMessage(res, 400, false, "A megadott jelszó nem elég biztonságos!");
     }
 
     try
@@ -27,7 +29,7 @@ router.post("/registration", async (req, res) => {
 
         if (user != null)
         {
-            return sendMessage(res, 203, "Foglalt felhasználói adatok!");
+            return sendMessage(res, 400, false, "Foglalt felhasználói adatok!");
         }
 
         await User.create({
@@ -36,11 +38,11 @@ router.post("/registration", async (req, res) => {
             password: String(CryptoJS.SHA1(req.body.password)),
         });
 
-        return sendMessage(res, 200, "Sikeres regisztráció!");
+        sendMessage(res, 200, true, "Sikeres regisztráció!");
     }
     catch
     {
-        return sendMessage(res, 500, "Hiba az adatbázis művelet közben!");
+        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
     }
 })
 
@@ -48,7 +50,7 @@ router.post("/registration", async (req, res) => {
 router.post("/login", async (req, res) => {
     if (!req.body.email || !req.body.password)
     {
-        return sendMessage(res, 203, "Hiányzó adatok!");
+        return sendMessage(res, 400, false, "Hiányzó adatok!");
     }
 
     try
@@ -67,19 +69,19 @@ router.post("/login", async (req, res) => {
 
         if (user == null)
         {
-            return sendMessage(res, 203, "Hibás belépési adatok!");
+            return sendMessage(res, 400, false, "Hibás belépési adatok!");
         }
 
         if (user.status == "banned")
         {
-            return sendMessage(res, 203, "A felhasználó ki van tiltva!");
+            return sendMessage(res, 401, false, "A felhasználó ki van tiltva!");
         }
 
-        return sendMessageAndGenerateToken(res, 200, "Sikeres bejelentkezés!", user)
+        res.status(200).json({success: true, message: "Sikeres bejelentkezés", token: jwt.sign(JSON.parse(JSON.stringify(user)), process.env.JWT_SECRET, {expiresIn: "2h"})});
     }
     catch
     {
-        return sendMessage(res, 500, "Hiba az adatbázis művelet közben!");
+        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
     }
 })
 

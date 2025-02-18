@@ -1,0 +1,55 @@
+@serverURL = http://localhost:3000
+
+@token = {{login.response.body.token}}
+
+@categoryID = {{categories.response.body.0.id}}
+
+
+### login (only for token)
+# @name login
+
+POST {{serverURL}}/users/login
+Content-Type: application/json
+
+{
+    "email": "jani@gmail.com",
+    "password": "Titkosjelszo123"
+}
+
+### get all categories
+# @name categories
+GET {{serverURL}}/category
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### get category by categoryID
+
+GET {{serverURL}}/category/{{categoryID}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### create category
+
+POST {{serverURL}}/category/create
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "Tájkép"
+}
+
+### update category by categoryID
+
+PATCH {{serverURL}}/category/update/{{categoryID}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "Megbeszélés"
+}
+
+### delete category by categoryID
+
+DELETE {{serverURL}}/category/delete/{{categoryID}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
