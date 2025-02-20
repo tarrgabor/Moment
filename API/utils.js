@@ -1,13 +1,16 @@
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-dotenv.config();
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+//require("dotenv").config()
+//import jwt from "jsonwebtoken";
+//import dotenv from "dotenv";
+//dotenv.config();
 
-export function sendMessage(res, status, success, message)
+function sendMessage(res, status, success, message)
 {
     return res.status(status).json({success, message});
 };
 
-export function tokenCheck(req, res, next){
+function tokenCheck(req, res, next){
     const authHeader = req.header('Authorization');
     
     if (!authHeader)
@@ -24,4 +27,9 @@ export function tokenCheck(req, res, next){
     {
         return sendMessage(res, 401, false, "Hibás authentikáció!");
     }
+}
+
+module.exports = {
+    sendMessage,
+    tokenCheck
 }
