@@ -1,11 +1,14 @@
+@use "../../../styles.scss" as *;
+
+
 .toplist{
     min-width: 250px;
     height: 500px;
     margin-left: 20px;
-    background-color: #222425;
+    background-color: $dark-border;
     position: sticky;
     top: 65px;
-    color: #F9FAFB;
+    color: $dark-text-c;
     border-radius: 10px;
     padding: 10px;
 }

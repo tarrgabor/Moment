@@ -10,10 +10,12 @@ import { VerificationCodeComponent } from './components/verification-code/verifi
 
 export const routes: Routes = [
 
-
+    {
+        path: "main", component: MainPageComponent
+    },
     // Possible pages to visit before logging in
     {
-        path: "login", component: MainPageComponent
+        path: "login", component: LoginComponent
     },
     {
         path: "registration", component: RegistrationComponent

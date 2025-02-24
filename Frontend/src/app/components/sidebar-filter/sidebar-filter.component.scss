@@ -1,6 +1,6 @@
-$bg-color: #101216;
-$blueBrandColor: #335CB5;
-$border:#222425;
+
+@use "../../../styles.scss" as *;
+
 
 .openFilterButton{
     display: none;
@@ -13,10 +13,10 @@ $border:#222425;
     transition: .5s;
 }
 label{
-    color: #F9FAFB;
+    color: $dark-text-c;
 }
 .openFilterButton:hover{
-    background-color: lightgrey;
+    background-color: $link;
 }
 
 .closeFilterButton{
@@ -30,7 +30,7 @@ label{
 }
 
 .closeFilterButton:hover{
-    background-color: lightgrey;
+    background-color: $link;
 }
 
 
@@ -67,7 +67,7 @@ aside{
 .searchBar input{
     width: 100%;
     border-radius: 20px;
-    border: 1px solid grey;
+    border: 1px solid $dark-border;
     text-indent: 35px;
     font-size: 18px;
     user-select: none;
@@ -82,17 +82,17 @@ aside{
 }
 
 .filterButton{
-    background-color: #335CB5;
+    background-color: $button;
     width: 100%;
     height: 30px;
     border: none;
     border-radius: 50px;
-    color: white;
+    color: $dark-text-c;
     transition: .2s;
 }
 
 .filterButton:hover{
-    background-color: #284a94;
+    background-color: $button-hover;
 }
 
 .categoryContainer{
@@ -109,7 +109,7 @@ aside{
     border: 1px solid $border;
     border-radius: 20px;
     margin: 5px;
-    color: #F9FAFB;
+    color: $dark-text-c;
     //box-shadow: .5px .5px 1.5px 0 black;
     user-select: none;
     cursor: pointer;
@@ -118,7 +118,7 @@ aside{
 
 .category:hover{
     border: 1px solid $border;
-    background-color: lightgrey;
+    background-color: $link;
 }
 
 @media screen and (max-width: 750px){
