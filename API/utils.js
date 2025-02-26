@@ -1,9 +1,5 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-//require("dotenv").config()
-//import jwt from "jsonwebtoken";
-//import dotenv from "dotenv";
-//dotenv.config();
 
 function sendMessage(res, status, success, message)
 {

@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const { Category } = require("../Database/Entities/Main/Category");
-const CryptoJS = require("crypto-js");
 const { sendMessage, tokenCheck } = require("../utils");
 
 // Get all categories
@@ -39,6 +38,11 @@ router.get("/:categoryID", tokenCheck, async (req, res) => {
 
 // Create category
 router.post("/create", tokenCheck, async (req, res) => {
+    if (!req.body.name)
+    {
+        return sendMessage(res, 400, false, "Hiányzó adatok!");
+    }
+
     try
     {
         if (await Category.findOne({where: {name: req.body.name}}))
@@ -70,6 +74,11 @@ router.patch("/update/:categoryID", tokenCheck, async (req, res) => {
 
     try
     {
+        if (!await Category.findOne({where: {id: req.params.categoryID}}))
+        {
+            return sendMessage(res, 400, false, "Kategória nem található!");
+        }
+
         if (await Category.findOne({where: {name: req.body.name}}))
         {
             return sendMessage(res, 400, false, "A kategória már létezik!");
