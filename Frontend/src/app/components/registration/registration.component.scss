@@ -1,7 +1,6 @@
 @use "../../../styles.scss" as *;
 
 
-
 .registrationContainer{
     width: 100vw;
     height: 100vh;
@@ -25,12 +24,13 @@
 }
 
 .logoContainer img{
+    filter:  $logo-invert;
     width: 275px;
     height: 175px;
 }
 
 .logoContainer h1{
-    color: $Moment;
+    color: $moment;
     text-align: center;
     font-size: 62px;
     font-family: $Moment-f-f;
@@ -72,7 +72,7 @@ button{
     height: 45px;
     border: none;
     border-radius: 50px;
-    color: white;
+    color: $dark-text-c;
     margin: 3px;
     margin-top: 10px;
 }

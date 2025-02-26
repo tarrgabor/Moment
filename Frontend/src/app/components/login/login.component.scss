@@ -20,7 +20,7 @@
     align-items: center;
 }
 .logoContainer img{
-    filter:  invert(85%);
+    filter:  $logo-invert;
     width: 275px;
     height: 175px;
 }

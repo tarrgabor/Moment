@@ -35,7 +35,7 @@ label{
 
 
 aside{
-    background-color: $bg-color;
+    background-color: $dark-bg;
     position: sticky;
     top: 55px;
 }
@@ -43,9 +43,8 @@ aside{
 .sidebarContainer{
     width: 250px;
     height: calc(100vh - 55px);
-    background-color:$bg-color;
-    border-right: 1px solid $border;
-    //box-shadow: .5px 0 .5px 0 grey;
+    background-color:$dark-bg;
+    border-right: 1px solid $dark-border;
     padding: 5px;
     overflow-y: scroll;
     scrollbar-width: none;
@@ -74,7 +73,7 @@ aside{
 }
 
 .searchBar input:hover{
-    border: 1px solid $border;
+    border: 1px solid $dark-border;
 }
 
 .selectedCategoriesContainer{
@@ -106,18 +105,17 @@ aside{
     padding-top: 2px;
     padding-bottom: 2px;
     font-size: 15px;
-    border: 1px solid $border;
+    border: 1px solid $dark-border;
     border-radius: 20px;
     margin: 5px;
     color: $dark-text-c;
-    //box-shadow: .5px .5px 1.5px 0 black;
     user-select: none;
     cursor: pointer;
     transition: .2s;
 }
 
 .category:hover{
-    border: 1px solid $border;
+    border: 1px solid $dark-border;
     background-color: $link;
 }
 
