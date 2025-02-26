@@ -1,0 +1,53 @@
+@serverURL = http://localhost:3000
+
+@token = {{login.response.body.token}}
+
+@commentID = {{comments.response.body.0.commentID}}
+
+@postID = {{posts.response.body.0.id}}
+
+### login (for token)
+# @name login
+
+POST {{serverURL}}/users/login
+Content-Type: application/json
+
+{
+    "email": "jani@gmail.com",
+    "password": "Titkosjelszo123"
+}
+
+### get all posts (for postID)
+# @name posts
+GET {{serverURL}}/posts/get/all
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### get all comments under a post by postID
+# @name comments
+GET {{serverURL}}/comments/post/{{postID}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### create comment under post by postID
+POST {{serverURL}}/comments/create/{{postID}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "message": "Ez egy komment!"
+}
+
+### update comment by commentID
+PATCH {{serverURL}}/comments/update/{{commentID}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "message": "Ez egy komment2!"
+}
+
+### delete comment by commentID
+DELETE {{serverURL}}/comments/delete/{{commentID}}
+Content-Type: application/json
+Authorization: Bearer {{token}}

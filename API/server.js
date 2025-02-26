@@ -11,7 +11,8 @@ app.use(express.urlencoded({extended: true}));
 
 app.use("/users", require("./Routes/UserRoutes"));
 app.use("/posts", require("./Routes/PostRoutes"));
-app.use("/category", require("./Routes/CategoryRoutes"));
+app.use("/categories", require("./Routes/CategoryRoutes"));
+app.use("/comments", require("./Routes/CommentRoutes"));
 
 app.listen(process.env.PORT, () => {
     require("./Database/syncer");

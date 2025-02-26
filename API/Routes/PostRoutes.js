@@ -27,7 +27,7 @@ router.get('/', tokenCheck, async (req, res) => {
     const query = `SELECT posts.id, posts.title, posts.description, posts.visible, posts.likes, DATE_FORMAT(posts.createdAt, '%Y-%m-%d %H:%i:%s') AS createdAt
         FROM posts, categories, postscategories WHERE posts.id = postscategories.postID AND postscategories.categoryID = categories.id
         ${filterByCategories ? `AND categories.name IN (${categories})` : ``}
-        ${lastPost ? `AND posts.createdAt > :createdAt OR (posts.createdAt = :createdAt AND posts.id > :id)`: ``}
+        ${lastPost ? `AND (posts.createdAt < :createdAt OR (posts.createdAt = :createdAt AND posts.id > :id))`: ``}
         ORDER BY posts.createdAt DESC, posts.id DESC LIMIT 10`;
 
     try {
@@ -36,12 +36,13 @@ router.get('/', tokenCheck, async (req, res) => {
             type: QueryTypes.SELECT
         })
 
-        const nextPost = posts.length ? `${posts.at(-1).createdAt}|${posts.at(-1).id}` : null;
-        res.status(200).json({ posts, nextPost });
+        const oldestPost = posts.length ? `${posts.at(-1).createdAt}|${posts.at(-1).id}` : null;
+        
+        res.status(200).json({ posts, oldestPost });
     }
-    catch (err)
+    catch
     {
-        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!" + err);
+        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
     }
 });
 
@@ -157,14 +158,12 @@ router.patch("/update/:postID", tokenCheck, async (req, res) => {
         await PostsCategory.update({
             categoryID: req.body.categoryID
             }, {
-                where: {
-                    postID: req.params.postID,
-                    categoryID: req.body.categoryID
-                }
+                where: {postID: req.params.postID},
+                transaction: transaction
             }
         );
 
-        transaction.commit();
+        await transaction.commit();
 
         sendMessage(res, 200, true, "Poszt frissítve!");
     }
@@ -195,7 +194,8 @@ router.delete("/delete/:postID", tokenCheck, async (req, res) => {
             return sendMessage(res, 400, false, "Poszt nem található!");
         }
 
-        await Post.destroy({where: {id: req.params.postID}})
+        await Post.destroy({where: {id: req.params.postID}});
+        
         sendMessage(res, 200, true, "Poszt törölve!");
     }
     catch

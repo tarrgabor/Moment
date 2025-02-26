@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 
 ### get few posts with pagination
-GET {{serverURL}}/posts?lastPost=2025-02-16+00:54:14|0c29bd1f-8c39-4af1-acfe-e8adf36dd997&categories=Megbeszélés|Tájkép
+GET {{serverURL}}/posts?lastPost=2025-02-25+16:51:35|b614a21f-b0e3-4b12-8894-a96e01686e07&categories=Megbeszélés|Tájkép
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -43,7 +43,7 @@ Authorization: Bearer {{token}}
     "title": "Teszt cím",
     "description": "Teszt leírás",
     "visible": 1,
-    "categoryID": "def0c945-9c53-4f5b-9846-852497d731d4"
+    "categoryID": "87f7321b-2467-4693-a798-ac63810cda3d"
 }
 
 ### update post by postID

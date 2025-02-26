@@ -18,19 +18,19 @@ Content-Type: application/json
 
 ### get all categories
 # @name categories
-GET {{serverURL}}/category
+GET {{serverURL}}/categories
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### get category by categoryID
 
-GET {{serverURL}}/category/{{categoryID}}
+GET {{serverURL}}/categories/{{categoryID}}
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### create category
 
-POST {{serverURL}}/category/create
+POST {{serverURL}}/categories/create
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -40,7 +40,7 @@ Authorization: Bearer {{token}}
 
 ### update category by categoryID
 
-PATCH {{serverURL}}/category/update/{{categoryID}}
+PATCH {{serverURL}}/categories/update/{{categoryID}}
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -50,6 +50,6 @@ Authorization: Bearer {{token}}
 
 ### delete category by categoryID
 
-DELETE {{serverURL}}/category/delete/{{categoryID}}
+DELETE {{serverURL}}/categories/delete/{{categoryID}}
 Content-Type: application/json
 Authorization: Bearer {{token}}

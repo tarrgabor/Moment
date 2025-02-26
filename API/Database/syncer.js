@@ -84,7 +84,7 @@ function ConnectTables()
     Post.hasMany(UsersLike, {foreignKey: "postID"});
     User.hasMany(UsersLike, {foreignKey: "userID"});
 
-    UsersLike.belongsTo(Post, {foreignKey: "postID", onDelete: "cascade"});
+    UsersLike.belongsTo(Post, {foreignKey: "postID"});
     UsersLike.belongsTo(User, {foreignKey: "userID"});
 
     // "Users" and "Images" main tables connected with "UsersImages" connecting table
@@ -103,7 +103,7 @@ async function SyncDatabase()
     // Syncing all tables
     try
     {
-        await db.sync({ alter: true }).then(() => {
+        await db.sync({ alter: false }).then(() => {
             console.log("All tables are connected and synced!");
         });
     }

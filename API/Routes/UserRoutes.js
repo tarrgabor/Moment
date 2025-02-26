@@ -2,7 +2,7 @@ const router = require("express").Router();
 const { Op } = require("sequelize");
 const { User } = require("../Database/Entities/Main/User");
 const CryptoJS = require("crypto-js");
-const { sendMessage, sendMessageAndGenerateToken } = require("../utils");
+const { sendMessage } = require("../utils");
 const passwdRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
