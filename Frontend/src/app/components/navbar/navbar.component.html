@@ -21,9 +21,52 @@
         <hr>
 
         <a href="#"><i class="bi bi-person"></i> Saját profil</a>
-        <a href=""><i class="bi bi-gear"></i> Beállítások</a>
+        <span href="" (click)="togglePopup()"><i class="bi bi-gear"></i> Beállítások</span>
         <a href=""><i class="bi bi-box-arrow-right"></i> Kijelentkezés</a>
     </div>
+
+    <div *ngIf="isSettingsOpen" class="popup-overlay" (click)="closePopup()">
+  
+        <div class="popup-container" (click)="$event.stopPropagation()">
+          
+          <button class="close-button" (click)="closePopup()">&times;</button>
+          
+          <div class="popup-sidebar">
+            <button (click)="setActiveTab('profile')">Profil módosítás</button>
+            <button (click)="setActiveTab('account')">Fiók műveletek</button>
+            <button (click)="setActiveTab('theme')">Téma</button>
+          </div>
+          
+          <div class="popup-content">
+            
+            <div *ngIf="activeTab === 'profile'">
+              <h2>Profil módosítás</h2>
+              <img src="profile-placeholder.png" class="profile-pic">
+              <input type="text" placeholder="Név">
+              <input type="email" placeholder="Email">
+              <input type="password" placeholder="Jelszó">
+              <button class="save-button">Módosítás</button>
+            </div>
+            
+            <div *ngIf="activeTab === 'account'">
+              <h2>Fiók műveletek</h2>
+              <button (click)="confirmAction('delete')">Fiók törlése</button>
+              <button (click)="confirmAction('deactivate')">Fiók deaktiválása</button>
+            </div>
+            
+            <div *ngIf="activeTab === 'theme'">
+              <h2>Téma</h2>
+              <button (click)="toggleTheme()">L/D</button>
+            </div>
+            
+            <div *ngIf="confirmationType" class="confirmation-box">
+              <h3>Biztos {{ confirmationType === 'delete' ? 'törölni' : 'deaktiválni' }} szeretné a fiókot?</h3>
+              <button (click)="confirm()" class="confirm-button">Igen</button>
+              <button (click)="cancelConfirm()" class="cancel-button">Nem</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <div id="overlay" (click)="closeSidebarMenu()"></div>
 </nav>
