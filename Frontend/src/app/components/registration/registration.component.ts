@@ -24,7 +24,7 @@ export class RegistrationComponent {
 
   registration(){
     this.api.registration('users', this.user).subscribe((res:any) => {
-      if (res.status == 200)
+      if (res.success)
       {
         this.user = {
           username: "",
