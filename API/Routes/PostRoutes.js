@@ -6,6 +6,7 @@ const { UsersPost } = require("../Database/Entities/Binders/UsersPost");
 const { PostsCategory } = require("../Database/Entities/Binders/PostsCategory");
 const { sendMessage, tokenCheck } = require("../utils");
 const { QueryTypes } = require("sequelize");
+const { UsersLike } = require("../Database/Entities/Binders/UsersLike");
 
 // Get posts with keyset pagination
 router.get('/', tokenCheck, async (req, res) => {
@@ -135,12 +136,7 @@ router.patch("/update/:postID", tokenCheck, async (req, res) => {
 
     try
     {
-        const post = await UsersPost.findOne({where: {
-            userID: req.user.id,
-            postID: req.params.postID
-        }});
-
-        if (post == null)
+        if (await UsersPost.findOne({where: {userID: req.user.id, postID: req.params.postID}}) == null)
         {
             return sendMessage(res, 400, false, "Poszt nem található!");
         }
@@ -179,17 +175,12 @@ router.patch("/update/:postID", tokenCheck, async (req, res) => {
 router.delete("/delete/:postID", tokenCheck, async (req, res) => {
     if (!req.params.postID)
     {
-        return sendMessage(res, 400, false, "Nem találhatók azonosítók!");
+        return sendMessage(res, 400, false, "Nem található poszt azonosító!");
     }
 
     try
     {
-        const post = await UsersPost.findOne({where: {
-            userID: req.user.id, 
-            postID: req.params.postID
-        }});
-        
-        if (post == null)
+        if (await UsersPost.findOne({where: {userID: req.user.id, postID: req.params.postID}}) == null)
         {
             return sendMessage(res, 400, false, "Poszt nem található!");
         }
@@ -197,6 +188,43 @@ router.delete("/delete/:postID", tokenCheck, async (req, res) => {
         await Post.destroy({where: {id: req.params.postID}});
         
         sendMessage(res, 200, true, "Poszt törölve!");
+    }
+    catch
+    {
+        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
+    }
+})
+
+// like and dislike post by postID
+router.post("/like/:postID", tokenCheck, async (req, res) => {
+    if (!req.params.postID)
+    {
+        return sendMessage(res, 400, false, "Nem található poszt azonosító!");
+    }
+
+    try
+    {
+        if (await Post.findOne({where: {id: req.params.postID}}) == null)
+        {
+            return sendMessage(res, 400, false, "Poszt nem található!");
+        }
+
+        if (!await UsersLike.findOne({where: {postID: req.params.postID, userID: req.user.id}}))
+        {
+            await UsersLike.create({
+                postID: req.params.postID,
+                userID: req.user.id
+            });
+
+            return res.status(200).json({success: true, liked: true});
+        }
+
+        await UsersLike.destroy({where: {
+            postID: req.params.postID,
+            userID: req.user.id
+        }});
+
+        return res.status(200).json({success: true, liked: false});
     }
     catch
     {

@@ -24,7 +24,7 @@ export class LoginComponent {
 
   login(){
     this.api.login('users', this.user).subscribe((res:any) => {
-      if (res.status == 200)
+      if (res.success)
       {
         this.user = {
           email: "",
