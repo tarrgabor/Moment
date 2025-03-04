@@ -1,35 +1,93 @@
-/* You can add global styles to this file, and also import other style files */
-body{
-    background-color:#101216;
+*{
     margin: 0;
     padding: 0;
+    outline: none;
+    border: none;
+    text-decoration: none;
+}
+
+html{
+    scrollbar-width: none;
+}
+
+body{
+    background-color:#101216;
     box-sizing: border-box;
 }
+
+button, a{
+    transition: .15s;
+}
+
+//-------------------Light Mode---------------------\\ - LIGHT MODE COLORS ARE PLACEHOLDERS
+
+$light-background-color: #F9FAFB;
+$light-border-color:#D1D5DB;
+$light-text-color: black;
+
+// Input
+$light-input-text-color: #2b2b2b;
+$light-input-background-color: #cfcfcf;
+
+// Content
+$light-content-background-color: #cccccc;
+
+// Link
+$light-link-color: #2b2b2b;
+$light-link-hover-color: #3f3f3f;
+$light-link-active-color: #3f4041;
+$light-link-active-background-color: #b6b6b6;
+
+// Close button
+$light-button-close-color: rgb(31, 31, 31);
+
+$light-button-close-hover-color: rgb(99, 99, 99);
+$light-button-close-hover-background-color: rgb(202, 202, 202);
+
+
+//-------------------Dark Mode---------------------\\
+
+$dark-background-color: #101216;
+$dark-border-color: #222425;
+$dark-text-color: #F9FAFB;
+
+// Input
+$dark-input-text-color: #F9FAFB;
+$dark-input-background-color: #3f4041;
+
+// Content
+$dark-content-background-color: #222425;
+
+// Link
+$dark-link-color: #d3d3d3;
+$dark-link-hover-color: #303030;
+$dark-link-active-color: #3f4041;
+$dark-link-active-background-color: #242424;
+
+// Close button
+$dark-button-close-color: rgb(135, 135, 135);
+
+$dark-button-close-hover-color: #F9FAFB;
+$dark-button-close-hover-background-color: rgb(65, 65, 65);
+
+//-------------------Other---------------------\\
+
+// Theme
+$theme-font-family: "Lilita One", serif;
+$theme-color: #335CB5;
+
+// Button
+$button-text-color: #F9FAFB;
+$button-background-color: #335CB5;
+
+$button-text-hover-color: rgb(200, 200, 200);
+$button-hover-background-color: #2a4888;
+
+$button-active-text-color: rgb(215, 215, 215);
+$button-active-background-color: #2e5bbd;
+
+// Overlay
+$overlay-background-color: rgba(0, 0, 0, 0.85);
+
+// Logo
 $logo-invert: invert(85%);
-
-
-$Moment-f-f:"Lilita One", serif;
-$moment: #335CB5;
-$input:#172d44;
-$input-c:#000000;
-$input-bg:#E5E7EB;
-
-$dark-bg: #101216;
-
-$dark-border:#222425;
-$dark-text-c:#F9FAFB;
-
-$inactiv-b:#343638;
-$button: #335CB5;
-$button-hover: #2a4888;
-
-
-$link:#6c6e70;
-$link-hover:#3f4041;
-
-$light-bg:#F9FAFB;
-$light-border:#D1D5DB;//E5E7EB
-
-
-$menu:rgba(0, 0, 0, 0.85)
-

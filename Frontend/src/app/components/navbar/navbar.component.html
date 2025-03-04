@@ -20,9 +20,9 @@
 
         <hr>
 
-        <a href="#"><i class="bi bi-person"></i> Saját profil</a>
-        <a href=""><i class="bi bi-gear"></i> Beállítások</a>
-        <a href=""><i class="bi bi-box-arrow-right"></i> Kijelentkezés</a>
+        <span routerLink="/"><i class="bi bi-person"></i> Saját profil</span>
+        <span routerLink="/"><i class="bi bi-gear"></i> Beállítások</span>
+        <span (click)="logout()"><i class="bi bi-box-arrow-right"></i> Kijelentkezés</span>
     </div>
 
     <div id="overlay" (click)="closeSidebarMenu()"></div>
