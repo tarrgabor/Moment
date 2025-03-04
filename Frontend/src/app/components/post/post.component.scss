@@ -1,0 +1,70 @@
+
+@use "../../../styles.scss" as *;
+
+
+
+.post {
+    background-color: $dark-border;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 15px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    color: $dark-text-c;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.post-author {
+    font-weight: bold;
+}
+
+.post-body {
+    margin-bottom: 15px;
+}
+
+.post-title {
+    font-size: 22px;
+    margin: 0;
+}
+
+.post-content {
+    width: 100%;
+    height: auto;
+}
+
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+.likeButton{
+    display: flex;
+    align-items: center;
+    border: 1px solid $dark-border;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.likeButton img{
+    margin-left: 5px;
+}
+
+.likeButton:hover{
+    background-color: $input-bg;
+    border: 1px solid $dark-border;    
+}
+
+.likeText{
+    font-size: 16px;
+    font-weight: bold;
+}

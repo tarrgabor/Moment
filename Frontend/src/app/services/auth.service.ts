@@ -48,4 +48,9 @@ export class AuthService {
 
     return null;
   }
+
+  getUserRole()
+  {
+    return this.getLoggedInUser().role;
+  }
 }

@@ -1,0 +1,137 @@
+
+@use "../../../styles.scss" as *;
+
+
+.openFilterButton{
+    display: none;
+    position: fixed;
+    align-items: center;
+    font-size: 25px;
+    margin-top: 2px;
+    padding: 2px;
+    border-radius: 10px;
+    transition: .5s;
+}
+label{
+    color: $dark-text-c;
+}
+.openFilterButton:hover{
+    background-color: $link;
+}
+
+.closeFilterButton{
+    display: none;
+    justify-self: flex-end;
+    font-size: 22px;
+    border-radius: 5px;
+    margin: 2px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.closeFilterButton:hover{
+    background-color: $link;
+}
+
+
+aside{
+    background-color: $dark-bg;
+    position: sticky;
+    top: 55px;
+}
+
+.sidebarContainer{
+    width: 250px;
+    height: calc(100vh - 55px);
+    background-color:$dark-bg;
+    border-right: 1px solid $dark-border;
+    padding: 5px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    overscroll-behavior: contain;
+    transition: .2s;
+}
+
+.sidebarContainer hr{
+    margin: 0;
+    padding: 0;
+}
+
+.searchBar i{
+    position: absolute;
+    text-indent: 5px;
+    font-size: 20px;
+}
+
+.searchBar input{
+    width: 100%;
+    border-radius: 20px;
+    border: 1px solid $dark-border;
+    text-indent: 35px;
+    font-size: 18px;
+    user-select: none;
+}
+
+.searchBar input:hover{
+    border: 1px solid $dark-border;
+}
+
+.selectedCategoriesContainer{
+    margin: 5px;
+}
+
+.filterButton{
+    background-color: $button;
+    width: 100%;
+    height: 30px;
+    border: none;
+    border-radius: 50px;
+    color: $dark-text-c;
+    transition: .2s;
+}
+
+.filterButton:hover{
+    background-color: $button-hover;
+}
+
+.categoryContainer{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.category{
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-size: 15px;
+    border: 1px solid $dark-border;
+    border-radius: 20px;
+    margin: 5px;
+    color: $dark-text-c;
+    user-select: none;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.category:hover{
+    border: 1px solid $dark-border;
+    background-color: $link;
+}
+
+@media screen and (max-width: 750px){
+    .openFilterButton, .closeFilterButton{
+        display: flex;
+    }
+
+    .sidebarContainer{
+        position: fixed;
+        left: -100%;
+        opacity: 0;
+    }
+
+    .sidebarContainer.open{
+        left: 0;
+        opacity: 1;
+    }
+}

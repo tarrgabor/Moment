@@ -1,0 +1,26 @@
+@use "../../../styles.scss" as *;
+
+
+.mainContainer{
+    display: flex;
+    justify-content: center;
+}
+
+.contentContainer{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    padding: 24px;
+}
+
+.postContainer{
+    max-width: 700px;
+    width: 100%;
+}
+
+@media screen and (max-width: 1000px){
+    .toplist{
+        display: none;
+    }
+}
