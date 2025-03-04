@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Category } from '../../interfaces/interfaces';
 import { CategoryFilterPipe } from '../../pipes/caregoryFilter.pipe';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar-filter',
@@ -66,6 +67,6 @@ export class SidebarFilterComponent implements OnInit{
     }
 
     this.selectedCategories.push(category);
-    this.categories.splice(this.categories.indexOf(category), 1)
+    this.categories.splice(this.categories.indexOf(category), 1);
   }
 }

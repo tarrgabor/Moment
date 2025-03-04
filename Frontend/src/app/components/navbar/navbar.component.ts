@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { NavItem } from '../../interfaces/interfaces';
 
 @Component({
   selector: 'app-navbar',
@@ -10,6 +9,7 @@ import { NavItem } from '../../interfaces/interfaces';
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent{
+  constructor(private auth: AuthService){}
 
   openSidebarMenu()
   {
@@ -20,5 +20,10 @@ export class NavbarComponent{
   closeSidebarMenu(){
     document.querySelector(".linksContainer")!.classList.remove("open");
     document.querySelector("body")!.style.overflowY = "auto";
+  }
+
+  logout()
+  {
+    this.auth.deleteTokenAndLogout();
   }
 }

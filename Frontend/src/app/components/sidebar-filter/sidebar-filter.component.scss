@@ -1,6 +1,4 @@
-
 @use "../../../styles.scss" as *;
-
 
 .openFilterButton{
     display: none;
@@ -12,11 +10,13 @@
     border-radius: 10px;
     transition: .5s;
 }
+
 label{
-    color: $dark-text-c;
+    color: $dark-text-color;
 }
+
 .openFilterButton:hover{
-    background-color: $link;
+    background-color: $light-background-color;
 }
 
 .closeFilterButton{
@@ -27,29 +27,31 @@ label{
     margin: 2px;
     cursor: pointer;
     transition: .2s;
+    color: $dark-button-close-color;
 }
 
 .closeFilterButton:hover{
-    background-color: $link;
+    color: $dark-button-close-color;
+    background-color: $dark-button-close-hover-background-color;
 }
 
 
 aside{
-    background-color: $dark-bg;
     position: sticky;
     top: 55px;
+    background-color: $dark-background-color;
 }
 
 .sidebarContainer{
     width: 250px;
     height: calc(100vh - 55px);
-    background-color:$dark-bg;
-    border-right: 1px solid $dark-border;
+    border-right: 1px solid $dark-border-color;
     padding: 5px;
     overflow-y: scroll;
     scrollbar-width: none;
     overscroll-behavior: contain;
     transition: .2s;
+    background-color: $dark-background-color;
 }
 
 .sidebarContainer hr{
@@ -66,14 +68,14 @@ aside{
 .searchBar input{
     width: 100%;
     border-radius: 20px;
-    border: 1px solid $dark-border;
+    border: 1px solid $dark-border-color;
     text-indent: 35px;
     font-size: 18px;
     user-select: none;
 }
 
 .searchBar input:hover{
-    border: 1px solid $dark-border;
+    border: 1px solid $dark-border-color;
 }
 
 .selectedCategoriesContainer{
@@ -81,17 +83,26 @@ aside{
 }
 
 .filterButton{
-    background-color: $button;
     width: 100%;
     height: 30px;
-    border: none;
     border-radius: 50px;
-    color: $dark-text-c;
     transition: .2s;
+    background-color: $button-background-color;
+    color: $button-text-color;
 }
 
 .filterButton:hover{
-    background-color: $button-hover;
+    color: $button-text-hover-color;
+    background-color: $button-hover-background-color;
+}
+
+.filterButton:active{
+    color: $button-active-text-color;
+    background-color: $button-active-background-color;
+}
+
+.filterButton:hover{
+    background-color: $button-hover-background-color;
 }
 
 .categoryContainer{
@@ -105,18 +116,18 @@ aside{
     padding-top: 2px;
     padding-bottom: 2px;
     font-size: 15px;
-    border: 1px solid $dark-border;
+    border: 1px solid $dark-border-color;
     border-radius: 20px;
     margin: 5px;
-    color: $dark-text-c;
+    color: $dark-text-color;
     user-select: none;
     cursor: pointer;
     transition: .2s;
 }
 
 .category:hover{
-    border: 1px solid $dark-border;
-    background-color: $link;
+    border: 1px solid $dark-border-color;
+    background-color: $dark-content-background-color;
 }
 
 @media screen and (max-width: 750px){

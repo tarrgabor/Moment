@@ -9,10 +9,6 @@ import { MainPageComponent } from './components/main-page/main-page.component';
 import { VerificationCodeComponent } from './components/verification-code/verification-code.component';
 
 export const routes: Routes = [
-
-    {
-        path: "main", component: MainPageComponent
-    },
     // Possible pages to visit before logging in
     {
         path: "login", component: LoginComponent

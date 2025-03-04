@@ -13,8 +13,7 @@ import { AuthService } from '../../services/auth.service';
 export class LoginComponent {
   constructor(
     private api: ApiService,
-    private auth: AuthService,
-    private router: Router
+    private auth: AuthService
   ){}
 
   user = {
@@ -32,8 +31,6 @@ export class LoginComponent {
         }
 
         this.auth.saveTokenAndLogin(res.token);
-        this.router.navigate(["/"]); // navigating to main page, where the posts are displayed
-
         return;
       }
     });

@@ -1,4 +1,3 @@
-
 @use "../../../styles.scss" as *;
 
 
@@ -8,73 +7,64 @@
     padding: 0;
 }
 
-a{
-    text-decoration: none;
-    color: $link;
-}
-
 nav{
     position: sticky;
     top: 0;
     z-index: 100;
 }
-
     
 .navbar{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     height: 55px;
-    background-color: $dark-bg;
-    border-bottom: 1px solid $dark-border;
+    background-color: $dark-background-color;
+    border-bottom: 1px solid $dark-border-color;
 }
 
 .logo{
-   display: flex;
+    display: flex;
     width: fit-content;
-    height: 100%;
     margin-left: 10px;
     align-items: center;
     -webkit-user-drag: none;
 }
 
- .logo img{
+.logo img{
     filter: $logo-invert;
     height: 55px;
     -webkit-user-drag: none;
 }
 
 .logo h1{
-    color: $moment;
     font-size: 30px;
-    font-family: "Lilita One", serif;
-    font-weight: 400;
-    font-style: normal;
     text-indent: 10px;
     user-select: none;
+    color: $theme-color;
+    font-family: $theme-font-family;
 }
+
 .navbarProfile{
     margin-right: 10px;
 }
+
 .navbarProfile img{
     width: 50px;
     height: 50px;
     border-radius: 100%;
-    border: 1px solid $dark-border;
+    border: 1px solid $dark-border-color;
     cursor: pointer;
 }
 
-
 .linksContainer{
     display: flex;
-   flex-direction: column;
+    flex-direction: column;
     position: fixed;
     top: 0;
+    right: -100%;
     width: 250px;
     height: 100%;
-    padding: 10px;
-    border-left: 1px solid $dark-border;
-    border-radius: 10px 0 0 10px ;
+    padding: 8px;
+    background-color: $dark-background-color;
+    border-left: 1px solid $dark-border-color;
+    border-radius: 10px 0 0 10px;
     opacity: 0;
     transition: .35s;
     z-index: 102;
@@ -83,10 +73,13 @@ nav{
 }
 
 .linksContainer hr{
-   margin-top: 5px;
+    height: 1px;
+    margin-top: 5px;
+    margin-bottom: 3px;
+    background-color: white;
 }
 
-.linksContainer a{
+.linksContainer span{
     display: flex;
     align-items: center;
     border-radius: 5px;
@@ -97,14 +90,20 @@ nav{
     user-select: none;
     -webkit-user-drag: none;
     margin-bottom: 5px;
+    color: $dark-link-color;
 }
 
-.linksContainer a i{
+.linksContainer span i{
+    margin-left: 2px;
     margin-right: 8px;
 }
   
-a:hover{
-    background-color: $link-hover;
+span:hover{
+    background-color: $dark-link-hover-color;
+}
+
+span:active{
+    background-color: $dark-link-active-background-color;
 }
 
 .linksHeader{
@@ -118,12 +117,12 @@ a:hover{
     width: 50px;
     height: 50px;
     border-radius: 100%;
-    border: 1px solid $dark-border;
+    border: 1px solid $dark-border-color;
     margin-left: -2px;
 }
 
- .linksHeader #username{
-    color: $link;
+.linksHeader #username{
+    color: $dark-text-color;
     max-width: 150px;
     height: fit-content;
     overflow: hidden;
@@ -139,20 +138,24 @@ a:hover{
     width: 100%;
     height: 100%;
     top: 0;
-    background-color: $menu;
+    background-color: $overlay-background-color;
     transition: .35s;
     z-index: 101;
 }
 
 .closeMenuButton{
+    display: flex;
+    padding: 4px;
     font-size: 22px;
-    border-radius: 5px;
+    border-radius: 100%;
     cursor: pointer;
     transition: .2s;
+    color: $dark-button-close-color;
 }
 
 .closeMenuButton:hover{
-    background-color: $link;
+    color: $dark-button-close-hover-color;
+    background-color: $dark-button-close-hover-background-color;
 }
 
 @media screen and (max-width: 300px) {
