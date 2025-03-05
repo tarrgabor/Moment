@@ -24,6 +24,7 @@
 .logoContainer img{
     width: 275px;
     height: 175px;
+    filter:  $logo-invert;
 }
 
 .logoContainer h1{
@@ -95,6 +96,7 @@ a:active{
 
 .Instructions{
     text-align: center;
+    color: $dark-text-color;
     
 }
 
