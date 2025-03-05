@@ -7,11 +7,12 @@ import { RestorePasswordComponent } from './components/restore-password/restore-
 import { UserAuthGuard } from './guards/user-auth-guard';
 import { MainPageComponent } from './components/main-page/main-page.component';
 import { VerificationCodeComponent } from './components/verification-code/verification-code.component';
+import { OpenPostComponent } from './components/open-post/open-post.component';
 
 export const routes: Routes = [
     // Possible pages to visit before logging in
     {
-        path: "login", component: LoginComponent
+        path: "login", component: MainPageComponent
     },
     {
         path: "registration", component: RegistrationComponent
@@ -24,6 +25,10 @@ export const routes: Routes = [
     },
     {
         path: "verification", component: VerificationCodeComponent
+    },
+
+    {
+        path: "postpage", component: OpenPostComponent
     },
     
     // Possible pages to visit after logging in
