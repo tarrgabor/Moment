@@ -9,6 +9,7 @@
     margin-right: auto;
     color: $dark-text-color;
     background-color: $dark-content-background-color;
+    cursor: pointer;
 }
 
 .post-header {
@@ -18,8 +19,41 @@
     margin-bottom: 10px;
 }
 
+.user-profileImage{
+    width: 30px;
+    height: 30px;
+    border: 1px solid $dark-border-color;
+    border-radius: 100%;
+}
+
 .post-author {
     font-weight: bold;
+    cursor: pointer;
+}
+
+.post-author:hover {
+    color: $dark-link-hover-color;
+}
+
+.post-author:active {
+    color: $dark-link-active-color;
+}
+
+.author {
+    margin-left: 3px;
+}
+
+.post-category {
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    font-size: 14px;
+    width: fit-content;
+    border-radius: 20px;
+    background-color: red;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .post-body {
@@ -34,6 +68,7 @@
 .post-content {
     width: 100%;
     height: auto;
+    border-radius: 10px;
 }
 
 .post-footer {
@@ -49,7 +84,13 @@
     border: 1px solid $dark-border-color;
     border-radius: 20px;
     font-size: 16px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
     cursor: pointer;
+    color: $dark-text-color;
+    background-color: $button-background-color;
 }
 
 .likeButton img{
@@ -57,11 +98,16 @@
 }
 
 .likeButton:hover{
-    background-color: $dark-background-color;
+    background-color: $button-hover-background-color;
+    color: $button-text-hover-color;
     border: 1px solid $dark-border-color;
 }
 
 .likeText{
     font-size: 16px;
     font-weight: bold;
+}
+
+.liked{
+    background-color: red;
 }

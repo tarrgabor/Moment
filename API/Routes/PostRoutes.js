@@ -6,7 +6,7 @@ const { UsersPost } = require("../Database/Entities/Binders/UsersPost");
 const { PostsCategory } = require("../Database/Entities/Binders/PostsCategory");
 const { sendMessage, tokenCheck } = require("../utils");
 const { QueryTypes } = require("sequelize");
-const { UsersLike } = require("../Database/Entities/Binders/UsersLike");
+const { PostLike } = require("../Database/Entities/Binders/PostLike");
 
 // Get posts with keyset pagination
 router.get('/', tokenCheck, async (req, res) => {
@@ -25,19 +25,41 @@ router.get('/', tokenCheck, async (req, res) => {
         });
     }
 
-    const query = `SELECT posts.id, posts.title, posts.description, posts.visible, posts.likes, DATE_FORMAT(posts.createdAt, '%Y-%m-%d %H:%i:%s') AS createdAt
-        FROM posts, categories, postscategories WHERE posts.id = postscategories.postID AND postscategories.categoryID = categories.id
+    /*const query2 = `SELECT users.id as 'userID', users.username, users.profilePicture, posts.id as 'postID', posts.title, posts.description, categories.name as 'category', posts.likes, DATE_FORMAT(posts.createdAt, '%Y-%m-%d %H:%i:%s') AS createdAt
+        FROM posts, categories, postscategories, users, usersposts
+        WHERE posts.id = postscategories.postID AND postscategories.categoryID = categories.id AND users.id = usersposts.userID AND usersposts.postID = posts.id AND posts.visible = 1
         ${filterByCategories ? `AND categories.name IN (${categories})` : ``}
-        ${lastPost ? `AND (posts.createdAt < :createdAt OR (posts.createdAt = :createdAt AND posts.id > :id))`: ``}
-        ORDER BY posts.createdAt DESC, posts.id DESC LIMIT 10`;
+        ${lastPost ? `AND (posts.createdAt < '${lastPost[0]}' OR (posts.createdAt = '${lastPost[0]}' AND posts.id > '${lastPost[1]}'))`: ``}
+        ORDER BY posts.createdAt DESC, posts.id DESC LIMIT 10`;*/
+    
+    // query is returning the last displayed post again
+    const query =
+    `SELECT 
+        users.id AS 'userID', 
+        users.username, 
+        users.profilePicture, 
+        posts.id AS 'postID', 
+        posts.title, 
+        posts.description,
+        categories.name as 'category',
+        posts.likes, 
+        DATE_FORMAT(posts.createdAt, '%Y-%m-%d %H:%i:%s') AS createdAt,
+        IF(postlikes.postID IS NOT NULL, 1, 0) AS 'liked'
+    FROM posts
+    JOIN postscategories ON posts.id = postscategories.postID
+    JOIN categories ON postscategories.categoryID = categories.id
+    LEFT JOIN usersposts ON usersposts.postID = posts.id
+    LEFT JOIN users ON users.id = usersposts.userID
+    LEFT JOIN postlikes ON posts.id = postlikes.postID AND postlikes.userID = '${req.user.id}'
+    WHERE posts.visible = 1
+    ${filterByCategories ? `AND categories.name IN (${categories})` : ``}
+    ${lastPost ? `AND (posts.createdAt < '${lastPost[0]}' OR (posts.createdAt = '${lastPost[0]}' AND posts.id > '${lastPost[1]}'))`: ``}
+    ORDER BY posts.createdAt DESC, posts.id DESC LIMIT 10`;
 
     try {
-        const posts = await db.query(query, {
-            replacements: { createdAt: lastPost[0], id: lastPost[1] },
-            type: QueryTypes.SELECT
-        })
+        const posts = await db.query(query, {type: QueryTypes.SELECT});
 
-        const oldestPost = posts.length ? `${posts.at(-1).createdAt}|${posts.at(-1).id}` : null;
+        const oldestPost = posts.length ? `${posts.at(-1).createdAt}|${posts.at(-1).postID}` : null;
         
         res.status(200).json({ posts, oldestPost });
     }
@@ -202,6 +224,8 @@ router.post("/like/:postID", tokenCheck, async (req, res) => {
         return sendMessage(res, 400, false, "Nem található poszt azonosító!");
     }
 
+    const transaction = await db.transaction();
+
     try
     {
         if (await Post.findOne({where: {id: req.params.postID}}) == null)
@@ -209,25 +233,43 @@ router.post("/like/:postID", tokenCheck, async (req, res) => {
             return sendMessage(res, 400, false, "Poszt nem található!");
         }
 
-        if (!await UsersLike.findOne({where: {postID: req.params.postID, userID: req.user.id}}))
+        if (!await PostLike.findOne({where: {postID: req.params.postID, userID: req.user.id}}))
         {
-            await UsersLike.create({
+            await Post.increment('likes', {
+                by: 1,
+                where: {id: req.params.postID},
+                transaction: transaction
+            });
+
+            await PostLike.create({
                 postID: req.params.postID,
                 userID: req.user.id
-            });
+            }, {transaction: transaction});
+
+            await transaction.commit();
 
             return res.status(200).json({success: true, liked: true});
         }
 
-        await UsersLike.destroy({where: {
+        await Post.decrement('likes', {
+            by: 1,
+            where: {id: req.params.postID},
+            transaction: transaction
+        });
+
+        await PostLike.destroy({where: {
             postID: req.params.postID,
             userID: req.user.id
-        }});
+        }, transaction: transaction});
+
+        await transaction.commit();
 
         return res.status(200).json({success: true, liked: false});
     }
     catch
     {
+        transaction.rollback();
+
         sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
     }
 })

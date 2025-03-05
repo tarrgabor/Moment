@@ -4,7 +4,6 @@ const {User} = require("./Entities/Main/User");
 const {Post} = require("./Entities/Main/Post");
 const {Image} = require("./Entities/Main/Image");
 const {Comment} = require("./Entities/Main/Comment");
-//const {Folder} = require("./Entities/Main/Folder");
 const {Report} = require("./Entities/Main/Report");
 const {Category} = require("./Entities/Main/Category");
 
@@ -13,11 +12,9 @@ const {UsersPost} = require("./Entities/Binders/UsersPost");
 const {PostsImage} = require("./Entities/Binders/PostsImage");
 const {UsersComment} = require("./Entities/Binders/UsersComment");
 const {PostsComment} = require("./Entities/Binders/PostsComment");
-//const {UsersFolder} = require("./Entities/Binders/UsersFolder");
 const {PostsReport} = require("./Entities/Binders/PostsReport");
 const {PostsCategory} = require("./Entities/Binders/PostsCategory");
-//const {FoldersImage} = require("./Entities/Binders/FoldersImage");
-const {UsersLike} = require("./Entities/Binders/UsersLike");
+const {PostLike} = require("./Entities/Binders/PostLike");
 const {UsersImage} = require("./Entities/Binders/UsersImage");
 
 function ConnectTables()
@@ -50,13 +47,6 @@ function ConnectTables()
     PostsComment.belongsTo(Post, {foreignKey: "postID"});
     PostsComment.belongsTo(Comment, {foreignKey: "commentID"});
 
-    // "Users" and "Folders" main tables connected with "UsersFolders" connecting table
-    //User.hasOne(UsersFolder, {foreignKey: "userID"});
-    //Folder.hasOne(UsersFolder, {foreignKey: "folderID"});
-
-    //UsersFolder.belongsTo(User, {foreignKey: "userID"});
-    //UsersFolder.belongsTo(Folder, {foreignKey: "folderID"});
-
     // "Reports" and "Posts" and "Users" main tables connected with "PostsReports" connecting table
     Report.hasOne(PostsReport, {foreignKey: "reportID"});
     Post.hasMany(PostsReport, {foreignKey: "postID"});
@@ -73,19 +63,12 @@ function ConnectTables()
     PostsCategory.belongsTo(Post, {foreignKey: "postID"});
     PostsCategory.belongsTo(Category, {foreignKey: "categoryID"});
 
-    // "Folders" and "Images" main tables connected with "FoldersImages" connecting table
-    //Folder.hasOne(FoldersImage, {foreignKey: "folderID"});
-    //Image.hasOne(FoldersImage, {foreignKey: "imageID"});
+    // "Posts" and "Users" main tables connected with "PostLikes" connecting table
+    Post.hasMany(PostLike, {foreignKey: "postID"});
+    User.hasMany(PostLike, {foreignKey: "userID"});
 
-    //FoldersImage.belongsTo(Folder, {foreignKey: "folderID"});
-    //FoldersImage.belongsTo(Image, {foreignKey: "imageID"});
-
-    // "Posts" and "Users" main tables connected with "UsersLikes" connecting table
-    Post.hasMany(UsersLike, {foreignKey: "postID"});
-    User.hasMany(UsersLike, {foreignKey: "userID"});
-
-    UsersLike.belongsTo(Post, {foreignKey: "postID"});
-    UsersLike.belongsTo(User, {foreignKey: "userID"});
+    PostLike.belongsTo(Post, {foreignKey: "postID"});
+    PostLike.belongsTo(User, {foreignKey: "userID"});
 
     // "Users" and "Images" main tables connected with "UsersImages" connecting table
     User.hasMany(UsersImage, {foreignKey: "userID"});

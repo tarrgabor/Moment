@@ -15,7 +15,7 @@ body{
     box-sizing: border-box;
 }
 
-button, a{
+button, a, span{
     transition: .15s;
 }
 
@@ -60,7 +60,7 @@ $dark-content-background-color: #222425;
 
 // Link
 $dark-link-color: #d3d3d3;
-$dark-link-hover-color: #303030;
+$dark-link-hover-color: #747474;
 $dark-link-active-color: #3f4041;
 $dark-link-active-background-color: #242424;
 
