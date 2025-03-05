@@ -2,8 +2,8 @@
 
 
 .toplist{
-    min-width: 250px;
-    height: 500px;
+    min-width: 380px;
+    height: auto;
     margin-left: 20px;
     background-color: $dark-border;
     position: sticky;
@@ -11,4 +11,64 @@
     color: $dark-text-c;
     border-radius: 10px;
     padding: 10px;
+}
+.card{
+    background-color: $dark-border;
+    min-width: 320px;
+    height: 100px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    color: $dark-text-c;
+}
+.place{
+    text-align: center;
+    margin: auto;
+    //background-color: aqua;
+    width: 50px;
+    height: 50px;
+
+}
+.content{
+    margin: auto;
+    //background-color: aqua;
+    width: 300px;
+    height: 90px;
+}
+.profile{
+    width: auto;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+}
+
+ h5{
+    margin: auto;
+    
+    //background-color: red;
+ }
+ .name{
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 10px;
+    
+ }
+.profileimg{
+    width: 55px;
+    height: 55px;
+    border-radius: 100%;
+    
+    cursor: pointer;
+}
+.like{
+    align-items: end;
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+
+}
+.like img {
+    height: 30px;
+    align-items: center;
 }
