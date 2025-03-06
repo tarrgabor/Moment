@@ -85,4 +85,21 @@ router.post("/login", async (req, res) => {
     }
 })
 
+router.delete('/users/:id', async (req, res) => {
+    try {
+      const userId = req.params.id;
+      const deletedUser = await User.destroy({ where: { id: userId } });
+
+      if (!deletedUser) {
+        return res.status(404).json({ message: 'Felhasználó nem található' });
+      }
+
+      res.status(200).json({ message: 'Sikeres fiók törlés' });
+    } catch (error) {
+      res.status(500).json({ message: 'Hiba az adatbázis művelet közben', error });
+    }
+});
+
+
+
 module.exports = router;

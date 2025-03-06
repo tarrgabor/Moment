@@ -155,7 +155,6 @@ span:active{
 
 .closeMenuButton:hover{
     color: $dark-button-close-hover-color;
-    background-color: $dark-button-close-hover-background-color;
 }
 
 @media screen and (max-width: 300px) {
@@ -163,3 +162,157 @@ span:active{
         display: none;
     }
 }
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .popup-container {
+    background: white;
+    width: 800px;
+    height: 600px;
+    max-width: 90%;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .popup-header {
+    background: #f4f4f4;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .popup-content {
+    padding: 20px;
+    font-size: 14px;
+    color: #333;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  
+  .popup-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 15px;
+  }
+  
+  button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  
+  .cancel-button {
+    background: #ccc;
+    color: #333;
+  
+    &:hover {
+      background: #b3b3b3;
+    }
+  }
+  
+  .confirm-button {
+    background: #007bff;
+    color: white;
+  
+    &:hover {
+      background: #0056b3;
+    }
+  }
+
+.profile{
+    input{  
+        width: 100%;
+        height: 45px;
+        border-radius: 50px;
+        text-indent: 15px;
+        margin: 3px;
+        background-color: $dark-input-background-color;
+        color: $dark-input-text-color;
+    }
+    button{
+        width: 100%;
+        height: 45px;
+        border-radius: 50px;
+        margin: 3px;
+        margin-top: 10px;
+        background-color: $button-background-color;
+        color: $button-text-color;
+    }
+    
+    button:hover{
+        color: $button-text-hover-color;
+        background-color: $button-hover-background-color;
+    }
+    
+    button:active{
+        color: $button-active-text-color;
+        background-color: $button-active-background-color;
+    }
+}
+
+.theme-switch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 60px;
+    height: 30px;
+    background: #ddd;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+  
+    .slider {
+      position: absolute;
+      left: 5px;
+      width: 24px;
+      height: 24px;
+      //background: white;
+      border-radius: 50%;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease-in-out;
+    }
+  
+    .icon {
+      font-size: 18px;
+      color: #555;
+      transition: color 0.3s ease-in-out;
+    }
+  
+    &.dark {
+      background: #333;
+  
+      .slider {
+        transform: translateX(30px);
+      }
+  
+      .icon {
+        color: #fff;
+      }
+    }
+  }
+  

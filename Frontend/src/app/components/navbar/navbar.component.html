@@ -21,9 +21,64 @@
         <hr>
 
         <span routerLink="/"><i class="bi bi-person"></i> Saját profil</span>
-        <span routerLink="/"><i class="bi bi-gear"></i> Beállítások</span>
+        <span href="" (click)="togglePopup()"><i class="bi bi-gear"></i> Beállítások</span>
         <span (click)="logout()"><i class="bi bi-box-arrow-right"></i> Kijelentkezés</span>
+
+        <div *ngIf="isSettingsOpen" class="popup-overlay" (click)="closePopup()">
+  
+          <div class="popup-container" (click)="$event.stopPropagation()">
+            
+            <i class="bi bi-x-lg closeMenuButton" (click)="closeSidebarMenu()"></i>
+            
+            <div class="popup-sidebar">
+              <button (click)="setActiveTab('profile')">Profil módosítás</button>
+              <button (click)="setActiveTab('account')">Fiók műveletek</button>
+              <button (click)="setActiveTab('theme')">Téma</button>
+            </div>
+            
+            <div class="popup-content">
+              
+              <div class="profile" *ngIf="activeTab === 'profile'">
+                <h2>Profil módosítás</h2>
+                <input type="text" placeholder="Név">
+                <input type="email" placeholder="Email">
+                <input type="password" placeholder="Jelszó">
+                <input type="confirmpassword" placeholder="Jelszó">
+                <input type="text" placeholder="Telefonszám">
+                <button class="save-button">Módosítás</button>
+              </div>
+              
+              <div class="accountmod"*ngIf="activeTab === 'account'">
+                <h2>Fiók műveletek</h2>
+                <button (click)="confirmAction('delete')">Fiók törlése</button>
+
+                <div *ngIf="confirmationType" class="confirmation-box">
+                  <h3>Biztos {{ confirmationType === 'delete' ? 'törölni' : 'deaktiválni' }} szeretné a fiókot?</h3>
+                  <button (click)="deleteUser('id')" class="confirm-button">Igen</button>
+                  <button (click)="cancelConfirm()" class="cancel-button">Nem</button>
+                </div>
+              </div>
+              
+              <div class="themechange" *ngIf="activeTab === 'theme'">
+                <h2>Téma</h2>
+                <div class="theme-switch" [class.dark]="isDarkMode" (click)="toggleTheme()">
+                  <div class="slider">
+                    <span class="material-icons icon">
+                      {{ isDarkMode ? 'dark_mode' : 'light_mode' }}
+                    </span>
+                  </div>
+                </div>
+                
+              </div>
+              
+              
+            </div>
+          </div>
+        </div>
+
     </div>
+
+    
 
     <div id="overlay" (click)="closeSidebarMenu()"></div>
 </nav>
