@@ -1,9 +1,8 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, Renderer2 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { NavItem } from '../../interfaces/interfaces';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,7 +11,11 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent{
-  constructor(private auth: AuthService, private renderer: Renderer2, private http: HttpClient){}
+  constructor(
+    private auth: AuthService,
+    private renderer: Renderer2,
+    private api: ApiService
+  ){}
   isSettingsOpen = false;
   activeTab: string = 'profile';
   confirmationType: 'delete' | 'deactivate' | null = null;
@@ -54,21 +57,13 @@ export class NavbarComponent{
     this.closePopup();
   }
 
-  deleteUser(userId: string) {
-    if (!userId) {
-      console.error('Hiba: nincs userId megadva');
-      return;
-    }
-    
-    this.http.delete(`http://localhost:3000/users/${userId}`).subscribe(
-      (res: any) => {
-        console.log('User deleted successfully', res);
-        this.logout();
-      },
-      (error) => {
-        console.error('Error deleting user', error);
+  deleteUser() {    
+    this.api.deleteMyAccount("users").subscribe((res: any) => {
+      if (res.success)
+      {
+        this.auth.deleteTokenAndLogout();
       }
-    );
+    })
   }
   
 

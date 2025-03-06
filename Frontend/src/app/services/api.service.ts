@@ -28,4 +28,9 @@ export class ApiService {
   login(table: string, user: object){
     return this.http.post(`${this.serverURL}/${table}/login`, user);
   }
+
+  deleteMyAccount(table: string)
+  {
+    return this.http.delete(`${this.serverURL}/${table}/deleteMyAccount`, this.tokenHeader());
+  }
 }

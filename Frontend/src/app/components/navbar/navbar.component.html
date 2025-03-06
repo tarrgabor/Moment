@@ -54,7 +54,7 @@
 
                 <div *ngIf="confirmationType" class="confirmation-box">
                   <h3>Biztos {{ confirmationType === 'delete' ? 'törölni' : 'deaktiválni' }} szeretné a fiókot?</h3>
-                  <button (click)="deleteUser('id')" class="confirm-button">Igen</button>
+                  <button (click)="deleteUser()" class="confirm-button">Igen</button>
                   <button (click)="cancelConfirm()" class="cancel-button">Nem</button>
                 </div>
               </div>

@@ -2,7 +2,7 @@ const router = require("express").Router();
 const { Op } = require("sequelize");
 const { User } = require("../Database/Entities/Main/User");
 const CryptoJS = require("crypto-js");
-const { sendMessage } = require("../utils");
+const { sendMessage, tokenCheck } = require("../utils");
 const passwdRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
@@ -85,18 +85,19 @@ router.post("/login", async (req, res) => {
     }
 })
 
-router.delete('/users/:id', async (req, res) => {
+router.delete('/deleteMyAccount', tokenCheck, async (req, res) => {
     try {
-      const userId = req.params.id;
-      const deletedUser = await User.destroy({ where: { id: userId } });
+      const deletedUser = await User.destroy({ where: { id: req.user.id } });
 
       if (!deletedUser) {
-        return res.status(404).json({ message: 'Felhasználó nem található' });
+        return sendMessage(res, 400, false, 'Felhasználó nem található');
       }
 
-      res.status(200).json({ message: 'Sikeres fiók törlés' });
-    } catch (error) {
-      res.status(500).json({ message: 'Hiba az adatbázis művelet közben', error });
+      sendMessage(res, 200, true, 'Sikeres fiók törlés');
+    }
+    catch
+    {
+      sendMessage(res, 500, false, 'Hiba az adatbázis művelet közben');
     }
 });
 
