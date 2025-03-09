@@ -65,9 +65,12 @@
     justify-content: space-between;
 }
 .kategory p{
-    margin-left: 10px;
+    margin-top: auto;
+    margin-bottom: auto;
+    
     padding: 2px;
     font-size :14px; 
+    
     //background-color: $dark-button-close-color;
     border-radius: 5px;
     border: 1px solid $dark-border-color;

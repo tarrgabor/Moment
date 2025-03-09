@@ -12,7 +12,7 @@ import { OpenPostComponent } from './components/open-post/open-post.component';
 export const routes: Routes = [
     // Possible pages to visit before logging in
     {
-        path: "login", component: LoginComponent
+        path: "login", component: MainPageComponent
     },
     {
         path: "registration", component: RegistrationComponent
