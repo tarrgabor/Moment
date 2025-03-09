@@ -24,14 +24,21 @@
     margin-top: 15px;
     
 }
+.had{
+    display: flex;
+    flex-direction: row; 
+    justify-content: space-between;
+
+}
 .name{
     margin-left: 10px;
     margin-top: auto;
     margin-bottom: auto;
+    
 }
 .title img{
-    width: 70px;
-    height: 70px;
+    width: 40px;
+    height: 40px;
     border-radius: 100%;
     
     cursor: pointer;
@@ -53,16 +60,25 @@
     background-color: $dark-input-background-color;
 }
 .kategory{
-    margin: 10px;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
 }
 .kategory p{
+    margin-left: 10px;
+    padding: 2px;
+    font-size :14px; 
+    //background-color: $dark-button-close-color;
+    border-radius: 5px;
+    border: 1px solid $dark-border-color;
+}
+.time p{
     margin: 10px;
-    padding: 5px;
-    font-size :16px; 
-    background-color: $dark-button-close-color;
-    border-radius: 15px;
+    padding: 2px;
+    font-size :14px; 
+    //background-color: $dark-button-close-color;
+    border-radius: 5px;
+    //border: 1px solid $dark-border-color;
 }
 .description{
     margin: 15px;
@@ -87,9 +103,10 @@
 }
 .like p {margin-right: 10px;}
 .report{
-    width: 50px;
-    border-radius: 15px;
+    width: auto;
+    border-radius: 100%;
     text-align: center;
+    background-color: $dark-background-color;
 }
 .comment{
     margin: 10px;
@@ -103,12 +120,14 @@
 .write{
     width: 95%;
     margin-right: 30px;
-    border-radius: 15px;
+    border-radius: 6px;
+    padding-left: 10px;
     height: 30px;
 }
 .send{
     width: 70px;
-    border-radius: 15px;
+    border-radius: 6px;
+    background-color: $button-background-color;
 }
 
 .coments{

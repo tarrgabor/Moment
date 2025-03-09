@@ -1,12 +1,12 @@
-<div class="post" routerLink="/postpage">
+<div class="post" >
     <div class="post-header">
         <div class="post-author">
             <span class="author">{{postData.author}}</span>
         </div>
     </div>
 
-    <div class="post-body">
-        <h2 class="post-title">{{postData.title}}</h2>
+    <div class="post-body" >
+        <h2 class="post-title" routerLink="/postpage">{{postData.title}}</h2>
         <img class="post-content" src="momentLogo.png" alt="">
     </div>
 
