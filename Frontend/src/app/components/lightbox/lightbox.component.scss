@@ -1,0 +1,78 @@
+@use "../../../styles.scss" as *;
+
+.lightbox-container {
+    position: fixed;
+    scale: 0;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    opacity: 0;
+    z-index: -100;
+    background-color: $overlay-background-color;
+    user-select: none;
+    transition: .2s;
+}
+
+.lightbox-container.open{
+    z-index: 500;
+    scale: 1;
+    opacity: 1;
+}
+
+.lightbox-image-container{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    backdrop-filter: blur(24px);
+}
+
+#lightbox-image{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+    cursor: zoom-in;
+}
+
+#lightbox-image.zoomed{
+    object-fit: cover;
+    width: 110%;
+    height: auto;
+    cursor: zoom-out;
+}
+
+.lightbox-image-container:has(#lightbox-image.zoomed){
+    overflow: auto;
+}
+
+
+.closeLightboxButton{
+    display: flex;
+    position: fixed;
+    color: white;
+    top: 5px;
+    right: 5px;
+    font-size: 28px;
+    padding: 5px;
+    border-radius: 50%;
+    z-index: 600;
+    background-color: $overlay-background-color;
+}
+
+.closeLightboxButton:hover{
+    background-color: rgb(85, 85, 85);
+}
+
+.closeLightboxButton:active{
+    outline: auto;
+}
+
+@media screen and (max-width: 800px) {
+    #lightbox-image.zoomed{
+        object-fit: contain;
+        width: 150%;
+        height: 150%;
+    }
+}

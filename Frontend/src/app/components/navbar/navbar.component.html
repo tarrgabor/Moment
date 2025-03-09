@@ -6,14 +6,16 @@
         </a>
     
         <div class="navbarProfile" (click)="openSidebarMenu()">
-            <img src="profilkep.png" alt="">
+            <img src="{{profilePicture}}" alt="">
         </div>
     </div>
 
     <div class="linksContainer">
         <div class="linksHeader">
-            <img src="profilkep.png" alt="">
-            <p id="username">Hosszú felhasználónév hogy teszteljem</p>
+            <div class="user-data">
+                <img src="{{profilePicture}}" alt="">
+                <p id="username">{{username}}</p>
+            </div>
 
             <i class="bi bi-x-lg closeMenuButton" (click)="closeSidebarMenu()"></i>
         </div>

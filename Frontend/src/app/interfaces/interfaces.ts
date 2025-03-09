@@ -4,9 +4,15 @@ export interface Category {
 }
 
 export interface Post {
-    id: string,
-    author: string,
+    userID: string,
+    username: string,
+    profilePicture: string,
+    postID: string,
     title: string,
-    img: string,
-    likes: string
+    description: string,
+    category: string,
+    image: string,
+    likes: number,
+    createdAt: Date,
+    liked: Boolean
 }

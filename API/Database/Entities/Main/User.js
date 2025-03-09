@@ -35,6 +35,10 @@ const User = db.define('user', {
         defaultValue: "user",
         allowNull: false
     },
+    profilePicture: {
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
     phoneNumber: {
         type: DataTypes.STRING(30),
         unique: true,
