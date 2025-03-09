@@ -4,10 +4,10 @@
     <app-sidebar-filter/>
 
     <main class="contentContainer">
-        <div class="postContainer">
-            <app-post *ngFor="let post of posts" [getPostData]="post"/>
-        </div>
+        <app-post-container class="postContainer"/>
         
         <app-toplist class="toplist"/>
     </main>
 </div>
+
+<app-lightbox/>

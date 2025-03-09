@@ -1,0 +1,7 @@
+<div class="postContainer">
+    <app-post *ngFor="let post of posts" [getPostData]="post"/>
+
+    <app-intersection-observer (intersecting)="getPosts()"/>
+
+    <app-loading *ngIf="fetching"/>
+</div>

@@ -13,6 +13,6 @@ export interface Post {
     category: string,
     image: string,
     likes: number,
-    createdAt: string,
+    createdAt: Date,
     liked: Boolean
 }

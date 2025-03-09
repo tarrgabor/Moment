@@ -30,6 +30,12 @@ export const routes: Routes = [
     {
         path: "", component: MainPageComponent, canActivate: [UserAuthGuard]
     },
+    {
+        path: "post/:id", component: PageNotFoundComponent, canActivate: [UserAuthGuard]
+    },
+    {
+        path: "user/:id", component: PageNotFoundComponent, canActivate: [UserAuthGuard]
+    },
 
     // Not valid page entered
     {

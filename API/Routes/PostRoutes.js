@@ -10,7 +10,7 @@ const { PostLike } = require("../Database/Entities/Binders/PostLike");
 
 // Get posts with keyset pagination
 router.get('/', tokenCheck, async (req, res) => {
-    const lastPost = req.query.lastPost?.split('|');
+    const oldestPost = req.query.oldestPost?.split('|');
 
     let filterByCategories = false;
 
@@ -25,36 +25,28 @@ router.get('/', tokenCheck, async (req, res) => {
         });
     }
 
-    /*const query2 = `SELECT users.id as 'userID', users.username, users.profilePicture, posts.id as 'postID', posts.title, posts.description, categories.name as 'category', posts.likes, DATE_FORMAT(posts.createdAt, '%Y-%m-%d %H:%i:%s') AS createdAt
-        FROM posts, categories, postscategories, users, usersposts
-        WHERE posts.id = postscategories.postID AND postscategories.categoryID = categories.id AND users.id = usersposts.userID AND usersposts.postID = posts.id AND posts.visible = 1
-        ${filterByCategories ? `AND categories.name IN (${categories})` : ``}
-        ${lastPost ? `AND (posts.createdAt < '${lastPost[0]}' OR (posts.createdAt = '${lastPost[0]}' AND posts.id > '${lastPost[1]}'))`: ``}
-        ORDER BY posts.createdAt DESC, posts.id DESC LIMIT 10`;*/
-    
-    // query is returning the last displayed post again
     const query =
-    `SELECT 
-        users.id AS 'userID', 
-        users.username, 
-        users.profilePicture, 
-        posts.id AS 'postID', 
-        posts.title, 
-        posts.description,
-        categories.name as 'category',
-        posts.likes, 
-        DATE_FORMAT(posts.createdAt, '%Y-%m-%d %H:%i:%s') AS createdAt,
-        IF(postlikes.postID IS NOT NULL, 1, 0) AS 'liked'
-    FROM posts
-    JOIN postscategories ON posts.id = postscategories.postID
-    JOIN categories ON postscategories.categoryID = categories.id
-    LEFT JOIN usersposts ON usersposts.postID = posts.id
-    LEFT JOIN users ON users.id = usersposts.userID
-    LEFT JOIN postlikes ON posts.id = postlikes.postID AND postlikes.userID = '${req.user.id}'
-    WHERE posts.visible = 1
-    ${filterByCategories ? `AND categories.name IN (${categories})` : ``}
-    ${lastPost ? `AND (posts.createdAt < '${lastPost[0]}' OR (posts.createdAt = '${lastPost[0]}' AND posts.id > '${lastPost[1]}'))`: ``}
-    ORDER BY posts.createdAt DESC, posts.id DESC LIMIT 10`;
+    `SELECT
+        u.id AS 'userID',
+        u.username,
+        u.profilePicture,
+        p.id AS 'postID',
+        p.title,
+        p.description,
+        c.name as 'category',
+        p.likes,
+        DATE_FORMAT(p.createdAt, '%Y-%m-%d %H:%i:%s') AS createdAt,
+        IF(l.postID IS NOT NULL, 1, 0) AS liked
+    FROM posts p
+    JOIN postscategories pc ON p.id = pc.postID
+    JOIN categories c ON c.id = pc.categoryID
+    LEFT JOIN postlikes l ON p.id = l.postID AND l.userID = '${req.user.id}'
+    LEFT JOIN usersposts up ON p.id = up.postID
+    LEFT JOIN users u ON u.id = up.userID
+    WHERE p.visible = 1
+    ${filterByCategories ? `AND c.name IN (${categories})` : ``}
+    ${oldestPost ? `AND (p.createdAt < '${oldestPost[0]}' OR (p.createdAt = '${oldestPost[0]}' AND p.id < '${oldestPost[1]}'))` : ``}
+    ORDER BY p.createdAt DESC, p.id DESC LIMIT 5`
 
     try {
         const posts = await db.query(query, {type: QueryTypes.SELECT});

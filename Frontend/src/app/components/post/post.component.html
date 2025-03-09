@@ -1,21 +1,20 @@
-<div class="post">
+<div class="post" routerLink="/post/{{postData.postID}}/{{processedTitle}}">
     <div class="post-header">
         <div class="post-author" routerLink="/user/{{postData.username}}">
-            <img class="user-profileImage" src="profilkep.png" alt="">
+            <img class="user-profileImage" src="{{postData.profilePicture}}" alt="">
             <span class="author">{{postData.username}}</span>
         </div>
+
+        <p>{{createdAgo}}</p>
     </div>
 
     <div class="post-body">
         <h2 class="post-title">{{postData.title}}</h2>
         <p class="post-category">{{postData.category}}</p>
-        <img class="post-content" src="profilkep.png" alt="">
+        <app-lightbox-listener [getImage]="postData.image"/>
     </div>
 
     <div class="post-footer">
-        <button id="{{postData.postID}}" class="likeButton" (click)="toggleLike()">
-            <span class="likeText">{{postData.likes}}</span>
-            <img src="likeIcon.svg" alt="">
-        </button>
+        <app-like-button [getID]="postData.postID" [getLikes]="postData.likes" [getIsLiked]="postData.liked"/>
     </div>
 </div>

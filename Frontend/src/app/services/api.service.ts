@@ -32,10 +32,10 @@ export class ApiService {
 
   getPosts(table: string, query?: string)
   {
-    return this.http.get(`${this.serverURL}/${table}${query ? query : ''}`, this.tokenHeader());
+    return this.http.get(`${this.serverURL}/${table}?${query ? query : ''}`, this.tokenHeader());
   }
 
-  togglePostLike(table: string, postID: string)
+  toggleLike(table: string, postID: string)
   {
     return this.http.post(`${this.serverURL}/${table}/like/${postID}`, null, this.tokenHeader());
   }
