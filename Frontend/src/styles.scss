@@ -15,7 +15,7 @@ body{
     box-sizing: border-box;
 }
 
-button, a{
+button, a, span{
     transition: .15s;
 }
 
@@ -58,10 +58,15 @@ $dark-input-background-color: #3f4041;
 
 // Content
 $dark-content-background-color: #222425;
+$dark-content-hover-background-color: #2d2e2e;
+
+// Button
+$dark-button-background-color: #3f3f3f;
+$dark-button-hover-background-color: #4e4e4e;
 
 // Link
 $dark-link-color: #d3d3d3;
-$dark-link-hover-color: #303030;
+$dark-link-hover-color: #747474;
 $dark-link-active-color: #3f4041;
 $dark-link-active-background-color: #242424;
 

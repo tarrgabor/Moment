@@ -25,7 +25,18 @@ export class ApiService {
     return this.http.post(`${this.serverURL}/${table}/registration`, user);
   }
 
-  login(table: string, user: object){
+  login(table: string, user: object)
+  {
     return this.http.post(`${this.serverURL}/${table}/login`, user);
+  }
+
+  getPosts(table: string, query?: string)
+  {
+    return this.http.get(`${this.serverURL}/${table}?${query ? query : ''}`, this.tokenHeader());
+  }
+
+  toggleLike(table: string, postID: string)
+  {
+    return this.http.post(`${this.serverURL}/${table}/like/${postID}`, null, this.tokenHeader());
   }
 }
