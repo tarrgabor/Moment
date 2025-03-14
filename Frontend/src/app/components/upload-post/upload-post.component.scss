@@ -10,8 +10,9 @@
     margin: auto;
     margin-top:30px;
     margin-bottom:30px;
+    padding-bottom: 30px;
     border-radius: 15px;
-    max-width: 900px;
+    max-width: 750px;
     border: 1px solid $dark-border-color;
     //background-color: $dark-content-background-color;
 }
@@ -91,12 +92,11 @@
     font-size :16px; 
 }
 .interaktion{
-    margin: 10px;
-    margin-left: 60px;
-    margin-right: 60px;
+   
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    margin-top: auto;
 
 }
 .like{
@@ -120,12 +120,27 @@
     
     justify-content: space-between;
 }
+.checkbox{
+    margin: 10px;
+    margin-left: 50px;
+    margin-right: 50px;
+    display: flex;
+    flex-direction: row;
+    
+    //justify-content: space-between;
+}
+.check{
+    margin-top:3px;
+    margin-left: 10px;
+}
+
+
 .write{
-    width: 95%;
-    margin-right: 30px;
+   // width: 95%;
+    //margin-right: 30px;
     border-radius: 6px;
     padding-left: 10px;
-    height: 30px;
+    min-height: 30px;
 }
 .send{
     width: 70px;
