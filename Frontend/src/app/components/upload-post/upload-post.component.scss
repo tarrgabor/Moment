@@ -1,0 +1,180 @@
+@use "../../../styles.scss" as *;
+
+
+.contanier{
+    
+    display: flex;
+    flex-direction: column;
+    //text-align: center;
+    color: $dark-text-color;
+    margin: auto;
+    margin-top:30px;
+    margin-bottom:30px;
+    border-radius: 15px;
+    max-width: 900px;
+    border: 1px solid $dark-border-color;
+    //background-color: $dark-content-background-color;
+}
+
+//fejléc
+.title{
+    display: flex;
+    flex-direction: row;
+    margin-left: 15px;
+    margin-top: 15px;
+    
+}
+.had{
+    display: flex;
+    flex-direction: row; 
+    justify-content: space-between;
+
+}
+.name{
+    margin-left: 10px;
+    margin-top: auto;
+    margin-bottom: auto;
+    
+}
+.title img{
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    
+    cursor: pointer;
+}
+
+// post
+.post-body{
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.post-title{
+    margin: 10px;
+    margin-left: 20px;
+}
+.post-content{
+    margin:10px;
+    border-radius: 15px;
+    background-color: $dark-input-background-color;
+}
+.kategory{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.kategory p{
+    margin-top: auto;
+    margin-bottom: auto;
+    
+    padding: 2px;
+    font-size :14px; 
+    
+    //background-color: $dark-button-close-color;
+    border-radius: 5px;
+    border: 1px solid $dark-border-color;
+}
+.time p{
+    margin: 10px;
+    padding: 2px;
+    font-size :14px; 
+    //background-color: $dark-button-close-color;
+    border-radius: 5px;
+    //border: 1px solid $dark-border-color;
+}
+.description{
+    margin: 15px;
+    margin-left: 50px;
+    margin-right: 50px;
+    text-align: justify;
+    font-size :16px; 
+}
+.interaktion{
+    margin: 10px;
+    margin-left: 60px;
+    margin-right: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+.like{
+    display: flex;
+    flex-direction: row;
+    
+}
+.like p {margin-right: 10px;}
+.report{
+    width: auto;
+    border-radius: 100%;
+    text-align: center;
+    background-color: $dark-background-color;
+}
+.comment{
+    margin: 10px;
+    margin-left: 50px;
+    margin-right: 50px;
+    display: flex;
+    flex-direction: column;
+    
+    justify-content: space-between;
+}
+.write{
+    width: 95%;
+    margin-right: 30px;
+    border-radius: 6px;
+    padding-left: 10px;
+    height: 30px;
+}
+.send{
+    width: 70px;
+    border-radius: 6px;
+    background-color: $button-background-color;
+}
+
+.coments{
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    margin: 30px;
+}
+.commentBody{
+    background-color: $dark-input-background-color;
+    margin: 10px;
+    border-radius: 15px;
+
+}
+
+
+.commentProfile{
+    display: flex;
+    flex-direction: row;
+    margin-left: 15px;
+    margin-top: 15px;
+    
+}
+.commentname{
+    margin-left: 10px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.commentProfile img{
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    cursor: pointer;
+}
+.commenttext{
+    margin: 20px;
+}
+
+.commentlike{
+    margin-right: 20px;
+    margin-bottom: 10px;
+    justify-content: end;
+    display: flex;
+    flex-direction: row;
+    
+}
+.commentlike p {margin-right: 10px;}
