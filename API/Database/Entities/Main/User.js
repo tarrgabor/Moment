@@ -49,11 +49,6 @@ const User = db.define('user', {
         values: ["allowed", "banned"],
         defaultValue: "allowed",
         allowNull: false
-    },
-    warnings: {
-        type: DataTypes.INTEGER(2),
-        defaultValue: 0,
-        allowNull: false
     }
 });
 

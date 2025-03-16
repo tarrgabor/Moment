@@ -25,7 +25,15 @@ function tokenCheck(req, res, next){
     }
 }
 
+function formatFileName(fileName){
+    const originalname = fileName.replaceAll(' ', '_');
+    const name = originalname.substring(0, originalname.lastIndexOf('.'));
+       
+    return name + '-' + Date.now();
+}
+
 module.exports = {
     sendMessage,
-    tokenCheck
+    tokenCheck,
+    formatFileName
 }

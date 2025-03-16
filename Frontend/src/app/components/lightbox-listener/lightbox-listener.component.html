@@ -1,3 +1,3 @@
 <div class="lightbox-listener" (click)="openLightbox($event)">
-    <img class="post-image" src="{{image}}">
+    <img *ngIf="image" class="post-image" src="{{image}}">
 </div>

@@ -2,7 +2,7 @@ const router = require("express").Router();
 const { Op } = require("sequelize");
 const { User } = require("../Database/Entities/Main/User");
 const CryptoJS = require("crypto-js");
-const { sendMessage } = require("../utils");
+const { sendMessage, tokenCheck } = require("../utils");
 const passwdRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
@@ -63,7 +63,7 @@ router.post("/login", async (req, res) => {
             },
             attributes:
             {
-                exclude: ["fullName", "password", "phoneNumber", "warnings"]
+                exclude: ["fullName", "password", "phoneNumber"]
             }
         });
 
@@ -78,6 +78,30 @@ router.post("/login", async (req, res) => {
         }
 
         res.status(200).json({success: true, message: "Sikeres bejelentkezés", token: jwt.sign(JSON.parse(JSON.stringify(user)), process.env.JWT_SECRET, {expiresIn: "2h"})});
+    }
+    catch
+    {
+        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
+    }
+})
+
+// Get user by username (profile)
+router.get("/get/:username", tokenCheck, async (req, res) => {
+    try
+    {
+        const user = await User.findOne({where: {username: req.params.username},
+            attributes:
+            {
+                exclude: ["id", "password"]
+            }
+        });
+
+        if (user == null)
+        {
+            return sendMessage(res, 400, false, "A felhasználó nem található!");
+        }
+
+        res.status(200).json({success: true, user});
     }
     catch
     {

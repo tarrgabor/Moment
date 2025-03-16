@@ -9,7 +9,7 @@ const Post = db.define('post', {
         allowNull: false
     },
     title: {
-        type: DataTypes.STRING(40),
+        type: DataTypes.STRING(150),
         allowNull: false
     },
     description: {

@@ -1,12 +1,12 @@
 .lightbox-listener {
-    background-color: white;
+    background-color: rgb(20, 20, 20);
     border-radius: 20px;
 }
 
 .post-image {
     width: 100%;
     height: auto;
+    max-height: 500px;
     border-radius: 20px;
-    aspect-ratio: 1.5;
-    object-fit: cover;
+    object-fit: contain;
 }

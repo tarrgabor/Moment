@@ -47,10 +47,10 @@ export class LikeButtonComponent implements OnInit{
     }
   }
 
-  toggleLike(e: Event, type: string)
+  toggleLike(e: Event, table: string)
   {
     e.stopPropagation();
-    this.api.toggleLike(type, this.id).subscribe((res: any) => {
+    this.api.toggleLike(table, this.id).subscribe((res: any) => {
       if (res.liked)
       {
         this.likes += 1;

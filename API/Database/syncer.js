@@ -8,60 +8,60 @@ const {Report} = require("./Entities/Main/Report");
 const {Category} = require("./Entities/Main/Category");
 
 // Importing connecting tables
-const {UsersPost} = require("./Entities/Binders/UsersPost");
-const {PostsImage} = require("./Entities/Binders/PostsImage");
-const {UsersComment} = require("./Entities/Binders/UsersComment");
-const {PostsComment} = require("./Entities/Binders/PostsComment");
-const {PostsReport} = require("./Entities/Binders/PostsReport");
-const {PostsCategory} = require("./Entities/Binders/PostsCategory");
+const {UserPost} = require("./Entities/Binders/UserPost");
+const {PostImage} = require("./Entities/Binders/PostImage");
+const {UserComment} = require("./Entities/Binders/UserComment");
+const {PostComment} = require("./Entities/Binders/PostComment");
+const {PostReport} = require("./Entities/Binders/PostReport");
+const {PostCategory} = require("./Entities/Binders/PostCategory");
 const {PostLike} = require("./Entities/Binders/PostLike");
 const {UsersImage} = require("./Entities/Binders/UsersImage");
 
 function ConnectTables()
 {
     // "Users" and "Posts" main tables connected with "UsersPosts" connecting table
-    User.hasMany(UsersPost, {foreignKey: "userID"});
-    Post.hasOne(UsersPost, {foreignKey: "postID"});
+    User.hasMany(UserPost, {foreignKey: "userID"});
+    Post.hasOne(UserPost, {foreignKey: "postID"});
 
-    UsersPost.belongsTo(User, {foreignKey: "userID", onDelete: "cascade"});
-    UsersPost.belongsTo(Post, {foreignKey: "postID", onDelete: "cascade"});
+    UserPost.belongsTo(User, {foreignKey: "userID"});
+    UserPost.belongsTo(Post, {foreignKey: "postID"});
 
     // "Posts" and "Images" main tables connected with "PostsImages" connecting table
-    Post.hasOne(PostsImage, {foreignKey: "postID"});
-    Image.hasOne(PostsImage, {foreignKey: "imageID"});
+    Post.hasOne(PostImage, {foreignKey: "postID"});
+    Image.hasOne(PostImage, {foreignKey: "imageID"});
 
-    PostsImage.belongsTo(Post, {foreignKey: "postID"});
-    PostsImage.belongsTo(Image, {foreignKey: "imageID"});
+    PostImage.belongsTo(Post, {foreignKey: "postID"});
+    PostImage.belongsTo(Image, {foreignKey: "imageID"});
 
     // "Users" and "Comments" main tables connected with "UsersComments" connecting table
-    User.hasMany(UsersComment, {foreignKey: "userID"});
-    Comment.hasOne(UsersComment, {foreignKey: "commentID"});
+    User.hasMany(UserComment, {foreignKey: "userID"});
+    Comment.hasOne(UserComment, {foreignKey: "commentID"});
 
-    UsersComment.belongsTo(User, {foreignKey: "userID"});
-    UsersComment.belongsTo(Comment, {foreignKey: "commentID"});
+    UserComment.belongsTo(User, {foreignKey: "userID"});
+    UserComment.belongsTo(Comment, {foreignKey: "commentID"});
 
     // "Posts" and "Comments" main tables connected with "PostsComments" connecting table
-    Post.hasMany(PostsComment, {foreignKey: "postID"});
-    Comment.hasOne(PostsComment, {foreignKey: "commentID"});
+    Post.hasMany(PostComment, {foreignKey: "postID"});
+    Comment.hasOne(PostComment, {foreignKey: "commentID"});
 
-    PostsComment.belongsTo(Post, {foreignKey: "postID"});
-    PostsComment.belongsTo(Comment, {foreignKey: "commentID"});
+    PostComment.belongsTo(Post, {foreignKey: "postID"});
+    PostComment.belongsTo(Comment, {foreignKey: "commentID"});
 
     // "Reports" and "Posts" and "Users" main tables connected with "PostsReports" connecting table
-    Report.hasOne(PostsReport, {foreignKey: "reportID"});
-    Post.hasMany(PostsReport, {foreignKey: "postID"});
-    User.hasMany(PostsReport, {foreignKey: "userID"});
+    Report.hasOne(PostReport, {foreignKey: "reportID"});
+    Post.hasMany(PostReport, {foreignKey: "postID"});
+    User.hasMany(PostReport, {foreignKey: "userID"});
 
-    PostsReport.belongsTo(Report, {foreignKey: "reportID"});
-    PostsReport.belongsTo(Post, {foreignKey: "postID"});
-    PostsReport.belongsTo(User, {foreignKey: "userID"});
+    PostReport.belongsTo(Report, {foreignKey: "reportID"});
+    PostReport.belongsTo(Post, {foreignKey: "postID"});
+    PostReport.belongsTo(User, {foreignKey: "userID"});
 
     // "Posts" and "Categories" main tables connected with "PostsCategories" connecting table
-    Post.hasOne(PostsCategory, {foreignKey: "postID"});
-    Category.hasMany(PostsCategory, {foreignKey: "categoryID"})
+    Post.hasOne(PostCategory, {foreignKey: "postID"});
+    Category.hasMany(PostCategory, {foreignKey: "categoryID"})
 
-    PostsCategory.belongsTo(Post, {foreignKey: "postID"});
-    PostsCategory.belongsTo(Category, {foreignKey: "categoryID"});
+    PostCategory.belongsTo(Post, {foreignKey: "postID"});
+    PostCategory.belongsTo(Category, {foreignKey: "categoryID"});
 
     // "Posts" and "Users" main tables connected with "PostLikes" connecting table
     Post.hasMany(PostLike, {foreignKey: "postID"});

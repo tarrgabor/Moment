@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { QueryTypes } = require("sequelize");
-const { PostsComment } = require("../Database/Entities/Binders/PostsComment");
-const { UsersComment } = require("../Database/Entities/Binders/UsersComment");
+const { PostComment } = require("../Database/Entities/Binders/PostComment");
+const { UserComment } = require("../Database/Entities/Binders/UserComment");
 const { Comment } = require("../Database/Entities/Main/Comment");
 const db = require("../Database/database");
 const { sendMessage, tokenCheck } = require("../utils");
@@ -20,8 +20,8 @@ router.get("/post/:postID", tokenCheck, async (req, res) => {
             `SELECT comments.id AS commentID, comments.message, users.username FROM comments
             JOIN postscomments ON comments.id = postscomments.commentID
             JOIN posts ON postscomments.postID = posts.id
-            LEFT JOIN userscomments ON comments.id = userscomments.commentID
-            LEFT JOIN users ON userscomments.userID = users.id
+            LEFT JOIN usercomments ON comments.id = usercomments.commentID
+            LEFT JOIN users ON usercomments.userID = users.id
             WHERE posts.id = :postID`, {
                 replacements: {postID: req.params.postID},
                 type: QueryTypes.SELECT
@@ -56,12 +56,12 @@ router.post("/create/:postID", tokenCheck, async (req, res) => {
             message: req.body.message,
         }, {transaction: transaction});
 
-        await UsersComment.create({
+        await UserComment.create({
             userID: req.user.id,
             commentID: commentID
         }, {transaction: transaction});
 
-        await PostsComment.create({
+        await PostComment.create({
             postID: req.params.postID,
             commentID: commentID
         }, {transaction: transaction});
@@ -87,7 +87,7 @@ router.patch("/update/:commentID", tokenCheck, async (req, res) => {
 
     try
     {
-        if (!await UsersComment.findOne({where: {commentID: req.params.commentID, userID: req.user.id}}))
+        if (!await UserComment.findOne({where: {commentID: req.params.commentID, userID: req.user.id}}))
         {
             return sendMessage(res, 400, false, "Komment nem található!");
         }
@@ -116,7 +116,7 @@ router.delete("/delete/:commentID", tokenCheck, async (req, res) => {
 
     try
     {
-        if (!await UsersComment.findOne({where: {commentID: req.params.commentID, userID: req.user.id}}))
+        if (!await UserComment.findOne({where: {commentID: req.params.commentID, userID: req.user.id}}))
         {
             return sendMessage(res, 400, false, "Komment nem található!");
         }
@@ -125,11 +125,11 @@ router.delete("/delete/:commentID", tokenCheck, async (req, res) => {
             where: {id: req.params.commentID}
         }, {transaction: transaction});
 
-        await UsersComment.destroy({
+        await UserComment.destroy({
             where: {commentID: req.params.commentID}
         }, {transaction: transaction});
 
-        await PostsComment.destroy({
+        await PostComment.destroy({
             where: {commentID: req.params.commentID}
         }, {transaction: transaction});
 
