@@ -38,15 +38,16 @@
 
 #lightbox-image.zoomed{
     object-fit: cover;
-    width: 110%;
+    width: auto;
     height: auto;
+    min-width: 120%;
+    min-height: 120%;
     cursor: zoom-out;
 }
 
 .lightbox-image-container:has(#lightbox-image.zoomed){
     overflow: auto;
 }
-
 
 .closeLightboxButton{
     display: flex;
@@ -67,12 +68,4 @@
 
 .closeLightboxButton:active{
     outline: auto;
-}
-
-@media screen and (max-width: 800px) {
-    #lightbox-image.zoomed{
-        object-fit: contain;
-        width: 150%;
-        height: 150%;
-    }
 }

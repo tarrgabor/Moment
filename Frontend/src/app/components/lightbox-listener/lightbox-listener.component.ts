@@ -1,10 +1,11 @@
-import { ChangeDetectorRef, Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { LightboxComponent } from '../lightbox/lightbox.component';
 import { LightboxService } from '../../services/lightbox.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-lightbox-listener',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './lightbox-listener.component.html',
   styleUrl: './lightbox-listener.component.scss'
 })

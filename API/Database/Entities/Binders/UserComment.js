@@ -1,21 +1,22 @@
 const db = require("../../database");
 const { DataTypes } = require('sequelize');
 
-const UsersComment = db.define('userscomment', {
-    id: {
-        primaryKey: true,
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        allowNull: false
-    },
+const UserComment = db.define('usercomment', {
     userID: {
         type: DataTypes.UUID,
+        primaryKey: true,
         allowNull: false
     },
     commentID: {
         type: DataTypes.UUID,
+        primaryKey: true,
         allowNull: false
     }
+}, {
+    indexes: [{
+            unique: true,
+            fields: ['userID', 'commentID']
+        }]
 });
 
-module.exports = {UsersComment};
+module.exports = {UserComment};

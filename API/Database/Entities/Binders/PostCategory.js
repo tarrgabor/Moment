@@ -1,21 +1,22 @@
 const db = require("../../database");
 const { DataTypes } = require('sequelize');
 
-const PostsCategory = db.define('postscategorie', {
-    id: {
-        primaryKey: true,
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        allowNull: false
-    },
+const PostCategory = db.define('postcategorie', {
     postID: {
         type: DataTypes.UUID,
+        primaryKey: true,
         allowNull: false
     },
     categoryID: {
         type: DataTypes.UUID,
+        primaryKey: true,
         allowNull: false
     }
+}, {
+    indexes: [{
+            unique: true,
+            fields: ['postID', 'categoryID']
+        }]
 });
 
-module.exports = {PostsCategory};
+module.exports = {PostCategory};
