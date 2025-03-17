@@ -12,7 +12,7 @@ import { OpenPostComponent } from './components/open-post/open-post.component';
 export const routes: Routes = [
     // Possible pages to visit before logging in
     {
-        path: "login", component: MainPageComponent
+        path: "login", component: LoginComponent
     },
     {
         path: "registration", component: RegistrationComponent
@@ -27,16 +27,12 @@ export const routes: Routes = [
         path: "verification", component: VerificationCodeComponent
     },
 
-    {
-        path: "postpage", component: OpenPostComponent
-    },
-    
     // Possible pages to visit after logging in
     {
         path: "", component: MainPageComponent, canActivate: [UserAuthGuard]
     },
     {
-        path: "post/:id", component: PageNotFoundComponent, canActivate: [UserAuthGuard]
+        path: "post/:id", component: OpenPostComponent, canActivate: [UserAuthGuard]
     },
     {
         path: "user/:id", component: PageNotFoundComponent, canActivate: [UserAuthGuard]

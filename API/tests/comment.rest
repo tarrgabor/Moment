@@ -51,3 +51,8 @@ Authorization: Bearer {{token}}
 DELETE {{serverURL}}/comments/delete/{{commentID}}
 Content-Type: application/json
 Authorization: Bearer {{token}}
+
+### like comment by commentID
+POST {{serverURL}}/comments/like/{{commentID}}
+Content-Type: application/json
+Authorization: Bearer {{token}}

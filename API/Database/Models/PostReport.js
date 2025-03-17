@@ -1,12 +1,7 @@
-const db = require("../../database");
+const db = require("../database");
 const { DataTypes } = require('sequelize');
 
 const PostReport = db.define('postreport', {
-    reportID: {
-        type: DataTypes.UUID,
-        primaryKey: true,
-        allowNull: false
-    },
     userID: {
         type: DataTypes.UUID,
         primaryKey: true,
@@ -16,12 +11,16 @@ const PostReport = db.define('postreport', {
         type: DataTypes.UUID,
         primaryKey: true,
         allowNull: false
+    },
+    reason: {
+        type: DataTypes.STRING(250),
+        allowNull: false
     }
 }, {
     indexes: [{
-            unique: true,
-            fields: ['reportID', 'userID', 'postID']
-        }]
+        unique: true,
+        fields: ["userID", "postID"]
+    }]
 });
 
 module.exports = {PostReport};

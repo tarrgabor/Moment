@@ -1,4 +1,4 @@
-const db = require("../../database");
+const db = require("../database");
 const { DataTypes } = require('sequelize');
 
 const User = db.define('user', {
@@ -18,7 +18,7 @@ const User = db.define('user', {
         allowNull: true
     },
     email: {
-        type: DataTypes.STRING(60),
+        type: DataTypes.STRING(100),
         validate: {
             isEmail: true
         },
@@ -46,8 +46,8 @@ const User = db.define('user', {
     },
     status: {
         type: DataTypes.ENUM,
-        values: ["allowed", "banned"],
-        defaultValue: "allowed",
+        values: ["active", "inactive", "banned"],
+        defaultValue: "active",
         allowNull: false
     }
 });
