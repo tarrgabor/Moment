@@ -1,6 +1,7 @@
 const router = require("express").Router();
-const { Category } = require("../Database/Entities/Main/Category");
 const { sendMessage, tokenCheck } = require("../utils");
+
+const { Category } = require("../Database/Models/Category");
 
 // Get all categories
 router.get("/", tokenCheck, async (req, res) => {

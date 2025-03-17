@@ -1,17 +1,17 @@
-const db = require("../../database");
+const db = require("../database");
 const { DataTypes } = require('sequelize');
 
-const Report = db.define('report', {
+const Category = db.define('categorie', {
     id: {
         primaryKey: true,
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         allowNull: false
     },
-    reason: {
-        type: DataTypes.STRING(500),
+    name: {
+        type: DataTypes.STRING(30),
         allowNull: false
     }
 });
 
-module.exports = {Report};
+module.exports = {Category};

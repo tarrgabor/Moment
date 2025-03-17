@@ -24,3 +24,9 @@ Content-Type: application/json
     "password": "Titkosjelszo123",
     "confirm": "Titkosjelszo123"
 }
+
+### get user's profile
+
+GET {{serverURL}}/users/profile/Jani
+Content-Type: application/json
+Authorization: Bearer {{token}}

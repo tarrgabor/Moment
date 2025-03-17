@@ -1,24 +1,23 @@
-const db = require("../../database");
+const db = require("../database");
 const { DataTypes } = require('sequelize');
 
-const Post = db.define('post', {
+const Comment = db.define('comment', {
     id: {
         primaryKey: true,
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         allowNull: false
     },
-    title: {
-        type: DataTypes.STRING(150),
+    userID: {
+        type: DataTypes.UUID,
         allowNull: false
     },
-    description: {
-        type: DataTypes.TEXT,
-        allowNull: true
+    postID: {
+        type: DataTypes.UUID,
+        allowNull: false
     },
-    visible: {
-        type: DataTypes.TINYINT(1),
-        defaultValue: 1,
+    message: {
+        type: DataTypes.TEXT,
         allowNull: false
     },
     likes: {
@@ -31,4 +30,4 @@ const Post = db.define('post', {
     }
 });
 
-module.exports = {Post};
+module.exports = {Comment};

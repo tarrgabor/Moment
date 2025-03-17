@@ -16,7 +16,7 @@ Content-Type: application/json
 }
 
 ### get few posts with pagination
-GET {{serverURL}}/posts?oldestPost=2025-03-05+17:04:18|85bb3cf1-ec9f-4d52-b325-b9d638c3767d&categories=Megbeszélés|Tájkép
+GET {{serverURL}}/posts?oldestPost=2025-03-17+17:45:34|f65d79b9-78fa-4e39-a4d2-6475f9135e24&categories=Megbeszélés|Tájkép
 Content-Type: application/json
 Authorization: Bearer {{token}}
 

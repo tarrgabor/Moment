@@ -1,11 +1,10 @@
 const router = require("express").Router();
 const { QueryTypes } = require("sequelize");
-const { PostComment } = require("../Database/Entities/Binders/PostComment");
-const { UserComment } = require("../Database/Entities/Binders/UserComment");
-const { Comment } = require("../Database/Entities/Main/Comment");
 const db = require("../Database/database");
 const { sendMessage, tokenCheck } = require("../utils");
-const uuid = require("uuid");
+
+const { Comment } = require("../Database/Models/Comment");
+const { CommentLike } = require("../Database/Models/CommentLike");
 
 // Get all comments under post
 router.get("/post/:postID", tokenCheck, async (req, res) => {
@@ -16,13 +15,21 @@ router.get("/post/:postID", tokenCheck, async (req, res) => {
 
     try
     {
-        res.status(200).send(await db.query(
-            `SELECT comments.id AS commentID, comments.message, users.username FROM comments
-            JOIN postscomments ON comments.id = postscomments.commentID
-            JOIN posts ON postscomments.postID = posts.id
-            LEFT JOIN usercomments ON comments.id = usercomments.commentID
-            LEFT JOIN users ON usercomments.userID = users.id
-            WHERE posts.id = :postID`, {
+        const query =
+        `SELECT
+        u.username,
+        u.profilePicture,
+        c.id as "commentID",
+        c.message,
+        c.likes,
+        c.createdAt,
+        IF(cl.commentID IS NOT NULL, 1, 0) AS liked
+        FROM comments c
+        LEFT JOIN users u ON c.userID = u.id
+        LEFT JOIN commentlikes cl ON c.id = cl.commentID
+        ORDER BY c.createdAt DESC`
+
+        res.status(200).send(await db.query(query, {
                 replacements: {postID: req.params.postID},
                 type: QueryTypes.SELECT
             })
@@ -45,35 +52,19 @@ router.post("/create/:postID", tokenCheck, async (req, res) => {
     {
         return sendMessage(res, 400, false, "Hiányzó adatok!");
     }
-
-    const transaction = await db.transaction();
     
     try
     {
-        const commentID = uuid.v4();
         await Comment.create({
-            id: commentID,
-            message: req.body.message,
-        }, {transaction: transaction});
-
-        await UserComment.create({
             userID: req.user.id,
-            commentID: commentID
-        }, {transaction: transaction});
-
-        await PostComment.create({
             postID: req.params.postID,
-            commentID: commentID
-        }, {transaction: transaction});
-
-        await transaction.commit();
+            message: req.body.message,
+        });
 
         sendMessage(res, 200, true, "Komment létrehozva!");
     }
     catch
     {
-        transaction.rollback();
-
         sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
     }
 });
@@ -87,7 +78,7 @@ router.patch("/update/:commentID", tokenCheck, async (req, res) => {
 
     try
     {
-        if (!await UserComment.findOne({where: {commentID: req.params.commentID, userID: req.user.id}}))
+        if (!await Comment.findOne({where: {id: req.params.commentID, userID: req.user.id}}))
         {
             return sendMessage(res, 400, false, "Komment nem található!");
         }
@@ -116,22 +107,20 @@ router.delete("/delete/:commentID", tokenCheck, async (req, res) => {
 
     try
     {
-        if (!await UserComment.findOne({where: {commentID: req.params.commentID, userID: req.user.id}}))
+        if (!await Comment.findOne({where: {id: req.params.commentID, userID: req.user.id}}))
         {
             return sendMessage(res, 400, false, "Komment nem található!");
         }
 
+        await CommentLike.destroy({
+            where: {commentID: req.params.commentID},
+            transaction: transaction
+        });
+
         await Comment.destroy({
-            where: {id: req.params.commentID}
-        }, {transaction: transaction});
-
-        await UserComment.destroy({
-            where: {commentID: req.params.commentID}
-        }, {transaction: transaction});
-
-        await PostComment.destroy({
-            where: {commentID: req.params.commentID}
-        }, {transaction: transaction});
+            where: {id: req.params.commentID},
+            transaction: transaction
+        });
 
         await transaction.commit();
 
@@ -145,5 +134,61 @@ router.delete("/delete/:commentID", tokenCheck, async (req, res) => {
     }
 });
 
+// like and dislike comment by commentID
+router.post("/like/:commentID", tokenCheck, async (req, res) => {
+    if (!req.params.commentID)
+    {
+        return sendMessage(res, 400, false, "Nem található komment azonosító!");
+    }
+
+    const transaction = await db.transaction();
+
+    try
+    {
+        if (!await Comment.findOne({where: {id: req.params.commentID}}))
+        {
+            return sendMessage(res, 400, false, "Komment nem található!");
+        }
+
+        if (!await CommentLike.findOne({where: {userID: req.user.id, commentID: req.params.commentID}}))
+        {
+            await Comment.increment('likes', {
+                by: 1,
+                where: {id: req.params.commentID},
+                transaction: transaction
+            });
+
+            await CommentLike.create({
+                userID: req.user.id,
+                commentID: req.params.commentID,
+            }, {transaction: transaction});
+
+            await transaction.commit();
+
+            return res.status(200).json({success: true, liked: true});
+        }
+
+        await Comment.decrement('likes', {
+            by: 1,
+            where: {id: req.params.commentID},
+            transaction: transaction
+        });
+
+        await CommentLike.destroy({where: {
+            userID: req.user.id,
+            commentID: req.params.commentID
+        }, transaction: transaction});
+
+        await transaction.commit();
+
+        return res.status(200).json({success: true, liked: false});
+    }
+    catch
+    {
+        transaction.rollback();
+
+        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
+    }
+})
 
 module.exports = router;
