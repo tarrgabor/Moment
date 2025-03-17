@@ -8,15 +8,47 @@
     //text-align: center;
     color: $dark-text-color;
     margin: auto;
-    margin-top:30px;
-    margin-bottom:30px;
-    padding-bottom: 30px;
+    margin-top:10px;
+    margin-bottom:10px;
+    padding-bottom: 10px;
     border-radius: 15px;
     max-width: 750px;
     border: 1px solid $dark-border-color;
     //background-color: $dark-content-background-color;
 }
+//----------------------------------------------------
 
+
+.uploader {
+  display: block;
+ 
+  margin: 0 auto;
+  width: 100%;
+  max-width: 600px;
+
+  label {
+    float: left;
+    width: 100%;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    background: $dark-border-color;
+    border-radius: 7px;
+   
+    transition: all .1s ease;
+    user-select: none;
+
+   
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+
+
+  
+}
+
+//----------------------------------------------------
 //fejléc
 .title{
     display: flex;
@@ -47,6 +79,7 @@
 
 // post
 .post-body{
+    //width: 50%;
     margin: 10px;
     display: flex;
     flex-direction: column;
@@ -56,6 +89,7 @@
     margin-left: 20px;
 }
 .post-content{
+    //height: 200px;
     margin:10px;
     border-radius: 15px;
     background-color: $dark-input-background-color;
@@ -144,6 +178,7 @@
 }
 .send{
     width: 70px;
+    height: auto;
     border-radius: 6px;
     background-color: $button-background-color;
 }

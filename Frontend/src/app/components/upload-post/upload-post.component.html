@@ -2,10 +2,16 @@
 
 <div class="contanier">
     <div class="post-body">
-        <div class="kategory">
-            <h4 class="post-title">Kép feltöltés</h4>
-        </div>
-        <img class="post-content" src="momentLogo.png" alt="">
+        <form class="uploader">
+            <input id="file-upload" type="file" name="fileUpload" accept="image/*" />
+          
+            <label for="file-upload" id="file-drag">
+              <img id="file-image" src="upload.svg" >
+              <div id="start">
+                <span id="file-upload-btn" class="btn btn-primary send">Select a file</span>
+              </div>
+            </label>
+          </form>
         
     </div>
    
@@ -39,6 +45,7 @@
             <button class="send">Feltöltés</button>
         </div>
     </div>
+    
 
     
     
@@ -46,4 +53,3 @@
 
 
 </div>
-

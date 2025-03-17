@@ -13,7 +13,7 @@ import { UploadPostComponent } from './components/upload-post/upload-post.compon
 export const routes: Routes = [
     // Possible pages to visit before logging in
     {
-        path: "login", component: MainPageComponent
+        path: "login", component: LoginComponent
     },
     {
         path: "registration", component: RegistrationComponent
