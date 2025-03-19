@@ -1,6 +1,8 @@
 @use "../../../styles.scss" as *;
 
 .post {
+    display: flex;
+    flex-direction: column;
     border-radius: 8px;
     margin-bottom: 20px;
     padding: 15px;
@@ -24,28 +26,33 @@
     margin-bottom: 10px;
 }
 
-.user-profileImage{
-    width: 30px;
-    height: 30px;
-    border: 1px solid $dark-border-color;
-    border-radius: 100%;
-}
-
 .post-author {
+    display: flex;
+    align-items: center;
     font-weight: bold;
     cursor: pointer;
 }
 
-.post-author:hover {
+.post-author span {
+    color: $dark-text-color;
+    margin-left: 3px;
+}
+
+.post-author:hover span{
     color: $dark-link-hover-color;
 }
 
-.post-author:active {
+.post-author:active span{
     color: $dark-link-active-color;
 }
 
-.author {
-    margin-left: 3px;
+.post-author img{
+    width: 30px;
+    height: 30px;
+    border: 1px solid $dark-border-color;
+    border-radius: 100%;
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
 .post-category {
@@ -75,27 +82,4 @@
     display: flex;
     align-items: center;
     font-size: 14px;
-}
-
-.post-like-box {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: $dark-button-background-color;
-    border-radius: 20px;
-    min-width: 55px;
-    height: 35px;
-    padding: 8px;
-    padding-right: 0;
-    transition: .15s;
-}
-
-.post-like-box img {
-    height: 35px;
-    width: 35px;
-    margin-left: 10px;
-}
-
-.post-like-box:hover {
-    background-color: $dark-button-hover-background-color;
 }

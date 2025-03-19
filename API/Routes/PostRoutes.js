@@ -104,9 +104,9 @@ router.get("/:postID", tokenCheck, async (req, res) => {
             LEFT JOIN postlikes pl ON pl.postID = p.id AND pl.userID = :userID
             WHERE p.visible = 1 AND p.id = :postID`
 
-        const [results] = await db.query(query, {replacements: {postID: req.params.postID, userID: req.user.id}});
+        const results = await db.query(query, {type: QueryTypes.SELECT, replacements: {postID: req.params.postID, userID: req.user.id}});
         
-        res.status(200).send(results);
+        res.status(200).send(results[0]);
     }
     catch
     {
@@ -261,7 +261,7 @@ router.post("/like/:postID", tokenCheck, async (req, res) => {
 
     try
     {
-        if (!await Post.findOne({where: {id: req.params.postID}}))
+        if (!await Post.findOne({where: {id: req.params.postID}, attributes: ["id"]}))
         {
             return sendMessage(res, 400, false, "Poszt nem található!");
         }

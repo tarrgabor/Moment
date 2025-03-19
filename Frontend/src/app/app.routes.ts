@@ -35,6 +35,9 @@ export const routes: Routes = [
         path: "post/:id", component: OpenPostComponent, canActivate: [UserAuthGuard]
     },
     {
+        path: "post/:id/:postTitle", component: OpenPostComponent, canActivate: [UserAuthGuard]
+    },
+    {
         path: "user/:id", component: PageNotFoundComponent, canActivate: [UserAuthGuard]
     },
 

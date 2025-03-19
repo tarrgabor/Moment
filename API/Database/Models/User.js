@@ -44,6 +44,10 @@ const User = db.define('user', {
         unique: true,
         allowNull: true
     },
+    followerCount:  {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+    },
     status: {
         type: DataTypes.ENUM,
         values: ["active", "inactive", "banned"],

@@ -1,9 +1,9 @@
-<div class="post" routerLink="/post/{{postData.postID}}/{{processedTitle}}">
+<a class="post" href="/post/{{postData.postID}}/{{processedTitle}}">
     <div class="post-header">
-        <div class="post-author" routerLink="/user/{{postData.username}}">
-            <img class="user-profileImage" src="{{postData.profilePicture}}" alt="">
-            <span class="author">{{postData.username}}</span>
-        </div>
+        <a class="post-author" href="/user/{{postData.username}}">
+            <img src="{{postData.profilePicture}}">
+            <span>{{postData.username}}</span>
+        </a>
 
         <p>{{createdAgo}}</p>
     </div>
@@ -17,4 +17,4 @@
     <div class="post-footer">
         <app-like-button [getID]="postData.postID" [getLikes]="postData.likes" [getIsLiked]="postData.liked"/>
     </div>
-</div>
+</a>

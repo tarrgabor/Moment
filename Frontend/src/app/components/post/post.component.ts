@@ -1,20 +1,17 @@
-import { Component, Input, OnInit, Output } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
 import { Post } from '../../interfaces/interfaces';
-import { ApiService } from '../../services/api.service';
 import { LightboxListenerComponent } from '../lightbox-listener/lightbox-listener.component';
 import { CommonModule } from '@angular/common';
 import { LikeButtonComponent } from '../like-button/like-button.component';
 
 @Component({
   selector: 'app-post',
-  imports: [RouterLink, LightboxListenerComponent, CommonModule, LikeButtonComponent],
+  imports: [LightboxListenerComponent, CommonModule, LikeButtonComponent],
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss'
 })
 export class PostComponent implements OnInit{
   @Input("getPostData") postData: Post = {
-    userID: '',
     username: '',
     profilePicture: '',
     postID: '',

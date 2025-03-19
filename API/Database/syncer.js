@@ -7,9 +7,13 @@ const { PostReport } = require("./Models/PostReport");
 const { Category } = require("./Models/Category");
 const { PostLike } = require("./Models/PostLike");
 const { CommentLike } = require("./Models/CommentLike");
+const { UserFollow } = require("./Models/UserFollow");
 
 function ConnectModels()
 {
+    User.hasMany(UserFollow, {foreignKey: "followerID"});
+    User.hasMany(UserFollow, {foreignKey: "followedID"});
+
     User.hasMany(Post, {foreignKey: "userID"});
     Category.hasOne(Post, {foreignKey: "categoryID"})
 
