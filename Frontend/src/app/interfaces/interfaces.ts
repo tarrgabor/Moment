@@ -4,7 +4,6 @@ export interface Category {
 }
 
 export interface Post {
-    userID: string,
     username: string,
     profilePicture: string,
     postID: string,

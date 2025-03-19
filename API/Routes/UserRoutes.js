@@ -1,12 +1,14 @@
 const router = require("express").Router();
-const { Op } = require("sequelize");
+const { Op, QueryTypes } = require("sequelize");
 const CryptoJS = require("crypto-js");
+const db = require("../Database/database");
 const { sendMessage, tokenCheck } = require("../utils");
 const passwdRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
 const { User } = require("../Database/Models/User");
+const { UserFollow } = require("../Database/Models/UserFollow");
 
 // Create a user
 router.post("/registration", async (req, res) => {
@@ -64,7 +66,7 @@ router.post("/login", async (req, res) => {
             },
             attributes:
             {
-                exclude: ["fullName", "password", "phoneNumber"]
+                exclude: ["fullName", "password", "phoneNumber", "followerCount"]
             }
         });
 
@@ -103,6 +105,139 @@ router.get("/profile/:username", tokenCheck, async (req, res) => {
         }
 
         res.status(200).json({success: true, user});
+    }
+    catch
+    {
+        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
+    }
+})
+
+// Toggle following user by username
+router.post("/follow/:username", tokenCheck, async (req, res) => {
+    if (!req.params.username)
+    {
+        return sendMessage(res, 400, false, "Nem található felhasználónév!");
+    }
+
+    const transaction = await db.transaction();
+
+    try
+    {
+        const user = await User.findOne({where: {username: req.params.username}, attributes: ["id", "username"]});
+
+        if (!user || user.username == req.user.username)
+        {
+            return sendMessage(res, 400, false, "Sikertelen művelet!");
+        }
+
+        if (!await UserFollow.findOne({where: {followerID: req.user.id, followedID: user.id}}))
+        {
+            await User.increment('followerCount', {
+                by: 1,
+                where: {id: user.id},
+                transaction: transaction
+            });
+    
+            await UserFollow.create({
+                followerID: req.user.id,
+                followedID: user.id,
+            }, {transaction: transaction});
+    
+            await transaction.commit();
+    
+            return res.status(200).json({success: true, followed: true});
+        }
+
+        await User.decrement('followerCount', {
+            by: 1,
+            where: {id: user.id},
+            transaction: transaction
+        });
+
+        await UserFollow.destroy({where: {
+            followerID: req.user.id,
+            followedID: user.id,
+        }, transaction: transaction});
+
+        await transaction.commit();
+
+        return res.status(200).json({success: true, followed: false});
+    }
+    catch
+    {
+        transaction.rollback();
+
+        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
+    }
+})
+
+// Get user's followers
+router.post("/followers/:username", tokenCheck, async (req, res) => {
+    if (!req.params.username)
+    {
+        return sendMessage(res, 400, false, "Nem található felhasználónév!");
+    }
+
+    try
+    {
+        const user = await User.findOne({where: {username: req.params.username}, attributes: ["id"]})
+
+        if (!user)
+        {
+            return sendMessage(res, 400, false, "Felhasználó nem található!");
+        }
+
+        const query =
+        `SELECT
+        u.username,
+        u.profilePicture
+        FROM users u
+        LEFT JOIN userfollows uf ON uf.followerID = u.id
+        WHERE uf.followedID = :followedID`
+
+        const followers = await db.query(query, {
+            replacements: {followedID: user.id},
+            type: QueryTypes.SELECT
+        });
+
+        return res.status(200).json({followers});
+    }
+    catch
+    {
+        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
+    }
+})
+
+// Get user's followers
+router.post("/followed/:username", tokenCheck, async (req, res) => {
+    if (!req.params.username)
+    {
+        return sendMessage(res, 400, false, "Nem található felhasználónév!");
+    }
+
+    try
+    {
+        const user = await User.findOne({where: {username: req.params.username}, attributes: ["id"]})
+
+        if (!user)
+        {
+            return sendMessage(res, 400, false, "Felhasználó nem található!");
+        }
+
+        const query =
+        `SELECT
+        u.username,
+        u.profilePicture
+        FROM users u
+        LEFT JOIN userfollows uf ON uf.followedID = u.id
+        WHERE uf.followerID = :followerID`
+
+        const followedUsers = await db.query(query, {
+            replacements: {followerID: user.id},
+            type: QueryTypes.SELECT
+        });
+
+        return res.status(200).json({followedUsers});
     }
     catch
     {

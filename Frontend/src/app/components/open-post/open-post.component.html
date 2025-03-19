@@ -1,76 +1,33 @@
 <app-navbar></app-navbar>
 
-<div class="contanier">
-    <div class="had">
-        <div class="title">
-            <img src="profilkep.png" alt="">
-            <h6 class="name">Kevin a pusztitó</h6>
-        </div>
-        <div class="time">
-            <p>22 órája</p>
-        </div>
-        
+<div class="post">
+    <div class="post-header">
+        <a class="post-author" href="/user/{{postData.username}}">
+            <img src="{{postData.profilePicture}}">
+            <span>{{postData.username}}</span>
+        </a>
+
+        <p>{{createdAgo}}</p>
     </div>
 
     <div class="post-body">
-        <div class="kategory">
-            <h4 class="post-title">Új rekord a konditeremben </h4>
-            <p>#GYM</p>
+        <div class="post-info">
+            <h2 class="post-title">{{postData.title}}</h2>
+            <p class="post-category">{{postData.category}}</p>
         </div>
-        
-        <img class="post-content" src="momentLogo.png" alt="">
-        
-    </div>
-    <div class="description">
-        
-        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis, quo esse repellendus amet est error animi provident ipsam nihil nisi necessitatibus mollitia eos repellat, aut iure delectus quasi, ducimus odio.
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis, quo esse repellendus amet est error animi provident ipsam nihil nisi necessitatibus mollitia eos repellat, aut iure delectus quasi, ducimus odio.
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis, quo esse repellendus amet est error animi provident ipsam nihil nisi necessitatibus mollitia eos repellat, aut iure delectus quasi, ducimus odio.</p>
-    </div>
-    <div class="interaktion">
-        <button class="report"><img src="report.svg" alt=""></button>
-        <div class="like">
-            <p>43232234</p>
-            <img src="likeI.svg" alt="">
-        </div>
-    </div>
-    <div class="comment">
-        <input type="text" class="write">
-        <button class="send">Küldés</button>
-    </div>
-    <div class="coments">
-        
-        <div class="commentBody">
-            <div class="commentProfile" >
-                <img src="profilkep.png" alt="">
-                <h3 class="commentname">Kevin a pusztitó</h3>
-            </div>
-            <div class="commenttext">
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis enim repellat praesentium minus temporibus velit natus, iste placeat consequuntur, consequatur soluta nemo suscipit blanditiis eveniet voluptas magnam dolore doloribus? Ex?
-                </p>
-            </div>
-            <div class="commentlike">
-                <p>43232234</p>
-                <img src="likeI.svg" alt="">
-            </div>
-        </div><div class="commentBody">
-            <div class="commentProfile" >
-                <img src="profilkep.png" alt="">
-                <h3 class="commentname">Tarr G</h3>
-            </div>
-            <div class="commenttext">
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis enim repellat praesentium minus temporibus velit natus, iste placeat consequuntur, consequatur soluta nemo suscipit blanditiis eveniet voluptas magnam dolore doloribus? Ex?
-                </p>
-            </div>
-            <div class="commentlike">
-                <p>43232234</p>
-                <img src="likeI.svg" alt="">
-            </div>
-        </div>
+
+        <p class="description"  [innerHTML]="postData.description"></p>
+
+        <app-lightbox-listener [getImage]="postData.image"/>
     </div>
 
+    <div class="post-footer">
+        <app-like-button *ngIf="fetchedData" [getID]="postData.postID" [getLikes]="postData.likes" [getIsLiked]="postData.liked"/>
+    </div>
 
+    <div class="comments-container">
+        <app-comment/>
+    </div>
 </div>
 
+<app-lightbox/>

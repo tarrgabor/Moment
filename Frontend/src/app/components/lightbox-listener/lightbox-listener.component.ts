@@ -16,7 +16,7 @@ export class LightboxListenerComponent{
 
   openLightbox(e: Event)
   {
-    e.stopPropagation();
+    e.preventDefault();
     this.lightboxService.selectImage(this.image);
     LightboxComponent.prototype.openLightbox();
   }

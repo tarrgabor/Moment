@@ -2,9 +2,10 @@
 
 @token = {{login.response.body.token}}
 
+@username = {{user.response.body.user.username}}
+
 ### login
 # @name login
-
 POST {{serverURL}}/users/login
 Content-Type: application/json
 
@@ -14,7 +15,6 @@ Content-Type: application/json
 }
 
 ### register
-
 POST {{serverURL}}/users/registration
 Content-Type: application/json
 
@@ -26,7 +26,22 @@ Content-Type: application/json
 }
 
 ### get user's profile
-
+# @name user
 GET {{serverURL}}/users/profile/Jani
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### follow user by username
+POST {{serverURL}}/users/follow/Jani
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### get user's followers by username
+POST {{serverURL}}/users/followers/Jani
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### get user's followed by user's username
+POST {{serverURL}}/users/followed/Jani
 Content-Type: application/json
 Authorization: Bearer {{token}}

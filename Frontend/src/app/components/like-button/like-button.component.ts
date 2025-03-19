@@ -47,9 +47,8 @@ export class LikeButtonComponent implements OnInit{
     }
   }
 
-  toggleLike(e: Event, table: string)
+  toggleLike(table: string)
   {
-    e.stopPropagation();
     this.api.toggleLike(table, this.id).subscribe((res: any) => {
       if (res.liked)
       {
@@ -64,8 +63,8 @@ export class LikeButtonComponent implements OnInit{
     });
   }
 
-  stopPropagation(e: Event)
+  preventDefault(e: Event)
   {
-    e.stopPropagation();
+    e.preventDefault();
   }
 }

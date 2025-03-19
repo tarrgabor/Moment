@@ -1,0 +1,47 @@
+@use "../../../styles.scss" as *;
+
+.comment {
+    display: flex;
+    flex-direction: column;
+    color: $dark-text-color;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.comment-author {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.comment-author span {
+    color: $dark-text-color;
+    margin-left: 3px;
+}
+
+.comment-author:hover span{
+    color: $dark-link-hover-color;
+}
+
+.comment-author:active span{
+    color: $dark-link-active-color;
+}
+
+.comment-author img{
+    width: 30px;
+    height: 30px;
+    border: 1px solid $dark-border-color;
+    border-radius: 100%;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.comment-body{
+    padding-left: 35px;
+}
