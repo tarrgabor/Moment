@@ -13,10 +13,6 @@ const User = db.define('user', {
         allowNull: false,
         unique: true
     },
-    fullName: {
-        type: DataTypes.STRING(50),
-        allowNull: true
-    },
     email: {
         type: DataTypes.STRING(100),
         validate: {
@@ -37,11 +33,6 @@ const User = db.define('user', {
     },
     profilePicture: {
         type: DataTypes.TEXT,
-        allowNull: true
-    },
-    phoneNumber: {
-        type: DataTypes.STRING(30),
-        unique: true,
         allowNull: true
     },
     followerCount:  {

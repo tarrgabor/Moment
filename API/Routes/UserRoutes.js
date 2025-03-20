@@ -17,6 +17,16 @@ router.post("/registration", async (req, res) => {
         return sendMessage(res, 400, false, "Hiányzó adatok!");
     }
 
+    if (req.body.username.match(/[^a-zA-Z0-9._-]/))
+    {
+        return sendMessage(res, 400, false, "A felhasználónév tiltott karaktereket tartalmaz!");
+    }
+
+    if (req.body.email.match(/[^a-zA-Z0-9._%+-@,;:"<>[\]()\\\s]/))
+    {
+        return sendMessage(res, 400, false, "Az E-mail cím tiltott karaktereket tartalmaz!");
+    }
+
     if (req.body.password != req.body.confirm)
     {
         return sendMessage(res, 400, false, "A jelszavak nem egyeznek!");
@@ -66,7 +76,7 @@ router.post("/login", async (req, res) => {
             },
             attributes:
             {
-                exclude: ["fullName", "password", "phoneNumber", "followerCount"]
+                exclude: ["password", "followerCount"]
             }
         });
 
