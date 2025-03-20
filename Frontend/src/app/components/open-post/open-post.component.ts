@@ -57,7 +57,7 @@ export class OpenPostComponent implements OnInit{
         }, 10);
       }
 
-      if (window.location.pathname.match("\/post\/[a-f0-9\-]{36}\/([^\/]+)$")?.[1] != this.postData.title.replaceAll(' ', '_'))
+      if (decodeURIComponent(window.location.pathname.match("\([^\/]+)$")![0]) != this.postData.title.replaceAll(' ', '_').match("^\([^\/]+)$")?.[1])
       {
         window.location.pathname = `post/${postID}/${this.postData.title.replaceAll(' ', '_')}`;
       }

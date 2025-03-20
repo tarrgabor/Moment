@@ -121,6 +121,11 @@ router.post("/create", tokenCheck, upload.single('file'), async (req, res) => {
         return sendMessage(res, 400, false, "Hiányzó adatok!");
     }
 
+    if (req.body.title.match(/[^\w\-._~:/?#\[\]@$&'()*+,;=%]/))
+    {
+        return sendMessage(res, 400, false, "A cím nem tartalmazhat tiltott speciális karaktereket!");
+    }
+
     try
     {
         cloudinary.uploader.upload_stream({
