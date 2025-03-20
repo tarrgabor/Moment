@@ -245,4 +245,111 @@ router.post("/followed/:username", tokenCheck, async (req, res) => {
     }
 })
 
+router.delete('/deleteMyAccount', tokenCheck, async (req, res) => {
+    try {
+      const deletedUser = await User.destroy({ where: { id: req.user.id } });
+
+      if (!deletedUser) {
+        return sendMessage(res, 400, false, 'Felhasználó nem található');
+      }
+
+      sendMessage(res, 200, true, 'Sikeres fiók törlés');
+    }
+    catch
+    {
+      sendMessage(res, 500, false, 'Hiba az adatbázis művelet közben');
+    }
+});
+
+router.patch('/update/username/:username', tokenCheck, async (req, res) =>{
+    if (!req.params.username)
+    {
+        return sendMessage(res, 400, false, "Nem található felhasználónév!");
+    }
+
+    if (!req.body.username)
+    {
+        return sendMessage(res, 400, false, "Nem található új felhasználónév!");
+    }
+
+    try
+    {
+        if (!await User.findOne({where: {username: req.params.username, id: req.user.id}, attributes: ["id"]}))
+        {
+            return sendMessage(res, 400, false, "Felhasználó nem található!");
+        }
+
+        await User.update({
+            username: req.body.username
+        }, {where: {id: req.user.id}})
+        
+        sendMessage(res, 200, true, 'Sikeres felhasználónév frissítés');
+    }
+    catch
+    {
+        sendMessage(res, 500, false, 'Hiba az adatbázis művelet közben');
+    }
+});
+
+router.patch('/update/email/:username', tokenCheck, async (req, res) =>{
+    if (!req.params.username)
+    {
+        return sendMessage(res, 400, false, "Nem található e-mail cím!");
+    }
+
+    if (!req.body.email)
+    {
+        return sendMessage(res, 400, false, "Nem található új e-mail cím!");
+    }
+
+    try
+    {
+        if (!await User.findOne({where: {username: req.params.username, id: req.user.id}, attributes: ["id"]}))
+        {
+            return sendMessage(res, 400, false, "Felhasználó nem található!");
+        }
+
+        await User.update({
+            email: req.body.email
+        }, {where: {id: req.user.id}})
+        
+        sendMessage(res, 200, true, 'Sikeres e-mail cím frissítés');
+    }
+    catch
+    {
+        sendMessage(res, 500, false, 'Hiba az adatbázis művelet közben');
+    }
+})
+
+router.patch('/update/password/:username', tokenCheck, async (req, res) =>{
+    if (!req.params.username)
+    {
+        return sendMessage(res, 400, false, "Nem található jelszó!");
+    }
+
+    if (!req.body.email)
+    {
+        return sendMessage(res, 400, false, "Nem található új jelszó!");
+    }
+
+    try
+    {
+        if (!await User.findOne({where: {username: req.params.username, id: req.user.id}, attributes: ["id"]}))
+        {
+            return sendMessage(res, 400, false, "Felhasználó nem található!");
+        }
+
+        await User.update({
+            password: req.body.password
+        }, {where: {id: req.user.id}})
+        
+        sendMessage(res, 200, true, 'Sikeres jelszó frissítés');
+    }
+    catch
+    {
+        sendMessage(res, 500, false, 'Hiba az adatbázis művelet közben');
+    }
+})
+
+
 module.exports = router;
