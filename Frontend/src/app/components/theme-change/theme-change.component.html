@@ -1,0 +1,10 @@
+<div class="themechange" *ngIf="activeTab === 'theme'">
+    <h2>Téma</h2>
+    <div class="theme-switch" [class.dark]="isDarkMode" (click)="toggleTheme()">
+      <div class="slider">
+        <span class="material-icons icon">
+          {{ isDarkMode ? 'dark_mode' : 'light_mode' }}
+        </span>
+      </div>
+    </div>
+</div>

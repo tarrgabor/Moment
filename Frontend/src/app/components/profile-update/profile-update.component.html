@@ -1,0 +1,24 @@
+<div class="popup-content">
+        
+    <div class="profile" *ngIf="activeTab === 'profile'">
+      <h2>Profil módosítás</h2>
+      <input type="text" placeholder="Név">
+      <input type="email" placeholder="Email">
+      <input type="password" placeholder="Jelszó">
+      <input type="confirmpassword" placeholder="Jelszó">
+      <input type="text" placeholder="Telefonszám">
+      <button class="save-button">Módosítás</button>
+    </div>
+    
+    <div class="accountmod"*ngIf="activeTab === 'account'">
+      <h2>Fiók műveletek</h2>
+      <button (click)="confirmAction('delete')">Fiók törlése</button>
+
+      <div *ngIf="confirmationType" class="confirmation-box">
+        <h3>Biztos {{ confirmationType === 'delete' ? 'törölni' : 'deaktiválni' }} szeretné a fiókot?</h3>
+        <button (click)="deleteUser()" class="confirm-button">Igen</button>
+        <button (click)="cancelConfirm()" class="cancel-button">Nem</button>
+      </div>
+    </div>
+    
+</div>

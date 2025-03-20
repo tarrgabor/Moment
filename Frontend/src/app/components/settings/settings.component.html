@@ -1,0 +1,12 @@
+<div *ngIf="isSettingsOpen" class="popup-overlay" (click)="closePopup()">
+  
+    <div class="popup-container" (click)="$event.stopPropagation()">
+      
+      <i class="bi bi-x-lg closeMenuButton" (click)="closeSidebarMenu()"></i>
+      
+      <div class="popup-sidebar">
+        <button (click)="setActiveTab('profile')">Profil módosítás</button>
+        <button (click)="setActiveTab('account')">Fiók műveletek</button>
+        <button (click)="setActiveTab('theme')">Téma</button>
+      </div>
+</div>
