@@ -1,20 +1,7 @@
-<div class="verificationContainer">
-    <div class="verificationBox">
-        <div class="logoContainer">
-            <img src="momentLogo.png" alt="">
-            <h1>MOMENT</h1>
-        </div>
-        <div class="itemsContainer">
-            <div class="inputsContainer">
-                <p class="Instructions">Írja be az E-mail címére kapott 6 számjegyű kódot, hogy visszaállíthassa jelszavát!</p>
-                <input type="text" placeholder="Kód">
-                
+<app-general-input-form [getInstructions]="'Írja be az E-mail címére kapott 6 számjegyű kódot, hogy visszaállíthassa jelszavát!'">
+    <app-general-input #code [getType]="'text'" [getPlaceholder]="'Kód'"></app-general-input>
+
+    <app-general-button [getText]="'Kód ellenőrzése'" (click)="checkCode()"/>
     
-                <button (click)="verification()">Jelszó visszaállítása</button>
-            </div>
-            
-            <a routerLink="/login">Vissza a bejelentkezéshez. </a>
-            
-        </div>
-    </div>
-</div>
+    <app-general-link [getPath]="'/login'" [getText]="'Vissza a bejelentkezéshez'"/>
+</app-general-input-form>

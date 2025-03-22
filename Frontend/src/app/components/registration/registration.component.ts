@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
+import { GeneralInputComponent } from '../general-input/general-input.component';
+import { GeneralButtonComponent } from '../general-button/general-button.component';
+import { GeneralLinkComponent } from '../general-link/general-link.component';
+import { GeneralInputFormComponent } from '../general-input-form/general-input-form.component';
 
 @Component({
   selector: 'app-registration',
-  imports: [RouterLink, FormsModule],
+  imports: [GeneralInputComponent, GeneralButtonComponent, GeneralLinkComponent, GeneralInputFormComponent],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.scss'
 })
@@ -15,24 +18,22 @@ export class RegistrationComponent {
     private router: Router
   ){}
 
-  user = {
-    username: "",
-    email: "",
-    password: "",
-    confirm: ""
-  };
+  @ViewChild('username') username!: GeneralInputComponent;
+  @ViewChild('email') email!: GeneralInputComponent;
+  @ViewChild('password') password!: GeneralInputComponent;
+  @ViewChild('confirm') confirm!: GeneralInputComponent;
 
   registration(){
-    this.api.registration('users', this.user).subscribe((res:any) => {
+    let user = {
+      username: this.username.getValue(),
+      email: this.email.getValue(),
+      password: this.password.getValue(),
+      confirm: this.confirm.getValue()
+    };
+
+    this.api.registration('users', user).subscribe((res:any) => {
       if (res.success)
       {
-        this.user = {
-          username: "",
-          email: "",
-          password: "",
-          confirm: "",
-        }
-
         this.router.navigate(["/login"]);
         return;
       }

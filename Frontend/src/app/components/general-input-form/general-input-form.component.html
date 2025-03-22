@@ -1,0 +1,11 @@
+<div class="form-container">
+    <div class="form-box">
+        <app-theme-logo *ngIf="requireLogo"/>
+        
+        <div class="form-items">
+            <p class="instructions" *ngIf="instructions">{{instructions}}</p>
+
+            <ng-content></ng-content>
+        </div>
+    </div>
+</div>

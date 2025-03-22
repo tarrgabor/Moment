@@ -7,10 +7,11 @@ import { Post } from '../../interfaces/interfaces';
 import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
 import { CommentComponent } from '../comment/comment.component';
+import { GeneralButtonComponent } from '../general-button/general-button.component';
 
 @Component({
   selector: 'app-open-post',
-  imports: [NavbarComponent, CommonModule, LightboxListenerComponent, LightboxComponent, LikeButtonComponent, CommentComponent],
+  imports: [NavbarComponent, CommonModule, LightboxListenerComponent, LightboxComponent, LikeButtonComponent, CommentComponent, GeneralButtonComponent],
   templateUrl: './open-post.component.html',
   styleUrl: './open-post.component.scss'
 })

@@ -14,26 +14,26 @@ const { UserFollow } = require("../Database/Models/UserFollow");
 router.post("/registration", async (req, res) => {
     if (!req.body.username || !req.body.email || !req.body.password || !req.body.confirm)
     {
-        return sendMessage(res, 400, false, "Hiányzó adatok!");
+        return sendMessage(res, 200, false, "Hiányzó adatok!");
     }
 
     if (req.body.username.match(/[^a-zA-Z0-9._-]/))
     {
-        return sendMessage(res, 400, false, "A felhasználónév tiltott karaktereket tartalmaz!");
+        return sendMessage(res, 200, false, "A felhasználónév tiltott karaktereket tartalmaz!");
     }
 
     if (req.body.email.match(/[^a-zA-Z0-9._%+-@,;:"<>[\]()\\\s]/))
     {
-        return sendMessage(res, 400, false, "Az E-mail cím tiltott karaktereket tartalmaz!");
+        return sendMessage(res, 200, false, "Az E-mail cím tiltott karaktereket tartalmaz!");
     }
 
     if (req.body.password != req.body.confirm)
     {
-        return sendMessage(res, 400, false, "A jelszavak nem egyeznek!");
+        return sendMessage(res, 200, false, "A jelszavak nem egyeznek!");
     }
 
     if (!req.body.password.match(passwdRegExp)){
-        return sendMessage(res, 400, false, "A megadott jelszó nem elég biztonságos!");
+        return sendMessage(res, 200, false, "A megadott jelszó nem elég biztonságos!");
     }
 
     try
@@ -42,7 +42,7 @@ router.post("/registration", async (req, res) => {
 
         if (user != null)
         {
-            return sendMessage(res, 400, false, "Foglalt felhasználói adatok!");
+            return sendMessage(res, 200, false, "Foglalt felhasználói adatok!");
         }
 
         await User.create({
@@ -63,7 +63,7 @@ router.post("/registration", async (req, res) => {
 router.post("/login", async (req, res) => {
     if (!req.body.email || !req.body.password)
     {
-        return sendMessage(res, 400, false, "Hiányzó adatok!");
+        return sendMessage(res, 200, false, "Hiányzó adatok!");
     }
 
     try
@@ -82,12 +82,12 @@ router.post("/login", async (req, res) => {
 
         if (user == null)
         {
-            return sendMessage(res, 400, false, "Hibás belépési adatok!");
+            return sendMessage(res, 200, false, "Hibás belépési adatok!");
         }
 
         if (user.status == "banned")
         {
-            return sendMessage(res, 401, false, "A felhasználó ki van tiltva!");
+            return sendMessage(res, 200, false, "A felhasználó ki van tiltva!");
         }
 
         res.status(200).json({success: true, message: "Sikeres bejelentkezés", token: jwt.sign(JSON.parse(JSON.stringify(user)), process.env.JWT_SECRET, {expiresIn: "2h"})});
@@ -111,7 +111,7 @@ router.get("/profile/:username", tokenCheck, async (req, res) => {
 
         if (user == null)
         {
-            return sendMessage(res, 400, false, "A felhasználó nem található!");
+            return sendMessage(res, 200, false, "A felhasználó nem található!");
         }
 
         res.status(200).json({success: true, user});
@@ -126,7 +126,7 @@ router.get("/profile/:username", tokenCheck, async (req, res) => {
 router.post("/follow/:username", tokenCheck, async (req, res) => {
     if (!req.params.username)
     {
-        return sendMessage(res, 400, false, "Nem található felhasználónév!");
+        return sendMessage(res, 200, false, "Nem található felhasználónév!");
     }
 
     const transaction = await db.transaction();
@@ -137,7 +137,7 @@ router.post("/follow/:username", tokenCheck, async (req, res) => {
 
         if (!user || user.username == req.user.username)
         {
-            return sendMessage(res, 400, false, "Sikertelen művelet!");
+            return sendMessage(res, 200, false, "Sikertelen művelet!");
         }
 
         if (!await UserFollow.findOne({where: {followerID: req.user.id, followedID: user.id}}))
@@ -185,7 +185,7 @@ router.post("/follow/:username", tokenCheck, async (req, res) => {
 router.post("/followers/:username", tokenCheck, async (req, res) => {
     if (!req.params.username)
     {
-        return sendMessage(res, 400, false, "Nem található felhasználónév!");
+        return sendMessage(res, 200, false, "Nem található felhasználónév!");
     }
 
     try
@@ -194,7 +194,7 @@ router.post("/followers/:username", tokenCheck, async (req, res) => {
 
         if (!user)
         {
-            return sendMessage(res, 400, false, "Felhasználó nem található!");
+            return sendMessage(res, 200, false, "Felhasználó nem található!");
         }
 
         const query =
@@ -222,7 +222,7 @@ router.post("/followers/:username", tokenCheck, async (req, res) => {
 router.post("/followed/:username", tokenCheck, async (req, res) => {
     if (!req.params.username)
     {
-        return sendMessage(res, 400, false, "Nem található felhasználónév!");
+        return sendMessage(res, 200, false, "Nem található felhasználónév!");
     }
 
     try
@@ -231,7 +231,7 @@ router.post("/followed/:username", tokenCheck, async (req, res) => {
 
         if (!user)
         {
-            return sendMessage(res, 400, false, "Felhasználó nem található!");
+            return sendMessage(res, 200, false, "Felhasználó nem található!");
         }
 
         const query =

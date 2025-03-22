@@ -1,0 +1,33 @@
+@use "../../../styles.scss" as *;
+
+.form-container{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-box{
+    width: 350px;
+}
+
+.form-items{
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 80%;
+}
+
+.instructions{
+    text-align: center;
+    color: $dark-text-color;
+}
+
+@media screen and (max-height: 550px) {
+    .form-container{
+        max-width: fit-content;
+        display: block;
+        margin: auto;
+    }
+}
