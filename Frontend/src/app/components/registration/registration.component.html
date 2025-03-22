@@ -1,20 +1,10 @@
-<div class="registrationContainer">
-    <div class="registrationBox">
-        <div class="logoContainer">
-            <img src="momentLogo.png" alt="">
-            <h1>MOMENT</h1>
-        </div>
-        <div class="itemsContainer">
-            <div class="inputsContainer">
-                <input type="text" placeholder="Felhasználónév" [(ngModel)]="user.username">
-                <input type="email" placeholder="Email cím" [(ngModel)]="user.email">
-                <input type="password" placeholder="Jelszó" [(ngModel)]="user.password">
-                <input type="password" placeholder="Jelszó megerősítése" [(ngModel)]="user.confirm">
+<app-general-input-form>
+    <app-general-input #username [getType]="'text'" [getPlaceholder]="'Felhasználónév'"></app-general-input>
+    <app-general-input #email [getType]="'email'" [getPlaceholder]="'Email cím'"></app-general-input>
+    <app-general-input #password [getType]="'password'" [getPlaceholder]="'Jelszó'"></app-general-input>
+    <app-general-input #confirm [getType]="'password'" [getPlaceholder]="'Jelszó megerősítése'"></app-general-input>
+
+    <app-general-button [getText]="'Regisztráció'" (click)="registration()"/>
     
-                <button (click)="registration()">Regisztráció</button>
-            </div>
-            
-            <a routerLink="/login">Már van fiókom..</a>
-        </div>
-    </div>
-</div>
+    <app-general-link [getPath]="'/login'" [getText]="'Már van fiókom..'"/>
+</app-general-input-form>

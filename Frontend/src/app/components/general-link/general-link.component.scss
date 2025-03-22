@@ -1,0 +1,14 @@
+@use "../../../styles.scss" as *;
+
+a{
+    text-decoration: none;
+    color: $dark-link-color;
+}
+
+a:hover{
+    color: $dark-link-hover-color;
+}
+
+a:active{
+    color: $dark-link-active-color;
+}

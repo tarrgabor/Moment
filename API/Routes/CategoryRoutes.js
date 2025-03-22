@@ -19,14 +19,14 @@ router.get("/", tokenCheck, async (req, res) => {
 router.get("/:categoryID", tokenCheck, async (req, res) => {
     if (!req.params.categoryID)
     {
-        return sendMessage(res, 400, false, "Nem található kategória azonosító!");
+        return sendMessage(res, 200, false, "Nem található kategória azonosító!");
     }
 
     try
     {
         if (!await Category.findOne({where: {id: req.params.categoryID}}))
         {
-            return sendMessage(res, 400, false, "Kategória nem található!");
+            return sendMessage(res, 200, false, "Kategória nem található!");
         }
         
         res.status(200).send(await Category.findOne({where: {id: req.params.categoryID}}));
@@ -41,14 +41,14 @@ router.get("/:categoryID", tokenCheck, async (req, res) => {
 router.post("/create", tokenCheck, async (req, res) => {
     if (!req.body.name)
     {
-        return sendMessage(res, 400, false, "Hiányzó adatok!");
+        return sendMessage(res, 200, false, "Hiányzó adatok!");
     }
 
     try
     {
         if (await Category.findOne({where: {name: req.body.name}}))
         {
-            return sendMessage(res, 400, false, "A kategória már létezik!");
+            return sendMessage(res, 200, false, "A kategória már létezik!");
         }
 
         await Category.create({name: req.body.name});
@@ -65,24 +65,24 @@ router.post("/create", tokenCheck, async (req, res) => {
 router.patch("/update/:categoryID", tokenCheck, async (req, res) => {
     if (!req.params.categoryID)
     {
-        return sendMessage(res, 400, false, "Nem található kategória azonosító!");
+        return sendMessage(res, 200, false, "Nem található kategória azonosító!");
     }
 
     if (!req.body.name)
     {
-        return sendMessage(res, 400, false, "Hiányzó adatok!");
+        return sendMessage(res, 200, false, "Hiányzó adatok!");
     }
 
     try
     {
         if (!await Category.findOne({where: {id: req.params.categoryID}}))
         {
-            return sendMessage(res, 400, false, "Kategória nem található!");
+            return sendMessage(res, 200, false, "Kategória nem található!");
         }
 
         if (await Category.findOne({where: {name: req.body.name}}))
         {
-            return sendMessage(res, 400, false, "A kategória már létezik!");
+            return sendMessage(res, 200, false, "A kategória már létezik!");
         }
 
         await Category.update(
@@ -102,14 +102,14 @@ router.patch("/update/:categoryID", tokenCheck, async (req, res) => {
 router.delete("/delete/:categoryID", tokenCheck, async (req, res) => {
     if (!req.params.categoryID)
     {
-        return sendMessage(res, 400, false, "Nem található kategória azonosító!");
+        return sendMessage(res, 200, false, "Nem található kategória azonosító!");
     }
 
     try
     {
         if (!await Category.findOne({where: {id: req.params.categoryID}}))
         {
-            return sendMessage(res, 400, false, "Kategória nem található!");
+            return sendMessage(res, 200, false, "Kategória nem található!");
         }
 
         await Category.destroy({where: {id: req.params.categoryID}});

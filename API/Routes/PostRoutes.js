@@ -81,7 +81,7 @@ router.get("/get/all", tokenCheck, async (req, res) => {
 router.get("/:postID", tokenCheck, async (req, res) => {
     if (!req.params.postID)
     {
-        return sendMessage(res, 400, false, "Nem található poszt azonosító!");
+        return sendMessage(res, 200, false, "Nem található poszt azonosító!");
     }
 
     try
@@ -118,12 +118,12 @@ router.get("/:postID", tokenCheck, async (req, res) => {
 router.post("/create", tokenCheck, upload.single('file'), async (req, res) => {
     if (!req.body.title || !req.body.description || !String(req.body.visible) || !req.body.categoryID || !req.file)
     {
-        return sendMessage(res, 400, false, "Hiányzó adatok!");
+        return sendMessage(res, 200, false, "Hiányzó adatok!");
     }
 
     if (req.body.title.match(/[^\w\-._~:/?#\[\]@$&'()*+,;=%]/))
     {
-        return sendMessage(res, 400, false, "A cím nem tartalmazhat tiltott speciális karaktereket!");
+        return sendMessage(res, 200, false, "A cím nem tartalmazhat tiltott speciális karaktereket!");
     }
 
     try
@@ -157,7 +157,7 @@ router.post("/create", tokenCheck, upload.single('file'), async (req, res) => {
     catch
     {
 
-        sendMessage(res, 500, false, "Poszt létrehozása sikertelen!");
+        sendMessage(res, 200, false, "Poszt létrehozása sikertelen!");
     }
 })
 
@@ -165,19 +165,19 @@ router.post("/create", tokenCheck, upload.single('file'), async (req, res) => {
 router.patch("/update/:postID", tokenCheck, async (req, res) => {
     if (!req.params.postID)
     {
-        return sendMessage(res, 400, false, "Nem található poszt azonosító!");
+        return sendMessage(res, 200, false, "Nem található poszt azonosító!");
     }
 
     if (!req.body.title || !req.body.description || !String(req.body.visible) || !req.body.categoryID)
     {
-        return sendMessage(res, 400, false, "Hiányzó adatok!");
+        return sendMessage(res, 200, false, "Hiányzó adatok!");
     }
 
     try
     {
         if (!await Post.findOne({where: {userID: req.user.id, id: req.params.postID}}))
         {
-            return sendMessage(res, 400, false, "Poszt nem található!");
+            return sendMessage(res, 200, false, "Poszt nem található!");
         }
 
         await Post.update({
@@ -194,7 +194,7 @@ router.patch("/update/:postID", tokenCheck, async (req, res) => {
     }
     catch
     {
-        sendMessage(res, 500, false, "Poszt frissítése sikertelen!");
+        sendMessage(res, 200, false, "Poszt frissítése sikertelen!");
     }
 })
 
@@ -202,7 +202,7 @@ router.patch("/update/:postID", tokenCheck, async (req, res) => {
 router.delete("/delete/:postID", tokenCheck, async (req, res) => {
     if (!req.params.postID)
     {
-        return sendMessage(res, 400, false, "Nem található poszt azonosító!");
+        return sendMessage(res, 200, false, "Nem található poszt azonosító!");
     }
 
     const transaction = await db.transaction();
@@ -211,7 +211,7 @@ router.delete("/delete/:postID", tokenCheck, async (req, res) => {
     {
         if (!await Post.findOne({where: {userID: req.user.id, id: req.params.postID}}))
         {
-            return sendMessage(res, 400, false, "Poszt nem található!");
+            return sendMessage(res, 200, false, "Poszt nem található!");
         }
         
         await PostLike.destroy({
@@ -251,7 +251,7 @@ router.delete("/delete/:postID", tokenCheck, async (req, res) => {
     {
         transaction.rollback();
 
-        sendMessage(res, 500, false, "Poszt törlése sikertelen!");
+        sendMessage(res, 200, false, "Poszt törlése sikertelen!");
     }
 })
 
@@ -259,7 +259,7 @@ router.delete("/delete/:postID", tokenCheck, async (req, res) => {
 router.post("/like/:postID", tokenCheck, async (req, res) => {
     if (!req.params.postID)
     {
-        return sendMessage(res, 400, false, "Nem található poszt azonosító!");
+        return sendMessage(res, 200, false, "Nem található poszt azonosító!");
     }
 
     const transaction = await db.transaction();
@@ -268,7 +268,7 @@ router.post("/like/:postID", tokenCheck, async (req, res) => {
     {
         if (!await Post.findOne({where: {id: req.params.postID}, attributes: ["id"]}))
         {
-            return sendMessage(res, 400, false, "Poszt nem található!");
+            return sendMessage(res, 200, false, "Poszt nem található!");
         }
 
         if (!await PostLike.findOne({where: {userID: req.user.id, postID: req.params.postID}}))

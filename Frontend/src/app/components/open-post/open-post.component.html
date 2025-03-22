@@ -16,7 +16,7 @@
             <p class="post-category">{{postData.category}}</p>
         </div>
 
-        <p class="description"  [innerHTML]="postData.description"></p>
+        <p class="description" [innerHTML]="postData.description"></p>
 
         <app-lightbox-listener [getImage]="postData.image"/>
     </div>
@@ -25,7 +25,11 @@
         <app-like-button *ngIf="fetchedData" [getID]="postData.postID" [getLikes]="postData.likes" [getIsLiked]="postData.liked"/>
     </div>
 
-    <div class="comments-container">
+    <div class="post-comments-header">
+        <app-general-button [getText]="'Komment hozzáadása'"/>
+    </div>
+
+    <div class="post-comments">
         <app-comment/>
     </div>
 </div>

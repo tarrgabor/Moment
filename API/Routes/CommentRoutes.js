@@ -10,7 +10,7 @@ const { CommentLike } = require("../Database/Models/CommentLike");
 router.get("/post/:postID", tokenCheck, async (req, res) => {
     if (!req.params.postID)
     {
-        return sendMessage(res, 400, false, "Nem található poszt azonosító!");
+        return sendMessage(res, 200, false, "Nem található poszt azonosító!");
     }
 
     try
@@ -45,12 +45,12 @@ router.get("/post/:postID", tokenCheck, async (req, res) => {
 router.post("/create/:postID", tokenCheck, async (req, res) => {
     if (!req.params.postID)
     {
-        return sendMessage(res, 400, false, "Nem található poszt azonosító!");
+        return sendMessage(res, 200, false, "Nem található poszt azonosító!");
     }
 
     if (!req.body.message)
     {
-        return sendMessage(res, 400, false, "Hiányzó adatok!");
+        return sendMessage(res, 200, false, "Hiányzó adatok!");
     }
     
     try
@@ -73,14 +73,14 @@ router.post("/create/:postID", tokenCheck, async (req, res) => {
 router.patch("/update/:commentID", tokenCheck, async (req, res) => {
     if (!req.params.commentID)
     {
-        return sendMessage(res, 400, false, "Nem található komment azonosító!");
+        return sendMessage(res, 200, false, "Nem található komment azonosító!");
     }
 
     try
     {
         if (!await Comment.findOne({where: {id: req.params.commentID, userID: req.user.id}}))
         {
-            return sendMessage(res, 400, false, "Komment nem található!");
+            return sendMessage(res, 200, false, "Komment nem található!");
         }
 
         await Comment.update(
@@ -100,7 +100,7 @@ router.patch("/update/:commentID", tokenCheck, async (req, res) => {
 router.delete("/delete/:commentID", tokenCheck, async (req, res) => {
     if (!req.params.commentID)
     {
-        return sendMessage(res, 400, false, "Nem található komment azonosító!");
+        return sendMessage(res, 200, false, "Nem található komment azonosító!");
     }
 
     const transaction = await db.transaction();
@@ -109,7 +109,7 @@ router.delete("/delete/:commentID", tokenCheck, async (req, res) => {
     {
         if (!await Comment.findOne({where: {id: req.params.commentID, userID: req.user.id}}))
         {
-            return sendMessage(res, 400, false, "Komment nem található!");
+            return sendMessage(res, 200, false, "Komment nem található!");
         }
 
         await CommentLike.destroy({
@@ -138,7 +138,7 @@ router.delete("/delete/:commentID", tokenCheck, async (req, res) => {
 router.post("/like/:commentID", tokenCheck, async (req, res) => {
     if (!req.params.commentID)
     {
-        return sendMessage(res, 400, false, "Nem található komment azonosító!");
+        return sendMessage(res, 200, false, "Nem található komment azonosító!");
     }
 
     const transaction = await db.transaction();
@@ -147,7 +147,7 @@ router.post("/like/:commentID", tokenCheck, async (req, res) => {
     {
         if (!await Comment.findOne({where: {id: req.params.commentID}}))
         {
-            return sendMessage(res, 400, false, "Komment nem található!");
+            return sendMessage(res, 200, false, "Komment nem található!");
         }
 
         if (!await CommentLike.findOne({where: {userID: req.user.id, commentID: req.params.commentID}}))
