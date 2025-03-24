@@ -1,21 +1,30 @@
 <div class="comment">
-    <div class="comment-header">
-        <a class="comment-author" href="#">
-            <img src="profilkep.png">
-            <span>username</span>
-        </a>
+    <app-user-content-header [getProfilePicture]="commentData.profilePicture" [getUsername]="commentData.username" [getCreatedAt]="commentData.createdAt"/>
 
-        <p>createdAt</p>
-    </div>
+    <div class="comment-content">
+        <div class="comment-message" *ngIf="!isEditing" [innerHTML]="commentData.message"></div>
 
-    <div class="comment-body">
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. At consequatur sunt maiores id eius dolorum, voluptas corporis asperiores, perferendis quis tempora deserunt repellendus ad impedit aliquid beatae pariatur laborum omnis.
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium excepturi eaque velit vel? Voluptas nisi eligendi accusamus perferendis in voluptates debitis aliquid inventore dolores cupiditate. Quam cumque nobis praesentium quod!
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsam at illo sed saepe accusamus itaque in, vel beatae nemo cum ab a, praesentium libero perspiciatis soluta atque nam, dolorem qui.
-        </p>
-    </div>
+        <div class="text-editor" *ngIf="isEditing">
+            <textarea #editCommentTextArea (input)="resizeTextArea($event)">{{convertBrToNewlines(commentData.message)}}</textarea>
 
-    <div class="comment-footer">
-        <app-like-button/>
+            <div class="message-editor-buttons">
+                <button class="editor-button cancel-button" (click)="closeEditor()">Mégse</button>
+                <button #editCancelButton class="editor-button save-button" (click)="modifyComment()">Mentés</button>
+            </div>
+        </div>
+
+        <div class="comment-actions">
+            <app-like-button/>
+
+            <span (click)="openEditor()">ideiglenes módosítás gomb</span>
+            <span>Válasz</span>
+            <span>Jelentés</span>
+        </div>
+
+        <span (click)="toggleShowReplies()">Válaszok</span>
+
+        <div class="replies" *ngIf="showReplies">
+            <ng-content/>
+        </div>
     </div>
 </div>

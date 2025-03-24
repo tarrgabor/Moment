@@ -5,6 +5,7 @@ import { GeneralInputComponent } from '../general-input/general-input.component'
 import { GeneralButtonComponent } from '../general-button/general-button.component';
 import { GeneralLinkComponent } from '../general-link/general-link.component';
 import { GeneralInputFormComponent } from '../general-input-form/general-input-form.component';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,8 @@ import { GeneralInputFormComponent } from '../general-input-form/general-input-f
 export class LoginComponent {
   constructor(
     private api: ApiService,
-    private auth: AuthService
+    private auth: AuthService,
+    private message: MessageService
   ){}
 
   @ViewChild('email') email!: GeneralInputComponent;
@@ -30,9 +32,12 @@ export class LoginComponent {
     this.api.login('users', user).subscribe((res: any) => {
       if (res.success)
       {
+        this.message.success(res.message);
         this.auth.saveTokenAndLogin(res.token);
         return;
       }
+
+      this.message.error(res.message);
     });
   }
 }

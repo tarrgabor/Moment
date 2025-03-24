@@ -11,6 +11,8 @@ import { ApiService } from '../../services/api.service';
 export class LikeButtonComponent implements OnInit{
   constructor(private api: ApiService){}
 
+  @Input("getType") type: string = "";
+
   @Input("getID") id: string = ""; 
 
   @Input("getLikes") likes: number = 0;
@@ -47,9 +49,9 @@ export class LikeButtonComponent implements OnInit{
     }
   }
 
-  toggleLike(table: string)
+  toggleLike(type: string)
   {
-    this.api.toggleLike(table, this.id).subscribe((res: any) => {
+    this.api.toggleLike(type, this.id).subscribe((res: any) => {
       if (res.liked)
       {
         this.likes += 1;

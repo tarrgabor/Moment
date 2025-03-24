@@ -121,7 +121,7 @@ router.post("/create", tokenCheck, upload.single('file'), async (req, res) => {
         return sendMessage(res, 200, false, "Hiányzó adatok!");
     }
 
-    if (req.body.title.match(/[^\w\-._~:/?#\[\]@$&'()*+,;=%]/))
+    if (!req.body.title.match(/^[a-zA-Z0-9?!.\s]*$/))
     {
         return sendMessage(res, 200, false, "A cím nem tartalmazhat tiltott speciális karaktereket!");
     }

@@ -5,6 +5,7 @@ import { GeneralInputComponent } from '../general-input/general-input.component'
 import { GeneralButtonComponent } from '../general-button/general-button.component';
 import { GeneralLinkComponent } from '../general-link/general-link.component';
 import { GeneralInputFormComponent } from '../general-input-form/general-input-form.component';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-registration',
@@ -15,7 +16,8 @@ import { GeneralInputFormComponent } from '../general-input-form/general-input-f
 export class RegistrationComponent {
   constructor(
     private api: ApiService,
-    private router: Router
+    private router: Router,
+    private message: MessageService
   ){}
 
   @ViewChild('username') username!: GeneralInputComponent;
@@ -34,9 +36,12 @@ export class RegistrationComponent {
     this.api.registration('users', user).subscribe((res:any) => {
       if (res.success)
       {
+        this.message.success(res.message);
         this.router.navigate(["/login"]);
         return;
       }
+
+      this.message.error(res.message);
     });
   }
 }

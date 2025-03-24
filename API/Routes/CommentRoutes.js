@@ -5,6 +5,7 @@ const { sendMessage, tokenCheck } = require("../utils");
 
 const { Comment } = require("../Database/Models/Comment");
 const { CommentLike } = require("../Database/Models/CommentLike");
+const { Reply } = require("../Database/Models/Reply");
 
 // Get all comments under post
 router.get("/post/:postID", tokenCheck, async (req, res) => {
@@ -19,21 +20,50 @@ router.get("/post/:postID", tokenCheck, async (req, res) => {
         `SELECT
         u.username,
         u.profilePicture,
-        c.id as "commentID",
+        c.id,
         c.message,
+        DATE_FORMAT(c.createdAt, '%Y-%m-%d %H:%i:%s') AS createdAt,
         c.likes,
-        c.createdAt,
-        IF(cl.commentID IS NOT NULL, 1, 0) AS liked
+        IF(cl.commentID IS NOT NULL, 1, 0) AS liked,
+        (SELECT
+			GROUP_CONCAT(
+                JSON_OBJECT(
+                    "username", ru.username,
+                    "profilePicture", ru.profilePicture,
+                    "id", rc.id,
+                    "message", rc.message,
+                    "createdAt", rc.createdAt,
+                    "likes", rc.likes,
+                    "liked", IF(rl.commentID IS NOT NULL, 1, 0)
+                )
+                ORDER BY rc.createdAt DESC
+            )
+            FROM replies r
+            LEFT JOIN comments rc ON rc.id = r.replyID
+            LEFT JOIN users ru ON rc.userID = ru.id
+            LEFT JOIN commentlikes rl ON rc.id = rl.commentID
+            WHERE r.commentID = c.id
+        ) AS "replies"
         FROM comments c
+        LEFT JOIN posts p on p.id = c.postID
         LEFT JOIN users u ON c.userID = u.id
         LEFT JOIN commentlikes cl ON c.id = cl.commentID
+        WHERE p.id = :postID AND c.id NOT IN (SELECT replyID FROM replies)
         ORDER BY c.createdAt DESC`
 
-        res.status(200).send(await db.query(query, {
-                replacements: {postID: req.params.postID},
-                type: QueryTypes.SELECT
-            })
-        );
+        const comments = await db.query(query, {
+            replacements: {postID: req.params.postID},
+            type: QueryTypes.SELECT
+        });
+
+        comments.forEach(comment => {
+            if (comment.replies)
+            {
+                comment.replies = JSON.parse(`[${comment.replies}]`); 
+            }
+        });
+
+        res.status(200).send(comments);
     }
     catch
     {
@@ -65,6 +95,45 @@ router.post("/create/:postID", tokenCheck, async (req, res) => {
     }
     catch
     {
+        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
+    }
+});
+
+// Create reply to comment under post
+router.post("/reply/:postID/:commentID", tokenCheck, async (req, res) => {
+    if (!req.params.postID || !req.params.commentID)
+    {
+        return sendMessage(res, 200, false, "Nem találhatók az azonosítók!");
+    }
+
+    const transaction = await db.transaction();
+
+    if (!req.body.message)
+    {
+        return sendMessage(res, 200, false, "Hiányzó adatok!");
+    }
+    
+    try
+    {
+        const reply = await Comment.create({
+            userID: req.user.id,
+            postID: req.params.postID,
+            message: req.body.message,
+        }, {transaction: transaction});
+
+        await Reply.create({
+            commentID: req.params.commentID,
+            replyID: reply.id
+        }, {transaction: transaction});
+
+        await transaction.commit();
+
+        sendMessage(res, 200, true, "Válasz létrehozva!");
+    }
+    catch
+    {
+        transaction.rollback();
+
         sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
     }
 });

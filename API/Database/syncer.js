@@ -8,6 +8,7 @@ const { Category } = require("./Models/Category");
 const { PostLike } = require("./Models/PostLike");
 const { CommentLike } = require("./Models/CommentLike");
 const { UserFollow } = require("./Models/UserFollow");
+const { Reply } = require("./Models/Reply");
 
 function ConnectModels()
 {
@@ -28,6 +29,9 @@ function ConnectModels()
 
     User.hasMany(PostReport, {foreignKey: "userID"});
     Post.hasMany(PostReport, {foreignKey: "postID"});
+
+    Comment.hasMany(Reply, {foreignKey: "commentID"});
+    Comment.hasMany(Reply, {foreignKey: "replyID"});
 }
 
 async function SyncDatabase()

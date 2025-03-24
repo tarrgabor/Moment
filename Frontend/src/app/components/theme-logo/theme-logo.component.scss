@@ -11,8 +11,9 @@
 }
 
 .logoContainer img{
-    width: 275px;
-    height: 175px;
+    width: 100%;
+    max-width: 275px;
+    height: auto;
     filter:  $logo-invert;
 }
 
