@@ -17,14 +17,14 @@ router.post("/registration", async (req, res) => {
         return sendMessage(res, 200, false, "Hiányzó adatok!");
     }
 
-    if (req.body.username.match(/[^a-zA-Z0-9._-]/))
+    if (req.body.username.match(/[^a-zA-Z0-9._-]/) || req.body.email.match(/[^a-zA-Z0-9._%+-@,;:"<>[\]()\\\s]/))
     {
-        return sendMessage(res, 200, false, "A felhasználónév tiltott karaktereket tartalmaz!");
+        return sendMessage(res, 200, false, "A mezők tiltott karaktereket tartalmaznak!");
     }
 
-    if (req.body.email.match(/[^a-zA-Z0-9._%+-@,;:"<>[\]()\\\s]/))
+    if (!req.body.email.match(/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim))
     {
-        return sendMessage(res, 200, false, "Az E-mail cím tiltott karaktereket tartalmaz!");
+        return sendMessage(res, 200, false, "Az e-mail nem érvényes!");
     }
 
     if (req.body.password != req.body.confirm)

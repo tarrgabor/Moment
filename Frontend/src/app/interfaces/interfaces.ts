@@ -15,3 +15,22 @@ export interface Post {
     createdAt: Date,
     liked: Boolean
 }
+
+export interface Comment {
+    id: string,
+    username: string,
+    profilePicture: string,
+    postID: string,
+    message: string,
+    replies: Comment[],
+    likes: number,
+    liked: Boolean,
+    createdAt: Date
+}
+
+export interface Message {
+    id: number,
+    type: string,
+    icon: string,
+    message: string
+}

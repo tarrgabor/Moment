@@ -1,0 +1,9 @@
+<div class="comment-container">
+    <app-comment [getCommentData]="comment" *ngFor="let comment of comments">
+        <app-comment [getCommentData]="reply" *ngFor="let reply of comment.replies"></app-comment>
+    </app-comment>
+
+    <app-intersection-observer (intersecting)="getComments()"/>
+
+    <app-loading *ngIf="fetching"/>
+</div>

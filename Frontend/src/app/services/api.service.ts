@@ -40,6 +40,16 @@ export class ApiService {
     return this.http.get(`${this.serverURL}/${table}/${postID}`, this.tokenHeader());
   }
 
+  getCommentsUnderPost(table: string, postID: string)
+  {
+    return this.http.get(`${this.serverURL}/${table}/post/${postID}`, this.tokenHeader());
+  }
+
+  updateComment(table: string, commentID: string, message: string)
+  {
+    return this.http.patch(`${this.serverURL}/${table}/update/${commentID}`, {message}, this.tokenHeader());
+  }
+
   toggleLike(table: string, id: string)
   {
     return this.http.post(`${this.serverURL}/${table}/like/${id}`, null, this.tokenHeader());

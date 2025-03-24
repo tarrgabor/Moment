@@ -3,45 +3,116 @@
 .comment {
     display: flex;
     flex-direction: column;
+    position: relative;
     color: $dark-text-color;
 }
 
-.comment-header {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    margin-bottom: 10px;
+.comment-content{
+    margin-left: 32px;
 }
 
-.comment-author {
+.comment-message{
+    word-wrap: break-word;
+}
+
+.text-editor{
     display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+textarea{
+    display: flex;
+    width: 100%;
+    height: 32px;
+    font-size: 16px;
+    resize: none;
+    border: none;
+    outline: none;
+    overflow: hidden;
+    color: $dark-text-color;
+    background-color: transparent;
+    border-bottom: 2px solid #555;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+textarea:focus{
+    border-bottom: 2px solid #1a73e8;
+}
+  
+textarea:hover{
+    border-bottom: 2px solid #ccc;
+}
+
+.message-editor-buttons{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 4px;
+}
+
+.editor-button{
+    padding: 4px;
+    border-radius: 20px;
+    outline: none;
+    background-color: transparent;
+    color: $dark-text-color;
+}
+
+.cancel-button{
+    background-color: rgb(40, 40, 40);
+}
+
+.cancel-button:hover{
+    background-color: rgb(70, 70, 70);
+}
+
+.save-button{
+    color: $dark-text-color;
+    background-color: $button-background-color;
+    margin-left: 2px;
+}
+
+.save-button:hover{
+    color: $button-text-hover-color;
+    background-color: $button-hover-background-color;
+}
+
+.save-button:disabled{
+    color: #5a5a5a;
+    background-color: #032757;
+}
+
+.comment-actions{
+    display: flex;
+    margin-top: 5px;
+}
+
+span{
+    display: flex;
+    justify-content: center;
     align-items: center;
-    font-weight: bold;
+    font-size: 14px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 20px;
+    width: fit-content;
+    height: 32px;
     cursor: pointer;
-}
-
-.comment-author span {
-    color: $dark-text-color;
-    margin-left: 3px;
-}
-
-.comment-author:hover span{
-    color: $dark-link-hover-color;
-}
-
-.comment-author:active span{
-    color: $dark-link-active-color;
-}
-
-.comment-author img{
-    width: 30px;
-    height: 30px;
-    border: 1px solid $dark-border-color;
-    border-radius: 100%;
     user-select: none;
-    -webkit-user-drag: none;
 }
 
-.comment-body{
-    padding-left: 35px;
+span:hover{
+    background-color: rgb(50, 50, 50);
+}
+
+.toggle-replies-button{
+    margin-top: 2px;
+    margin-left: 12px;
+}
+
+@media screen and (max-width: 380px) {
+    .inline-actions{
+        display: none;
+    }  
 }

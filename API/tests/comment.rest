@@ -2,7 +2,7 @@
 
 @token = {{login.response.body.token}}
 
-@commentID = {{comments.response.body.0.commentID}}
+@commentID = {{comments.response.body.0.id}}
 
 @postID = {{posts.response.body.0.id}}
 
@@ -13,7 +13,7 @@ POST {{serverURL}}/users/login
 Content-Type: application/json
 
 {
-    "email": "jani@gmail.com",
+    "email": "jani2@gmail.com",
     "password": "Titkosjelszo123"
 }
 
@@ -36,6 +36,15 @@ Authorization: Bearer {{token}}
 
 {
     "message": "Ez egy komment!"
+}
+
+### reply to comment under post by postID and commentID
+POST {{serverURL}}/comments/reply/{{postID}}/{{commentID}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "message": "Ez egy válasz!"
 }
 
 ### update comment by commentID

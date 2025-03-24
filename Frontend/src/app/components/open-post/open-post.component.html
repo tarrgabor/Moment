@@ -1,37 +1,29 @@
 <app-navbar></app-navbar>
 
-<div class="post">
-    <div class="post-header">
-        <a class="post-author" href="/user/{{postData.username}}">
-            <img src="{{postData.profilePicture}}">
-            <span>{{postData.username}}</span>
-        </a>
-
-        <p>{{createdAgo}}</p>
-    </div>
+<div class="post" *ngIf="fetchedData">
+    <app-user-content-header [getProfilePicture]="postData.profilePicture" [getUsername]="postData.username" [getCreatedAt]="postData.createdAt"/>
 
     <div class="post-body">
-        <div class="post-info">
-            <h2 class="post-title">{{postData.title}}</h2>
-            <p class="post-category">{{postData.category}}</p>
-        </div>
+        <h2 class="post-title">{{postData.title}}</h2>
 
-        <p class="description" [innerHTML]="postData.description"></p>
+        <p class="post-description" [innerHTML]="postData.description"></p>
+
+        <p class="post-category">{{postData.category}}</p>
 
         <app-lightbox-listener [getImage]="postData.image"/>
     </div>
 
     <div class="post-footer">
-        <app-like-button *ngIf="fetchedData" [getID]="postData.postID" [getLikes]="postData.likes" [getIsLiked]="postData.liked"/>
+        <app-like-button [getType]="'posts'" [getID]="postData.postID" [getLikes]="postData.likes" [getIsLiked]="postData.liked"/>
     </div>
 
     <div class="post-comments-header">
         <app-general-button [getText]="'Komment hozzáadása'"/>
     </div>
 
-    <div class="post-comments">
-        <app-comment/>
-    </div>
+    <app-comment-container [getPostID]="postData.postID"/>
 </div>
 
 <app-lightbox/>
+
+<app-page-not-found *ngIf="!postFound"/>

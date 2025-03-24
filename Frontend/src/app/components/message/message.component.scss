@@ -1,0 +1,149 @@
+@use "../../../styles.scss" as *;
+
+$success-color: #00ff00;
+$info-color: #0095ff;
+$warning-color: #ff9500;
+$error-color: #ff000d;
+
+.messages{
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    cursor: pointer;
+}
+
+.message{
+    display: flex;
+    align-items: center;
+    width: 250px;
+    min-height: 45px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 3px;
+    overflow: hidden;
+    position: relative;
+}
+
+.message-icon i{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: auto;
+    padding: 12px;
+}
+
+.message-content{
+    flex-grow: 1;
+    padding: 12px 8px;
+}
+
+.message-text{
+    font-size: 15px;
+}
+
+.message svg{
+    position: absolute;
+    top: 5px;
+    right: 7px;
+    min-width: 25px;
+    min-height: 25px;
+}
+
+.message-loader{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    animation: progressBar 3s linear;
+}
+
+// background colors
+
+.success{
+    background-image: linear-gradient(
+        to right, #1a661a, #094909 80%);
+    color: $success-color;
+}
+
+.info{
+    background-image: linear-gradient(
+        to right, #194869, #0c324d 80%);
+    color: $info-color;
+}
+
+.warning{
+    background-image: linear-gradient(
+        to right, #63451d, #52320b 80%);
+    color: $warning-color;
+}
+
+.error{
+    background-image: linear-gradient(
+        to right, #7e191e, #5a0e0e 80%);
+    color: $error-color;
+}
+
+// close buttons
+.success svg{
+    fill: $success-color;
+}
+
+.info svg{
+    fill: $info-color;
+}
+
+.warning svg{
+    fill: $warning-color;
+}
+
+.error svg{
+    fill: $error-color;
+}
+
+
+// progress bars
+
+.success .message-loader{
+    box-shadow: #5ea85e 1px 0px 4px 1px;
+    background-color: $success-color;
+}
+
+.info .message-loader{
+    box-shadow: #5b94bd 1px 0px 4px 1px;
+    background-color: $info-color;
+}
+
+.warning .message-loader{
+    box-shadow: #c79c61 1px 0px 4px 1px;
+    background-color: $warning-color;
+}
+
+.error .message-loader{
+    box-shadow: #b95c60 1px 0px 4px 1px;
+    background-color: $error-color;
+}
+
+@keyframes progressBar {
+    0% {
+        width: 100%;
+    }
+    100% {
+        width: 0%;
+    }
+}
+
+@keyframes messageFadeOut {
+    0% {
+        right: 0;
+        opacity: 1;
+    }
+    100% {
+        right: -100%;
+        opacity: 0;
+    }
+}

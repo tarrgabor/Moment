@@ -1,12 +1,5 @@
 <a class="post" href="/post/{{postData.postID}}/{{processedTitle}}">
-    <div class="post-header">
-        <a class="post-author" href="/user/{{postData.username}}">
-            <img src="{{postData.profilePicture}}">
-            <span>{{postData.username}}</span>
-        </a>
-
-        <p>{{createdAgo}}</p>
-    </div>
+    <app-user-content-header [getProfilePicture]="postData.profilePicture" [getUsername]="postData.username" [getCreatedAt]="postData.createdAt"/>
 
     <div class="post-body">
         <h2 class="post-title">{{postData.title}}</h2>
@@ -15,6 +8,6 @@
     </div>
 
     <div class="post-footer">
-        <app-like-button [getID]="postData.postID" [getLikes]="postData.likes" [getIsLiked]="postData.liked"/>
+        <app-like-button [getType]="'posts'" [getID]="postData.postID" [getLikes]="postData.likes" [getIsLiked]="postData.liked"/>
     </div>
 </a>
