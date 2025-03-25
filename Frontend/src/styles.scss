@@ -21,54 +21,57 @@ button, a{
 
 //-------------------Light Mode---------------------\\ - LIGHT MODE COLORS ARE PLACEHOLDERS
 
-$light-background-color: #F9FAFB;
-$light-border-color:#D1D5DB;
-$light-text-color: black;
-
-// Input
-$light-input-text-color: #2b2b2b;
-$light-input-background-color: #cfcfcf;
-
-// Content
-$light-content-background-color: #cccccc;
-
-// Link
-$light-link-color: #2b2b2b;
-$light-link-hover-color: #3f3f3f;
-$light-link-active-color: #3f4041;
-$light-link-active-background-color: #b6b6b6;
-
-// Close button
-$light-button-close-color: rgb(31, 31, 31);
-
-$light-button-close-hover-color: rgb(99, 99, 99);
-$light-button-close-hover-background-color: rgb(202, 202, 202);
-
+[data-theme='light'] {
+    --light-background-color: #F9FAFB;
+    --light-border-color:#D1D5DB;
+    --light-text-color: black;
+    
+    // Input
+    --light-input-text-color: #2b2b2b;
+    --light-input-background-color: #cfcfcf;
+    
+    // Content
+    --light-content-background-color: #cccccc;
+    
+    // Link
+    --light-link-color: #2b2b2b;
+    --light-link-hover-color: #3f3f3f;
+    --light-link-active-color: #3f4041;
+    --light-link-active-background-color: #b6b6b6;
+    
+    // Close button
+    --light-button-close-color: rgb(31, 31, 31);
+    
+    --light-button-close-hover-color: rgb(99, 99, 99);
+    --light-button-close-hover-background-color: rgb(202, 202, 202);
+  }
 
 //-------------------Dark Mode---------------------\\
 
-$dark-background-color: #101216;
-$dark-border-color: #222425;
-$dark-text-color: #F9FAFB;
-
-// Input
-$dark-input-text-color: #F9FAFB;
-$dark-input-background-color: #3f4041;
-
-// Content
-$dark-content-background-color: #222425;
-
-// Link
-$dark-link-color: #d3d3d3;
-$dark-link-hover-color: #303030;
-$dark-link-active-color: #3f4041;
-$dark-link-active-background-color: #242424;
-
-// Close button
-$dark-button-close-color: rgb(135, 135, 135);
-
-$dark-button-close-hover-color: #F9FAFB;
-$dark-button-close-hover-background-color: rgb(65, 65, 65);
+[data-theme='dark'] {
+    --dark-background-color: #101216;
+    --dark-border-color: #222425;
+    --dark-text-color: #F9FAFB;
+    
+    // Input
+    --dark-input-text-color: #F9FAFB;
+    --dark-input-background-color: #3f4041;
+    
+    // Content
+    --dark-content-background-color: #222425;
+    
+    // Link
+    --dark-link-color: #d3d3d3;
+    --dark-link-hover-color: #303030;
+    --dark-link-active-color: #3f4041;
+    --dark-link-active-background-color: #242424;
+    
+    // Close button
+    --dark-button-close-color: rgb(135, 135, 135);
+    
+    --dark-button-close-hover-color: #F9FAFB;
+    --dark-button-close-hover-background-color: rgb(65, 65, 65);
+  }
 
 //-------------------Other---------------------\\
 
