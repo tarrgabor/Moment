@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../services/api.service';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,7 +15,8 @@ export class NavbarComponent{
   constructor(
     private auth: AuthService,
     private renderer: Renderer2,
-    private api: ApiService
+    private api: ApiService,
+    private theme: ThemeService
   ){}
   isSettingsOpen = false;
   activeTab: string = 'profile';
@@ -86,6 +88,7 @@ export class NavbarComponent{
   }
 
   toggleTheme() {
+    this.theme.toggleTheme();
     this.isDarkMode = !this.isDarkMode;
     localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
     this.updateTheme();
