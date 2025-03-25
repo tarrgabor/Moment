@@ -1,0 +1,55 @@
+<app-navbar></app-navbar>
+
+<div class="contanier">
+    <div class="post-body">
+        <form class="uploader">
+            <input id="file-upload" type="file" name="fileUpload" accept="image/*" />
+          
+            <label for="file-upload" id="file-drag">
+              <img id="file-image" src="upload.svg" >
+              <div id="start">
+                <span id="file-upload-btn" class="btn btn-primary send">Select a file</span>
+              </div>
+            </label>
+          </form>
+        
+    </div>
+   
+    <div class="comment">
+        <p>Kép cime:</p>
+        <input type="text" class="write">
+    </div>
+
+    <div class="comment">
+        <p>Kategória:</p>
+        
+            <select  class="write"  id="inputGroupSelect01">
+              <option selected>Choose...</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+          
+    </div>
+    <div class="comment">
+        <p>Leirás:</p>
+        <textarea  class="write" ></textarea>
+    </div>
+    <div  class="interaktion">
+        <div class="checkbox">
+            <p>Privát post legyen:</p>
+            <input type="checkbox"  class="check"value="privat">
+        </div>
+        
+        <div class="comment">
+            <button class="send">Feltöltés</button>
+        </div>
+    </div>
+    
+
+    
+    
+   
+
+
+</div>
