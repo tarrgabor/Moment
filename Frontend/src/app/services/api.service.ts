@@ -9,6 +9,12 @@ export class ApiService {
   constructor(private http: HttpClient){}
   serverURL = "http://localhost:3000";
 
+  noCache = new HttpHeaders({
+    'Cache-Control': 'no-cache',
+    'Pragma': 'no-cache',
+    'Expires': '0'
+  });
+
   getToken()
   {
     return localStorage.getItem(environment.tokenName);
@@ -16,7 +22,12 @@ export class ApiService {
 
   tokenHeader()
   {
-    const headers = new HttpHeaders({"Authorization": `Bearer ${this.getToken()}`});
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${this.getToken()}`,
+      "Cache-Control": "no-cache",
+      "Pragma": "no-cache",
+      "Expires": "0"
+    });
     return {headers};
   }
 
@@ -45,9 +56,24 @@ export class ApiService {
     return this.http.get(`${this.serverURL}/${table}/post/${postID}`, this.tokenHeader());
   }
 
+  createComment(table: string, postID: string, message: string)
+  {
+    return this.http.post(`${this.serverURL}/${table}/create/${postID}`, {message}, this.tokenHeader());
+  }
+
   updateComment(table: string, commentID: string, message: string)
   {
     return this.http.patch(`${this.serverURL}/${table}/update/${commentID}`, {message}, this.tokenHeader());
+  }
+
+  deleteComment(table: string, commentID: string)
+  {
+    return this.http.delete(`${this.serverURL}/${table}/delete/${commentID}`, this.tokenHeader());
+  }
+
+  replyToComment(table: string, postID: string, commentID: string, message: string)
+  {
+    return this.http.post(`${this.serverURL}/${table}/reply/${postID}/${commentID}`, {message}, this.tokenHeader());
   }
 
   toggleLike(table: string, id: string)

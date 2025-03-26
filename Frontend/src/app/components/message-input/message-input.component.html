@@ -1,0 +1,11 @@
+<div class="messsage-input-container">
+    <div class="message-input">
+        <img src="{{profilePicture}}">
+        <textarea #textArea (input)="resizeTextArea($event)" maxlength="400">{{convertBrToNewlines(initialText)}}</textarea>
+    </div>
+
+    <div class="message-input-buttons">
+        <button class="editor-button cancel-button" (click)="sendClose()">Mégse</button>
+        <button #saveButton class="editor-button save-button" (click)="sendValue()">{{buttonText}}</button>
+    </div>
+</div>

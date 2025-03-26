@@ -2,7 +2,6 @@
 
 .content-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     font-size: 14px;
 }
@@ -10,6 +9,7 @@
 .content-author {
     display: flex;
     align-items: center;
+    margin-right: 5px;
     font-weight: bold;
     cursor: pointer;
 }

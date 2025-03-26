@@ -25,6 +25,7 @@ export interface Comment {
     replies: Comment[],
     likes: number,
     liked: Boolean,
+    owned: Boolean,
     createdAt: Date
 }
 

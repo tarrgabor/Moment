@@ -1,27 +1,27 @@
 <div class="comment">
-    <app-user-content-header [getProfilePicture]="commentData.profilePicture" [getUsername]="commentData.username" [getCreatedAt]="commentData.createdAt"/>
+    <div class="comment-header">
+        <app-user-content-header [getProfilePicture]="commentData.profilePicture" [getUsername]="commentData.username" [getCreatedAt]="commentData.createdAt"/>
+
+        <div *ngIf="commentData.owned">
+            <i class="bi bi-pencil edit-button" (click)="openUpdate()"></i>
+            <i class="bi bi-trash delete-button" (click)="deleteComment()"></i>
+        </div>
+    </div>
 
     <div class="comment-content">
         <div class="comment-message" *ngIf="!isEditing" [innerHTML]="commentData.message"></div>
 
-        <div class="text-editor" *ngIf="isEditing">
-            <textarea #editCommentTextArea (input)="resizeTextArea($event)">{{convertBrToNewlines(commentData.message)}}</textarea>
-
-            <div class="message-editor-buttons">
-                <button class="editor-button cancel-button" (click)="closeEditor()">Mégse</button>
-                <button #editCancelButton class="editor-button save-button" (click)="modifyComment()">Mentés</button>
-            </div>
-        </div>
+        <app-message-input *ngIf="isEditing && commentData.owned" [getButtonText]="'Mentés'" [getInitialText]="commentData.message" (onSave)="updateComment($event)" (onCancel)="closeUpdate()"/>
 
         <div class="comment-actions">
-            <app-like-button/>
+            <app-like-button [getType]="'comments'" [getID]="commentData.id" [getLikes]="commentData.likes" [getIsLiked]="commentData.liked"/>
 
-            <span (click)="openEditor()">ideiglenes módosítás gomb</span>
-            <span>Válasz</span>
-            <span>Jelentés</span>
+            <span (click)="openReply()">Válasz</span>
         </div>
 
-        <span (click)="toggleShowReplies()">Válaszok</span>
+        <app-message-input *ngIf="isReplying" [getButtonText]="'Hozzáad'" (onSave)="replyToComment($event)" (onCancel)="closeReply()"/>
+
+        <span class="replyToggle" (click)="toggleShowReplies()" *ngIf="commentData.replies">{{showReplies ? '/\\' : '\\/'}} {{commentData.replies.length}} válasz</span>
 
         <div class="replies" *ngIf="showReplies">
             <ng-content/>
