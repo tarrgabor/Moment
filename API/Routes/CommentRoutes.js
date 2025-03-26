@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { QueryTypes } = require("sequelize");
+const { QueryTypes, Op } = require("sequelize");
 const db = require("../Database/database");
 const { sendMessage, tokenCheck } = require("../utils");
 
@@ -20,26 +20,31 @@ router.get("/post/:postID", tokenCheck, async (req, res) => {
         `SELECT
         u.username,
         u.profilePicture,
+        p.id as postID,
         c.id,
         c.message,
         DATE_FORMAT(c.createdAt, '%Y-%m-%d %H:%i:%s') AS createdAt,
         c.likes,
         IF(cl.commentID IS NOT NULL, 1, 0) AS liked,
+        IF(c.userID = :userID, 1, 0) as owned,
         (SELECT
 			GROUP_CONCAT(
                 JSON_OBJECT(
                     "username", ru.username,
                     "profilePicture", ru.profilePicture,
+                    "postID", rp.id,
                     "id", rc.id,
                     "message", rc.message,
                     "createdAt", rc.createdAt,
                     "likes", rc.likes,
-                    "liked", IF(rl.commentID IS NOT NULL, 1, 0)
+                    "liked", IF(rl.commentID IS NOT NULL, 1, 0),
+                    "owned", IF(rc.userID = :userID, 1, 0)
                 )
                 ORDER BY rc.createdAt DESC
             )
             FROM replies r
             LEFT JOIN comments rc ON rc.id = r.replyID
+            LEFT JOIN posts rp on rp.id = rc.postID
             LEFT JOIN users ru ON rc.userID = ru.id
             LEFT JOIN commentlikes rl ON rc.id = rl.commentID
             WHERE r.commentID = c.id
@@ -52,7 +57,7 @@ router.get("/post/:postID", tokenCheck, async (req, res) => {
         ORDER BY c.createdAt DESC`
 
         const comments = await db.query(query, {
-            replacements: {postID: req.params.postID},
+            replacements: {postID: req.params.postID, userID: req.user.id},
             type: QueryTypes.SELECT
         });
 
@@ -85,13 +90,24 @@ router.post("/create/:postID", tokenCheck, async (req, res) => {
     
     try
     {
-        await Comment.create({
+        const comment = await Comment.create({
             userID: req.user.id,
             postID: req.params.postID,
             message: req.body.message,
         });
 
-        sendMessage(res, 200, true, "Komment létrehozva!");
+        res.status(200).send({
+            success: true,
+            message: "Komment létrehozva",
+            comment: {
+                id: comment.id,
+                likes: comment.likes,
+                createdAt: comment.createdAt,
+                postID: comment.postID,
+                message: comment.message,
+                owned: 1
+            }
+        });
     }
     catch
     {
@@ -115,7 +131,7 @@ router.post("/reply/:postID/:commentID", tokenCheck, async (req, res) => {
     
     try
     {
-        const reply = await Comment.create({
+        const comment = await Comment.create({
             userID: req.user.id,
             postID: req.params.postID,
             message: req.body.message,
@@ -123,18 +139,29 @@ router.post("/reply/:postID/:commentID", tokenCheck, async (req, res) => {
 
         await Reply.create({
             commentID: req.params.commentID,
-            replyID: reply.id
+            replyID: comment.id
         }, {transaction: transaction});
 
         await transaction.commit();
 
-        sendMessage(res, 200, true, "Válasz létrehozva!");
+        res.status(200).send({
+            success: true,
+            message: "Válasz létrehozva",
+            comment: {
+                id: comment.id,
+                likes: comment.likes,
+                createdAt: comment.createdAt,
+                postID: comment.postID,
+                message: comment.message,
+                owned: 1
+            }
+        });
     }
     catch
     {
         transaction.rollback();
 
-        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
+        sendMessage(res, 500, false, "Válasz hozzáadása sikertelen!");
     }
 });
 
@@ -161,7 +188,7 @@ router.patch("/update/:commentID", tokenCheck, async (req, res) => {
     }
     catch
     {
-        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
+        sendMessage(res, 500, false, "Komment módosítás sikertelen!");
     }
 });
 
@@ -181,13 +208,29 @@ router.delete("/delete/:commentID", tokenCheck, async (req, res) => {
             return sendMessage(res, 200, false, "Komment nem található!");
         }
 
+        const replies = await Reply.findAll({
+            where: {commentID: req.params.commentID},
+            transaction: transaction
+        })
+
         await CommentLike.destroy({
+            where: {[Op.or]: [
+                {commentID: req.params.commentID},
+                {commentID: {[Op.in]: replies.map(reply => reply.commentID)}}
+            ]},
+            transaction: transaction
+        });
+
+        await Reply.destroy({
             where: {commentID: req.params.commentID},
             transaction: transaction
         });
 
         await Comment.destroy({
-            where: {id: req.params.commentID},
+            where: {[Op.or]: [
+                {id: req.params.commentID},
+                {id: {[Op.in]: replies.map(reply => reply.replyID)}}
+            ]},
             transaction: transaction
         });
 
@@ -199,7 +242,7 @@ router.delete("/delete/:commentID", tokenCheck, async (req, res) => {
     {
         transaction.rollback();
 
-        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
+        sendMessage(res, 500, false, "Komment törlése sikertelen!");
     }
 });
 

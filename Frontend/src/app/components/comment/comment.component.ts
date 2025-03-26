@@ -1,21 +1,25 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LikeButtonComponent } from '../like-button/like-button.component';
 import { UserContentHeaderComponent } from '../user-content-header/user-content-header.component';
-import { GeneralButtonComponent } from '../general-button/general-button.component';
 import { CommonModule } from '@angular/common';
 import { Comment } from '../../interfaces/interfaces';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
+import { MessageInputComponent } from '../message-input/message-input.component';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-comment',
-  imports: [LikeButtonComponent, UserContentHeaderComponent, GeneralButtonComponent, CommonModule, FormsModule],
+  imports: [LikeButtonComponent, UserContentHeaderComponent, CommonModule, FormsModule, MessageInputComponent],
   templateUrl: './comment.component.html',
   styleUrl: './comment.component.scss'
 })
 
-export class CommentComponent {
-  constructor(private api: ApiService){}
+export class CommentComponent implements OnInit {
+  constructor(
+    private api: ApiService,
+    private auth: AuthService,
+  ){}
   
   @Input("getCommentData") commentData: Comment = {
     id: '',
@@ -26,51 +30,53 @@ export class CommentComponent {
     replies: [],
     likes: 0,
     liked: false,
+    owned: false,
     createdAt: new Date()
   }
 
-  @ViewChild("editCommentTextArea") editCommentTextArea!: ElementRef;
-  @ViewChild("editCancelButton") editCancelButton!: ElementRef;
+  @Input("getParentID") parentID: string = "";
+
+  @Output() onReply = new EventEmitter();
+  @Output() onDelete = new EventEmitter();
 
   isEditing: Boolean = false;
 
+  isReplying: Boolean = false;
+
   showReplies: Boolean = false;
 
-  resizeTextArea(e: any)
+  ngOnInit()
   {
-    e.target.style.height = "32px";
-    e.target.style.height = `${e.target.scrollHeight}px`;
-
-    if (e.target.value.trim().length == 0)
+    if (!this.parentID)
     {
-      this.editCancelButton.nativeElement.disabled = true;
-      return;
+      this.parentID = this.commentData.id;
     }
 
-    this.editCancelButton.nativeElement.disabled = false;
+    if (this.commentData.liked)
+    {
+      setTimeout(() => {
+        document.getElementById(`${this.commentData.id}`)?.classList.add("liked");
+      }, 10);
+    }
   }
 
-  openEditor()
+  openUpdate()
   {
     this.isEditing = true;
-
-    setTimeout(() => {
-      this.editCommentTextArea.nativeElement.style.height = `${this.editCommentTextArea.nativeElement.scrollHeight}px`
-    }, .0001);
   }
  
-  closeEditor()
+  closeUpdate()
   {
     this.isEditing = false;
   }
 
-  modifyComment()
+  updateComment(e: Event)
   {
-    this.commentData.message = this.convertNewlinesToBr(this.editCommentTextArea.nativeElement.value.trim());
+    this.commentData.message = e.toString();
 
-    this.api.updateComment("comments", this.commentData.id, this.commentData.message).subscribe();
+    this.api.updateComment("comments", this.parentID, e.toString()).subscribe();
 
-    this.closeEditor();
+    this.closeUpdate();
   }
 
   toggleShowReplies()
@@ -78,13 +84,48 @@ export class CommentComponent {
     this.showReplies = !this.showReplies;
   }
 
-  convertNewlinesToBr(text: string)
+  openReply()
   {
-    return text.replace(/\n/g, '<br/>');
+    this.isReplying = true;
   }
 
-  convertBrToNewlines(text: string)
+  closeReply()
   {
-    return text.replace(/<br\s*\/?>/g, '\n');
+    this.isReplying = false;
+  }
+
+  replyToComment(e: Event)
+  {
+    this.api.replyToComment("comments", this.commentData.postID, this.parentID, e.toString()).subscribe((res: any) => {
+      if (res.success)
+      {
+        this.onReply.emit({
+          reply: {
+            id: res.comment.id,
+            postID: res.comment.postID,
+            message: res.comment.message,
+            createdAt: res.comment.createdAt,
+            likes: res.comment.likes,
+            owned: res.comment.owned,
+            profilePicture: this.auth.getLoggedInUser().profilePicture,
+            username: this.auth.getLoggedInUser().username
+          },
+          parentID: this.parentID});
+
+        this.showReplies = true;
+
+        this.closeReply();
+      }
+    });
+  }
+
+  deleteComment()
+  {
+    this.api.deleteComment("comments", this.commentData.id).subscribe((res: any) => {
+      if (res.success)
+      {
+        this.onDelete.emit({id: this.commentData.id, parentID: this.parentID});
+      }
+    })
   }
 }

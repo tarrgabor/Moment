@@ -1,14 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../services/api.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-like-button',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './like-button.component.html',
   styleUrl: './like-button.component.scss'
 })
 
-export class LikeButtonComponent implements OnInit{
+export class LikeButtonComponent implements OnInit {
   constructor(private api: ApiService){}
 
   @Input("getType") type: string = "";
@@ -21,12 +22,16 @@ export class LikeButtonComponent implements OnInit{
 
   formattedLikes: string = "";
 
+  @ViewChild("svg") svg!: ElementRef;
+
   ngOnInit()
   {
-    if (this.liked)
-    {
-      document.getElementById(this.id)?.classList.add("liked");
-    }
+    setTimeout(() => {
+      if (this.liked)
+      {
+        this.svg.nativeElement.classList.add("liked");
+      }
+    }, 0);
 
     this.formatLike();
   }
@@ -56,12 +61,12 @@ export class LikeButtonComponent implements OnInit{
       {
         this.likes += 1;
         this.formatLike();
-        return document.getElementById(this.id)?.classList.add("liked");
+        return this.svg.nativeElement.classList.add("liked");;
       }
 
       this.likes -= 1;
       this.formatLike()
-      document.getElementById(this.id)?.classList.remove("liked");
+      this.svg.nativeElement.classList.remove("liked");;
     });
   }
 

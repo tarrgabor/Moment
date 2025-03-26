@@ -9,7 +9,7 @@ const User = db.define('user', {
         allowNull: false
     },
     username: {
-        type: DataTypes.STRING(40),
+        type: DataTypes.STRING(18),
         allowNull: false,
         unique: true
     },

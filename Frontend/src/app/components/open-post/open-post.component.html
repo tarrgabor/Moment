@@ -17,10 +17,6 @@
         <app-like-button [getType]="'posts'" [getID]="postData.postID" [getLikes]="postData.likes" [getIsLiked]="postData.liked"/>
     </div>
 
-    <div class="post-comments-header">
-        <app-general-button [getText]="'Komment hozzáadása'"/>
-    </div>
-
     <app-comment-container [getPostID]="postData.postID"/>
 </div>
 

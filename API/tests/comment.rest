@@ -13,7 +13,7 @@ POST {{serverURL}}/users/login
 Content-Type: application/json
 
 {
-    "email": "jani2@gmail.com",
+    "email": "jani@gmail.com",
     "password": "Titkosjelszo123"
 }
 
