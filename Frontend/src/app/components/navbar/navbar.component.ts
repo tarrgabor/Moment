@@ -97,6 +97,7 @@ export class NavbarComponent{
   updateTheme() {
     if (this.isDarkMode) {
       this.renderer.addClass(document.body, 'dark-mode');
+      
     } else {
       this.renderer.removeClass(document.body, 'dark-mode');
     }

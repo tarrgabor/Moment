@@ -58,8 +58,8 @@ input{
     border-radius: 50px;
     text-indent: 15px;
     margin: 3px;
-    background-color: $dark-input-background-color;
-    color: $dark-input-text-color;
+    background-color: --input-background-color;
+    color: --input-text-color;
 }
 
 button{
@@ -84,15 +84,15 @@ button:active{
 
 a{
     margin-left: 30px;
-    color: $dark-link-color;
+    color: --link-color;
 }
 
 a:hover{
-    color: $dark-link-hover-color;
+    color: --link-hover-color;
 }
 
 a:active{
-    color: $dark-link-active-color;
+    color: --link-active-color;
 }
 
 @media screen and (max-height: 550px) {

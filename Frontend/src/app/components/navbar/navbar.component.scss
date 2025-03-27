@@ -15,8 +15,8 @@ nav{
     
 .navbar{
     height: 55px;
-    background-color: $dark-background-color;
-    border-bottom: 1px solid $dark-border-color;
+    background-color: --background-color;
+    border-bottom: 1px solid --border-color;
 }
 
 .logo{
@@ -49,7 +49,7 @@ nav{
     width: 50px;
     height: 50px;
     border-radius: 100%;
-    border: 1px solid $dark-border-color;
+    border: 1px solid --border-color;
     cursor: pointer;
 }
 
@@ -62,8 +62,8 @@ nav{
     width: 250px;
     height: 100%;
     padding: 8px;
-    background-color: $dark-background-color;
-    border-left: 1px solid $dark-border-color;
+    background-color: --background-color;
+    border-left: 1px solid --border-color;
     border-radius: 10px 0 0 10px;
     opacity: 0;
     transition: .35s;
@@ -90,7 +90,7 @@ nav{
     user-select: none;
     -webkit-user-drag: none;
     margin-bottom: 5px;
-    color: $dark-link-color;
+    color: --link-color;
 }
 
 .linksContainer span i{
@@ -99,11 +99,11 @@ nav{
 }
   
 span:hover{
-    background-color: $dark-link-hover-color;
+    background-color: --link-hover-color;
 }
 
 span:active{
-    background-color: $dark-link-active-background-color;
+    background-color: --link-active-background-color;
 }
 
 .linksHeader{
@@ -117,12 +117,12 @@ span:active{
     width: 50px;
     height: 50px;
     border-radius: 100%;
-    border: 1px solid $dark-border-color;
+    border: 1px solid --border-color;
     margin-left: -2px;
 }
 
 .linksHeader #username{
-    color: $dark-text-color;
+    color: --text-color;
     max-width: 150px;
     height: fit-content;
     overflow: hidden;
@@ -150,11 +150,11 @@ span:active{
     border-radius: 100%;
     cursor: pointer;
     transition: .2s;
-    color: $dark-button-close-color;
+    color: --button-close-color;
 }
 
 .closeMenuButton:hover{
-    color: $dark-button-close-hover-color;
+    color: --button-close-hover-color;
 }
 
 @media screen and (max-width: 300px) {
@@ -247,8 +247,8 @@ span:active{
         border-radius: 50px;
         text-indent: 15px;
         margin: 3px;
-        background-color: $dark-input-background-color;
-        color: $dark-input-text-color;
+        background-color: --input-background-color;
+        color: --input-text-color;
     }
     button{
         width: 100%;
