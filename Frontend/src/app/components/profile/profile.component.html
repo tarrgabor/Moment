@@ -1,6 +1,7 @@
 <app-navbar></app-navbar>
 
 <div class="mainContainer">
+
     <!--<app-sidebar-filter/>-->
 
     <main class="contentContainer">
@@ -8,16 +9,25 @@
         <div class="datacard">
             <img src="{{profilePicture}}" alt="">
             <p id="username">{{username}}</p>
-            <button>Követem/Követed</button>
-            <p>Követőkszám</p>
-            <p>Követők</p>
-            <p>Követésekszám</p>
-            <p>Követések</p>
-        </div>
+            <app-follow-button/>
 
+            <div class="kovetok">
+                <p>Követőkszám</p>
+                <p>Követő</p>
+            </div>
+
+            <div class="kovetesek">
+                <p>Követésekszám</p>
+                <p>Követés</p>
+            </div>
+        </div>
+        
         <app-post-container class="postContainer"/>
 
     </main>
 </div>
 
 <app-lightbox/>
+
+
+
