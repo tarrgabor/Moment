@@ -9,6 +9,7 @@ import { MainPageComponent } from './components/main-page/main-page.component';
 import { VerificationCodeComponent } from './components/verification-code/verification-code.component';
 import { OpenPostComponent } from './components/open-post/open-post.component';
 import { UploadPostComponent } from './components/upload-post/upload-post.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 export const routes: Routes = [
     // Possible pages to visit before logging in
@@ -34,6 +35,9 @@ export const routes: Routes = [
     // Possible pages to visit after logging in
     {
         path: "", component: MainPageComponent, canActivate: [UserAuthGuard]
+    },
+    {
+        path: "profile", component: ProfileComponent, canActivate: [UserAuthGuard]
     },
     {
         path: "post/:id", component: OpenPostComponent, canActivate: [UserAuthGuard]

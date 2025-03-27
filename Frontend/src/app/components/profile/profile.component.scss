@@ -1,1 +1,12 @@
 @use "../../../styles.scss" as *;
+
+
+.datacard{
+    color: white;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 9px 9px 9px 9px;
+    background-color: black;
+}
