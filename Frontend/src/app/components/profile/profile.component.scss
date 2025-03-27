@@ -2,50 +2,53 @@
 
 .mainContainer {
   display: flex;
-  flex-direction: row; // Align children horizontally
-  justify-content: space-between; // Space out the elements evenly
-  gap: 20px; // Add space between the elements (optional)
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
 
   @media (max-width: 768px) {
-    flex-direction: column; // Stack items vertically on smaller screens
+    flex-direction: column;
     align-items: center;
   }
 }
 
 .contentContainer {
   display: flex;
-  flex-direction: column; // Keep the content inside as a column
-  flex: 1; // Allow contentContainer to take up remaining space
-  width: 100%; // Ensure it takes full width in smaller screens
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  width: 100%; 
 }
 
 .datacard {
   flex: 0 0 auto;
   color: white;
   border-radius: 9px;
-  background-color: black;
-  width: 900px;
+  background-color: rgb(97, 179, 255);
+  width: 95%;
   padding: 20px;
   border-radius: 10px;
+  gap: 10px;
+  
 
   @media (max-width: 1024px) {
-    width: 700px;
+    width: 90%;
   }
 
   @media (max-width: 768px) {
-    width: 90%;
+    width: 85%;
   }
 
   @media (max-width: 480px) {
     flex-direction: column;
-    align-items: center;
+    text-align: center;
     width: 95%;
     padding: 15px;
   }
 
   @media (max-width: 300px) {
     flex-direction: column;
-    align-items: center;
+    text-align: center;
     width: 100%;
     padding: 10px;
   }
@@ -63,14 +66,22 @@
   }
 }
 
-.kovetok,
-.kovetesek {
+.kovetok{
   display: flex;
   flex-direction: column;
+  text-align: center;
   @media (max-width: 480px) {
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+  }
+}
+.kovetesek {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: center;
   }
 }
 

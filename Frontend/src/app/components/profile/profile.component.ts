@@ -5,11 +5,12 @@ import { PostContainerComponent } from '../post-container/post-container.compone
 import { AuthService } from '../../services/auth.service';
 import { FollowButtonComponent } from '../follow-button/follow-button.component';
 import { ApiService } from '../../services/api.service';
+import { SidebarFilterComponent } from '../sidebar-filter/sidebar-filter.component';
 
 
 @Component({
   selector: 'app-profile',
-imports: [NavbarComponent, LightboxComponent, PostContainerComponent, FollowButtonComponent],
+imports: [NavbarComponent, LightboxComponent, PostContainerComponent, FollowButtonComponent, SidebarFilterComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
