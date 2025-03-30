@@ -1,0 +1,5 @@
+<div class="textarea-container">
+    <label class="textarea-title" for="input">{{title}}</label>
+    <div #textarea class="textarea-input" id="input" contenteditable="true" (input)="updateCharLeftInfo()"></div>
+    <p class="textarea-info">{{charsUsed}}/{{maxLength}}</p>
+</div>

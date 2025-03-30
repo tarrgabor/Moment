@@ -35,3 +35,9 @@ export interface Message {
     icon: string,
     message: string
 }
+
+export interface Option
+{
+  id: string,
+  text: string
+}

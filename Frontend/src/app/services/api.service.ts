@@ -51,6 +51,11 @@ export class ApiService {
     return this.http.get(`${this.serverURL}/${table}/${postID}`, this.tokenHeader());
   }
 
+  createPost(table: string, data: object)
+  {
+    return this.http.post(`${this.serverURL}/${table}/create`, data, this.tokenHeader());
+  }
+
   getCommentsUnderPost(table: string, postID: string)
   {
     return this.http.get(`${this.serverURL}/${table}/post/${postID}`, this.tokenHeader());
@@ -79,5 +84,10 @@ export class ApiService {
   toggleLike(table: string, id: string)
   {
     return this.http.post(`${this.serverURL}/${table}/like/${id}`, null, this.tokenHeader());
+  }
+
+  getCategories(table: string)
+  {
+    return this.http.get(`${this.serverURL}/${table}`, this.tokenHeader());
   }
 }
