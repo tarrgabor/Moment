@@ -17,7 +17,7 @@ const Post = db.define('post', {
         allowNull: false
     },
     description: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING(600),
         allowNull: true
     },
     categoryID: {

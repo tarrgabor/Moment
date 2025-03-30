@@ -95,6 +95,18 @@ export class UploadPostComponent implements OnInit {
 
   createPost()
   {
+    if (this.postTitle.charsUsed > this.postTitle.maxLength)
+    {
+      this.message.error("A cím meghaladja a maximális karakterek számát!");
+      return;
+    }
+
+    if (this.postDescription.charsUsed > this.postDescription.maxLength)
+    {
+      this.message.error("A leírás meghaladja a maximális karakterek számát!");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("title", this.postTitle.getValue());
     formData.append("description", this.postDescription.getValue());
@@ -105,7 +117,7 @@ export class UploadPostComponent implements OnInit {
     this.api.createPost("posts", formData).subscribe((res: any) => {
       if (res.success)
       {
-        if (this.visibilityOptions.getValue())
+        if (Number(this.visibilityOptions.getValue()))
         {
           this.router.navigate([`/post/${res.id}`])
         }
