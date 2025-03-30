@@ -1,55 +1,30 @@
 <app-navbar></app-navbar>
 
-<div class="contanier">
-    <div class="post-body">
-        <form class="uploader">
-            <input id="file-upload" type="file" name="fileUpload" accept="image/*" />
-          
-            <label for="file-upload" id="file-drag">
-              <img id="file-image" src="upload.svg" >
-              <div id="start">
-                <span id="file-upload-btn" class="btn btn-primary send">Select a file</span>
-              </div>
-            </label>
-          </form>
-        
-    </div>
-   
-    <div class="comment">
-        <p>Kép cime:</p>
-        <input type="text" class="write">
-    </div>
-
-    <div class="comment">
-        <p>Kategória:</p>
-        
-            <select  class="write"  id="inputGroupSelect01">
-              <option selected>Choose...</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </select>
-          
-    </div>
-    <div class="comment">
-        <p>Leirás:</p>
-        <textarea  class="write" ></textarea>
-    </div>
-    <div  class="interaktion">
-        <div class="checkbox">
-            <p>Privát post legyen:</p>
-            <input type="checkbox"  class="check"value="privat">
-        </div>
-        
-        <div class="comment">
-            <button class="send">Feltöltés</button>
-        </div>
-    </div>
+<div class="post-upload-container">
+    <div class="post-upload-form">
+        <label #dropArea for="image-input" class="drop-area" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
+            <input #imageInput type="file" accept="image/*" id="image-input" hidden (change)="setImage($event)">
+            <div class="upload-instructions" *ngIf="!hasImage">
+                <svg width="76px" height="76px" viewBox="0 -960 960 960" fill="#e3e3e3">
+                    <path d="M450-313v-371L330-564l-43-43 193-193 193 193-43 43-120-120v371h-60ZM220-160q-24 0-42-18t-18-42v-143h60v143h520v-143h60v143q0 24-18 42t-42 18H220Z"/>
+                </svg>
     
+                <p>Húzza és dobja vagy kattintson ide<br>hogy feltöltse a képet!</p>
+                <span>Töltse fel képét az eszközéről!</span>
+            </div>
+            
+            <div class="preview-image-container">
+                <img #imagePreview class="image-preview">
+            </div>
+        </label>
 
-    
-    
-   
+        <app-general-dropdown #categoryOptions class="dropdown"/>
 
+        <app-general-textarea #postTitle [getTitle]="'Cím'" [getMaxLength]="120"/>
+        <app-general-textarea #postDescription [getTitle]="'Leírás'" [getMaxLength]="600"/>
 
+        <app-general-dropdown #visibilityOptions class="dropdown"/>
+
+        <app-general-button [getText]="'Poszt létrehozása'" (click)="createPost()"/>
+    </div>
 </div>

@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const cloudinary = require("cloudinary").v2;
 require("dotenv").config();
 
 function sendMessage(res, status, success, message)
@@ -32,8 +33,27 @@ function formatFileName(fileName){
     return name + '-' + Date.now();
 }
 
+const uploadImage = (fileName, fileBuffer) => {
+    return new Promise((resolve, reject) => {
+        cloudinary.uploader.upload_stream({
+            public_id: formatFileName(fileName),
+            resource_type: "image"
+    }, (error, uploadResults) => {
+        if (error)
+        {
+            reject(new Error("Kép feltöltés sikertelen!"));
+        }
+        else
+        {
+            resolve(uploadResults);
+        }
+      }).end(fileBuffer);
+    });
+};
+
 module.exports = {
     sendMessage,
     tokenCheck,
-    formatFileName
+    formatFileName,
+    uploadImage
 }

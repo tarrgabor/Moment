@@ -68,8 +68,9 @@ nav{
     opacity: 0;
     transition: .35s;
     z-index: 102;
-    overflow-y: scroll;
-    scrollbar-width: none;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
 }
 
 .linksContainer hr{

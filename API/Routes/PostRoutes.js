@@ -3,7 +3,7 @@ require("dotenv").config();
 const db = require("../Database/database");
 const { QueryTypes } = require("sequelize");
 const multer  = require('multer')
-const { sendMessage, tokenCheck, formatFileName } = require("../utils");
+const { sendMessage, tokenCheck, uploadImage } = require("../utils");
 const cloudinary = require("cloudinary").v2;
 
 const { Post } = require("../Database/Models/Post");
@@ -121,42 +121,33 @@ router.post("/create", tokenCheck, upload.single('file'), async (req, res) => {
         return sendMessage(res, 200, false, "Hiányzó adatok!");
     }
 
-    if (!req.body.title.match(/^[a-zA-Z0-9?!.\s]*$/))
+    if (!req.body.title.match(/^[\p{L}0-9?!.\s]*$/u))
     {
         return sendMessage(res, 200, false, "A cím nem tartalmazhat tiltott speciális karaktereket!");
     }
 
     try
     {
-        cloudinary.uploader.upload_stream({
-            
-            public_id: formatFileName(req.file.originalname),
-            resource_type: "image"
-        }, async (error, uploadResults) => {
-            if (error) return new Error("Kép feltöltés sikertelen!");
-
-            await Post.create({
-                userID: req.user.id,
-                title: req.body.title,
-                description: req.body.description,
-                categoryID: req.body.categoryID,
-                image: cloudinary.url(uploadResults.public_id, {
-                    transformation: [
-                        {
-                            quality: "auto",
-                            fetch_format: "auto"
-                        }
-                    ],
-                }),
-                visible: req.body.visible
-            });
-        }).end(req.file.buffer)
-
-        sendMessage(res, 200, true, "Poszt létrehozva!");
+        const uploadResults = await uploadImage(req.file.originalname, req.file.buffer);
+        
+        const post = await Post.create({
+            userID: req.user.id,
+            title: req.body.title,
+            description: req.body.description,
+            categoryID: req.body.categoryID,
+            image: cloudinary.url(uploadResults.public_id, {
+                transformation: [{
+                    quality: "auto",
+                    fetch_format: "auto"
+                }]
+            }),
+            visible: req.body.visible
+        });
+        
+        res.status(200).send({success: true, message: "Poszt létrehozva!", id: post.id});
     }
     catch
     {
-
         sendMessage(res, 200, false, "Poszt létrehozása sikertelen!");
     }
 })
