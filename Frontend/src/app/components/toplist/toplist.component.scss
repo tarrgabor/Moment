@@ -1,13 +1,78 @@
 @use "../../../styles.scss" as *;
 
+
 .toplist{
     min-width: 250px;
-    height: 500px;
+    height: auto;
     margin-left: 20px;
+    background-color: $dark-content-background-color;
     position: sticky;
     top: 65px;
+    color: $dark-text-color;
     border-radius: 10px;
     padding: 10px;
+}
+.card{
     background-color: $dark-content-background-color;
+    min-width: 220px;
+    height: 80px;
+    margin-bottom: 2px;
+    display: flex;
+    flex-direction: row;
     color: $dark-text-color;
+}
+.place{
+    text-align: center;
+    margin: auto;
+    //background-color: aqua;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+
+}
+.place p{
+    font-size: 25px;
+}
+.content{
+    margin: auto;
+    //background-color: aqua;
+    width: 200px;
+    height: 90px;
+}
+.profile{
+    width: auto;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+ .name{
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 10px;
+    
+ }
+ .cim a{
+    margin-left: 10px;
+    color: $dark-text-color;
+ }
+.profileimg{
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    
+    cursor: pointer;
+}
+.like{
+    align-items: end;
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+
+}
+.like img {
+    height: 20px;
+    align-items: center;
 }
