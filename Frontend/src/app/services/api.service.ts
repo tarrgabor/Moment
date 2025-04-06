@@ -90,4 +90,9 @@ export class ApiService {
   {
     return this.http.get(`${this.serverURL}/${table}`, this.tokenHeader());
   }
+
+  search(parameters: any)
+  {
+    return this.http.get(`${this.serverURL}/search/searchbar?${parameters}`, this.tokenHeader());
+  }
 }

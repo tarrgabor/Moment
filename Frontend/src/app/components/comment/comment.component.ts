@@ -51,13 +51,6 @@ export class CommentComponent implements OnInit {
     {
       this.parentID = this.commentData.id;
     }
-
-    if (this.commentData.liked)
-    {
-      setTimeout(() => {
-        document.getElementById(`${this.commentData.id}`)?.classList.add("liked");
-      }, 10);
-    }
   }
 
   openUpdate()

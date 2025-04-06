@@ -3,70 +3,53 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Category } from '../../interfaces/interfaces';
 import { CategoryFilterPipe } from '../../pipes/caregoryFilter.pipe';
-import { BehaviorSubject } from 'rxjs';
+import { BoundaryCheckDirective } from '../../directives/boundary-check.directive';
+import { CategoryService } from '../../services/category.service';
 
 @Component({
   selector: 'app-sidebar-filter',
-  imports: [CommonModule, FormsModule, CategoryFilterPipe],
+  imports: [CommonModule, FormsModule, CategoryFilterPipe, BoundaryCheckDirective],
   templateUrl: './sidebar-filter.component.html',
   styleUrl: './sidebar-filter.component.scss'
 })
 
 export class SidebarFilterComponent implements OnInit{
+  constructor(private categoryService: CategoryService){};
+
+  categories: Category[] = [];
+
+  isOpen: boolean = false;
 
   categoryFilterText: string = "";
 
-  categories: Category[] = [
-    {
-      id: "1",
-      name: "Táj"
-    },
-    {
-      id: "2",
-      name: "Állatok"
-    },
-    {
-      id: "3",
-      name: "Kozmosz"
-    },
-    {
-      id: "4",
-      name: "Növények"
-    }
-  ];
+  ngOnInit()
+  {
+    this.categoryService.fetchCategories();
 
-  selectedCategories: Category[] = [];
-
-  ngOnInit(): void {
-    document.querySelector(".sidebarContainer")!.addEventListener('mouseover', function() {
-      document.body.style.overflow = 'hidden';
-    });
-
-    document.querySelector(".sidebarContainer")!.addEventListener('mouseleave', function() {
-      document.body.style.overflow = 'auto';
+    this.categoryService.categorySubject.subscribe((res: Category[]) => {
+      this.categories = res;
     });
   }
 
-  openFilterSidebar()
+  openSidebarFilter()
   {
-    document.querySelector(".sidebarContainer")!.classList.add("open");
+    this.isOpen = true
   }
 
-  closeFilterSidebar()
+  closeSidebar()
   {
-    document.querySelector(".sidebarContainer")!.classList.remove("open");
+    this.isOpen = false;
   }
 
+  toggleSidebarFilter(e: Event)
+  {
+    e.stopPropagation();
 
-  toggleCategory(category: Category){
-    if (this.selectedCategories.includes(category))
-    {
-      this.categories.push(category);
-      this.selectedCategories.splice(this.selectedCategories.indexOf(category), 1)
-      return;
-    }
+    this.isOpen = !this.isOpen;
+  }
 
-    this.selectedCategories.push(category);
-    this.categories.splice(this.categories.indexOf(category), 1);
+  toggleCategorySelection(categoryID: string)
+  {
+    this.categoryService.toggleCategorySelection(categoryID);
   }
 }

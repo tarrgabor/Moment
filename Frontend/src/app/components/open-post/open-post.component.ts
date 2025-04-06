@@ -50,13 +50,6 @@ export class OpenPostComponent implements OnInit{
 
         this.fetchedData = true;
   
-        if (this.postData.liked)
-        {
-          setTimeout(() => {
-            document.getElementById(`${this.postData.postID}`)?.classList.add("liked");
-          }, 10);
-        }
-  
         if (decodeURIComponent(window.location.pathname.match("\([^\/]+)$")![0]) != this.postData.title.replaceAll(' ', '_').match("^\([^\/]+)$")?.[1])
         {
           window.location.pathname = `post/${postID}/${this.postData.title.replaceAll(' ', '_')}`;

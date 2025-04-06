@@ -1,6 +1,7 @@
 export interface Category {
     id: string,
-    name: string
+    name: string,
+    isSelected: boolean
 }
 
 export interface Post {

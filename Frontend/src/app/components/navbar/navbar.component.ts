@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { SearchbarComponent } from '../searchbar/searchbar.component';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink],
+  imports: [RouterLink, SearchbarComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
