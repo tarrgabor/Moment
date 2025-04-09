@@ -6,7 +6,6 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { RestorePasswordComponent } from './components/restore-password/restore-password.component';
 import { UserAuthGuard } from './guards/user-auth-guard';
 import { MainPageComponent } from './components/main-page/main-page.component';
-import { VerificationCodeComponent } from './components/verification-code/verification-code.component';
 import { OpenPostComponent } from './components/open-post/open-post.component';
 import { UploadPostComponent } from './components/upload-post/upload-post.component';
 
@@ -23,9 +22,6 @@ export const routes: Routes = [
     },
     {
         path: "restore", component: RestorePasswordComponent
-    },
-    {
-        path: "verification", component: VerificationCodeComponent
     },
     {
         path: "postupload", component: UploadPostComponent

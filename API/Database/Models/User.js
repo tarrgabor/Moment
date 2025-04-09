@@ -44,6 +44,10 @@ const User = db.define('user', {
         values: ["active", "inactive", "banned"],
         defaultValue: "active",
         allowNull: false
+    },
+    restoreCode: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4
     }
 });
 
