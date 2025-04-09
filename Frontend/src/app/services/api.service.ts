@@ -90,4 +90,14 @@ export class ApiService {
   {
     return this.http.get(`${this.serverURL}/${table}`, this.tokenHeader());
   }
+
+  sendEmail(email: string)
+  {
+    return this.http.post(`${this.serverURL}/users/reset/request`, {email}, this.tokenHeader());
+  }
+
+  resetPassword(token: string, passwords: object)
+  {
+    return this.http.patch(`${this.serverURL}/users/reset/password${token}`, passwords, this.tokenHeader());
+  }
 }

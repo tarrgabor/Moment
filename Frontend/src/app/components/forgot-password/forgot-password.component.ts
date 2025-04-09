@@ -1,10 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { GeneralInputComponent } from '../general-input/general-input.component';
 import { GeneralButtonComponent } from '../general-button/general-button.component';
 import { GeneralLinkComponent } from '../general-link/general-link.component';
 import { GeneralInputFormComponent } from '../general-input-form/general-input-form.component';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -16,16 +16,29 @@ import { GeneralInputFormComponent } from '../general-input-form/general-input-f
 export class ForgotPasswordComponent {
   constructor(
     private api: ApiService,
-    private router: Router
+    private message: MessageService
   ){}
 
   @ViewChild('email') email!: GeneralInputComponent;
 
   sendEmail()
   {
-    let code = this.email.getValue();
+    const email = this.email.getValue();
 
-    alert("email sending mechanic comes here");
-    this.router.navigate(["/verification"]); 
+    if (!email)
+    {
+      this.message.error("Hiányzó mező!");
+      return;
+    }
+
+    this.api.sendEmail(email).subscribe((res: any) => {
+      if (res.success)
+      {
+        this.message.success(res.message);
+        return;
+      }
+
+      this.message.error(res.message);
+    });
   }
 }
