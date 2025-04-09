@@ -1,9 +1,20 @@
 <a class="post" href="/post/{{postData.postID}}/{{processedTitle}}">
-    <app-user-content-header [getProfilePicture]="postData.profilePicture" [getUsername]="postData.username" [getCreatedAt]="postData.createdAt"/>
+    <div class="comment-header">
+        <app-user-content-header [getProfilePicture]="postData.profilePicture" [getUsername]="postData.username" [getCreatedAt]="postData.createdAt"/>
+        <div >
+            <a class="edit-button" [routerLink]="['/postupdate', postData.postID]" (click)="$event.stopPropagation()">
+                <i class="bi bi-pencil"></i>
+            </a>
 
+            
+            <i class="bi bi-trash delete-button"  (click)="preventDefault($event)"></i>
+        </div>
+    </div>
+    
     <div class="post-body">
         <h2 class="post-title">{{postData.title}}</h2>
         <p class="post-category">{{postData.category}}</p>
+        
         <app-lightbox-listener [getImage]="postData.image"/>
     </div>
 

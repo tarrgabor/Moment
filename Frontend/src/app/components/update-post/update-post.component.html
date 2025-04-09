@@ -1,0 +1,18 @@
+<app-navbar></app-navbar>
+
+<div class="post-upload-container">
+  <div class="post-upload-form">
+    
+    <div class="preview-image-container">
+      <img #imagePreview class="image-preview" />
+    </div>
+
+    <app-general-dropdown #categoryOptions class="dropdown" />
+    <app-general-textarea #postTitle [getTitle]="'Cím'" [getMaxLength]="120" />
+    <app-general-textarea #postDescription [getTitle]="'Leírás'" [getMaxLength]="600" />
+    <app-general-dropdown #visibilityOptions class="dropdown" />
+
+    <app-general-button [getText]="'Módosítás mentése'"  />
+    
+  </div>
+</div>

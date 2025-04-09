@@ -4,10 +4,11 @@ import { LightboxListenerComponent } from '../lightbox-listener/lightbox-listene
 import { CommonModule } from '@angular/common';
 import { LikeButtonComponent } from '../like-button/like-button.component';
 import { UserContentHeaderComponent } from '../user-content-header/user-content-header.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-post',
-  imports: [LightboxListenerComponent, CommonModule, LikeButtonComponent, UserContentHeaderComponent],
+  imports: [LightboxListenerComponent,RouterModule, CommonModule, LikeButtonComponent, UserContentHeaderComponent],
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss'
 })
@@ -37,5 +38,11 @@ export class PostComponent implements OnInit{
         document.getElementById(`${this.postData.postID}`)?.classList.add("liked");
       }, 10);
     }
+
+    
+  }
+  preventDefault(e: Event)
+  {
+    e.preventDefault();
   }
 }

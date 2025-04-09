@@ -1,0 +1,63 @@
+@use "../../../styles.scss" as *;
+
+.post-upload-container{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.post-upload-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    max-width: 700px;
+    padding: 20px;
+    color: $dark-text-color;
+}
+
+.drop-area{
+    text-align: center;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: $dark-content-background-color;
+}
+
+.upload-instructions{
+    width: 100%;
+    padding: 50px 20px 50px 20px;
+    border-radius: 20px;
+    border: 2px dashed rgb(120, 120, 120);
+}
+
+.upload-instructions span{
+    display: block;
+    font-size: 12.5px;
+    margin-top: 25px;
+}
+
+.preview-image-container{
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+.image-preview{
+    display: none;
+    width: auto;
+    height: auto;
+    max-height: 280px;
+    margin: auto;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+
+
+.dropdown{
+    margin-top: 15px;
+    margin-bottom: 10px;
+}

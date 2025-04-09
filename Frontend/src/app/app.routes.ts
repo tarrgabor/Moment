@@ -9,6 +9,7 @@ import { MainPageComponent } from './components/main-page/main-page.component';
 import { VerificationCodeComponent } from './components/verification-code/verification-code.component';
 import { OpenPostComponent } from './components/open-post/open-post.component';
 import { UploadPostComponent } from './components/upload-post/upload-post.component';
+import { UpdatePostComponent } from './components/update-post/update-post.component';
 
 export const routes: Routes = [
     // Possible pages to visit before logging in
@@ -29,6 +30,9 @@ export const routes: Routes = [
     },
     {
         path: "postupload", component: UploadPostComponent
+    },
+    {
+        path: "postupdate/:id", component: UpdatePostComponent
     },
 
     // Possible pages to visit after logging in

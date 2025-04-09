@@ -15,8 +15,25 @@
     cursor: pointer;
 }
 
+
+
 .post:hover {
     background-color: $dark-content-hover-background-color;
+}
+.comment-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.edit-button{
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.delete-button{
+    color: red;
+    cursor: pointer;
 }
 
 .post-header {
