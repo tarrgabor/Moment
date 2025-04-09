@@ -130,7 +130,7 @@ aside{
     background-color: $dark-content-background-color;
 }
 
-@media screen and (max-width: 750px){
+@media screen and (max-width: 768px){
     .openFilterButton, .closeFilterButton{
         display: flex;
     }

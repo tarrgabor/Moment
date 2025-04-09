@@ -26,7 +26,7 @@
   color: white;
   border-radius: 9px;
   background-color: $dark-content-background-color;
-  width: 75%;
+  width: 95%;
   margin-top: 10px;
   padding: 20px;
   border-radius: 10px;
@@ -59,8 +59,8 @@
 
 .datacard img {
   border-radius: 100%;
-  height: 5em;
-  width: 5em;
+  height: 4em;
+  width: 4em;
 
   @media (max-width: 480px) {
     height: 4em;
@@ -76,7 +76,6 @@
 .kovetok, .kovetesek{
   display: flex;
   flex-direction: column;
-  text-align: center;
   @media (max-width: 480px) {
     flex-direction: column;
     align-items: center;
@@ -84,6 +83,7 @@
 }
 
 app-follow-button{
+  margin-left: auto;
   margin-top: 10px;
   @media (max-width: 480px) {
     width: 100%;
