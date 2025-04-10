@@ -15,47 +15,31 @@ imports: [NavbarComponent, LightboxComponent, PostContainerComponent, FollowButt
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
-export class ProfileComponent {
 
+export class ProfileComponent {
   constructor(private auth: AuthService, private api: ApiService, private http: HttpClient){}
   
-
-  username: string = "";
-  
-  profilePicture: string = "";
-
-  followersCount: number = 0;
-  followedCount: number = 0;
+  profile: any = {
+    username: "",
+    email: "",
+    role: "",
+    profilePicture: "",
+    followerCount: 0,
+    followedCount: 0,
+    status: ""
+  }
 
 
   ngOnInit(): void {
     document.body.style.overflow = "auto";
-    this.username = this.auth.getLoggedInUser().username;
-    this.profilePicture = this.auth.getLoggedInUser().profilePicture;
-    this.fetchFollowersCount();
-    this.fetchFollowedCount();
-    document.body.style.overflow = "auto";
+    
+    this.fetchProfileData();
   }
 
-  fetchFollowersCount(): void {
-    this.http.post<{ followers: any[] }>(`/api/followers/${this.username}`, {}).subscribe({
-      next: (response) => {
-        this.followersCount = response.followers.length;
-      },
-      error: (error) => {
-        console.error('Error fetching followers:', error);
-      }
-    });
-  }
-
-  fetchFollowedCount(): void {
-    this.http.post<{ followedUsers: any[] }>(`/api/followed/${this.username}`, {}).subscribe({
-      next: (response) => {
-        this.followedCount = response.followedUsers.length;
-      },
-      error: (error) => {
-        console.error('Error fetching followed users:', error);
-      }
+  fetchProfileData()
+  {
+    this.api.getProfile(window.location.pathname.split('/')[2]).subscribe((res: any) => {
+      this.profile = res.user;
     });
   }
 }

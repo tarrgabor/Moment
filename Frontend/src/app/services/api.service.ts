@@ -80,4 +80,9 @@ export class ApiService {
   {
     return this.http.post(`${this.serverURL}/${table}/like/${id}`, null, this.tokenHeader());
   }
+
+  getProfile(username: string)
+  {
+    return this.http.get(`${this.serverURL}/users/profile/${username}`, this.tokenHeader())
+  }
 }
