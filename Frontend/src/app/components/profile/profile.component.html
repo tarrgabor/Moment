@@ -17,13 +17,37 @@
 
                 <div class="kovetok">
                     <p>{{ profile.followerCount }}</p>
-                    <p>Követő</p>
+                    <span (click)="togglePopupFollwers()">Követő</span>
                 </div>
 
                 <div class="kovetesek">
                     <p>{{ profile.followedCount }}</p>
-                    <p>Követés</p>
+                    <span (click)="togglePopupFollows()">Követés</span>
                 </div>
+                
+                <div *ngIf="isFollowersList" class="popup-overlay" (click)="closePopup()">
+  
+                    <div class="popup-container" (click)="$event.stopPropagation()">
+                      
+                      <i class="bi bi-x-lg closeMenuButton" (click)="closeSidebarMenu()"></i>
+                      
+                      <div class="popup-content">
+                        
+                      </div>
+                    </div>
+                  </div>
+
+                  <div *ngIf="isFollowsList" class="popup-overlay" (click)="closePopup()">
+  
+                    <div class="popup-container" (click)="$event.stopPropagation()">
+                      
+                      <i class="bi bi-x-lg closeMenuButton" (click)="closeSidebarMenu()"></i>
+                      
+                      <div class="popup-content">
+                        
+                      </div>
+                    </div>
+                  </div>
 
             <app-follow-button/>
 

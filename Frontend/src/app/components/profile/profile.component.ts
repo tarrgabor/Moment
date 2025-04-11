@@ -19,6 +19,9 @@ imports: [NavbarComponent, LightboxComponent, PostContainerComponent, FollowButt
 export class ProfileComponent {
   constructor(private auth: AuthService, private api: ApiService, private http: HttpClient){}
   
+  isFollowersList = false;
+  isFollowsList = false;
+
   profile: any = {
     username: "",
     email: "",
@@ -34,6 +37,19 @@ export class ProfileComponent {
     document.body.style.overflow = "auto";
     
     this.fetchProfileData();
+  }
+
+  togglePopupFollowers() {
+    this.isFollowersList = !this.isFollowersList;
+  }
+
+  togglePopupFollows() {
+    this.isFollowsList = !this.isFollowsList;
+  }
+
+  closePopup() {
+    this.isFollowersList = false;
+    this.isFollowsList = false;
   }
 
   fetchProfileData()
