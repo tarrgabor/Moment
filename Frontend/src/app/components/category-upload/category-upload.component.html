@@ -1,1 +1,27 @@
-<p>category-upload works!</p>
+<div class="category-upload">
+    <h2>Kategória létrehozása</h2>
+  
+    <input
+      type="text"
+      [(ngModel)]="newCategoryName"
+      placeholder="Kategórianév"
+    />
+    
+    <button (click)="createCategory()">Létrehozás</button>
+    
+    <table *ngIf="categories.length > 0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Név</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let category of categories">
+          <td>{{ category.id }}</td>
+          <td>{{ category.name }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

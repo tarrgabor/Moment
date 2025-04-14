@@ -43,5 +43,41 @@
     border-radius: 6px;
     background-color: $dark-content-background-color;
     color: $dark-text-color;
+ 
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+  
+      th, td {
+        text-align: left;
+        padding: 12px;
+        border-bottom: 1px solid $dark-border-color;
+      }
+  
+      th {
+        background-color: $dark-content-background-color;
+        color: $dark-text-color;
+      }
+  
+      tr:hover {
+        background-color: $dark-content-hover-background-color;
+      }
+  
+      td {
+        color: $dark-text-color;
+      }
+  
+      .admin {
+        color: $theme-color;
+        font-weight: bold;
+      }
+  
+      .banned {
+        color: red;
+        font-weight: bold;
+      }
+    }
   }
+  
   

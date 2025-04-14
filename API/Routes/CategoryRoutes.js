@@ -3,20 +3,19 @@ const { sendMessage, tokenCheck } = require("../utils");
 
 const { Category } = require("../Database/Models/Category");
 
+
 // Get all categories
-router.get("/", tokenCheck, async (req, res) => {
-    try
-    {
+router.get("/", /* tokenCheck, */ async (req, res) => {
+    try {
         res.status(200).send(await Category.findAll());
-    }
-    catch
-    {
+    } catch {
         sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
     }
 });
 
+
 // Get category by categoryID
-router.get("/:categoryID", tokenCheck, async (req, res) => {
+router.get("/:categoryID",/* tokenCheck, */ async (req, res) => {
     if (!req.params.categoryID)
     {
         return sendMessage(res, 200, false, "Nem található kategória azonosító!");
@@ -38,7 +37,7 @@ router.get("/:categoryID", tokenCheck, async (req, res) => {
 });
 
 // Create category
-router.post("/create", tokenCheck, async (req, res) => {
+router.post("/create",/* tokenCheck, */ async (req, res) => {
     if (!req.body.name)
     {
         return sendMessage(res, 200, false, "Hiányzó adatok!");
@@ -62,7 +61,7 @@ router.post("/create", tokenCheck, async (req, res) => {
 });
 
 // Modify category by categoryID
-router.patch("/update/:categoryID", tokenCheck, async (req, res) => {
+router.patch("/update/:categoryID", /* tokenCheck, */async (req, res) => {
     if (!req.params.categoryID)
     {
         return sendMessage(res, 200, false, "Nem található kategória azonosító!");
@@ -99,7 +98,7 @@ router.patch("/update/:categoryID", tokenCheck, async (req, res) => {
 });
 
 // Delete category by categoryID
-router.delete("/delete/:categoryID", tokenCheck, async (req, res) => {
+router.delete("/delete/:categoryID",/* tokenCheck, */ async (req, res) => {
     if (!req.params.categoryID)
     {
         return sendMessage(res, 200, false, "Nem található kategória azonosító!");
@@ -121,5 +120,6 @@ router.delete("/delete/:categoryID", tokenCheck, async (req, res) => {
         sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
     }
 });
+
 
 module.exports = router;
