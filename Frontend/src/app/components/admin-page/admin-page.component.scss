@@ -1,0 +1,47 @@
+@use "../../../styles.scss" as *;
+
+.tab-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 30px auto;
+    
+    color: $dark-text-color;
+  }
+  
+  .tab-header {
+    display: flex;
+    justify-content: center; 
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px 0;
+    border-bottom: 1px solid $dark-border-color;
+  
+    li {
+      padding: 10px 20px;
+      cursor: pointer;
+      border-bottom: 1px solid transparent;
+      transition: all 0.3s;
+      color: $dark-link-color;
+      background-color: transparent;
+  
+      &.active {
+        border-bottom: 1px solid $theme-color;
+        font-weight: bold;
+        color: $theme-color;
+      }
+  
+      &:hover {
+        background-color: $dark-content-hover-background-color;
+        color: $dark-link-hover-color;
+      }
+    }
+  }
+  
+  .tab-body {
+    padding: 20px;
+    border: 1px solid $dark-border-color;
+    border-radius: 6px;
+    background-color: $dark-content-background-color;
+    color: $dark-text-color;
+  }
+  

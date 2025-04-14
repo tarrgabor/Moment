@@ -1,1 +1,37 @@
-<p>admin-page works!</p>
+<app-navbar></app-navbar>
+
+<div class="tab-container">
+  <ul class="tab-header">
+    <li
+      [class.active]="activeTabId === 'general'"
+      (click)="activeTabId = 'general'"
+    >
+      Kategória felvétel
+    </li>
+    <li
+      [class.active]="activeTabId === 'users'"
+      (click)="activeTabId = 'users'"
+    >
+      Reportok 
+    </li>
+    <li
+      [class.active]="activeTabId === 'stats'"
+      (click)="activeTabId = 'stats'"
+    >
+      Felhasználók lista
+    </li>
+  </ul>
+
+  <div class="tab-body">
+    <div *ngIf="activeTabId === 'general'">
+        
+        <app-category-upload></app-category-upload>
+    </div>
+    <div *ngIf="activeTabId === 'users'">
+        <app-reports></app-reports>
+    </div>
+    <div *ngIf="activeTabId === 'stats'">
+        <p>users list</p>
+    </div>
+  </div>
+</div>
