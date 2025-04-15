@@ -1,9 +1,9 @@
 const router = require("express").Router();
 const { Op, QueryTypes } = require("sequelize");
 const CryptoJS = require("crypto-js");
+const uuid = require("uuid");
 const db = require("../Database/database");
-const { sendMessage, tokenCheck } = require("../utils");
-const passwdRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+const { sendMessage, tokenCheck, sendResetEmail, verifyToken, validateEmail, validatePassword, validateUsername } = require("../utils");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
@@ -17,14 +17,9 @@ router.post("/registration", async (req, res) => {
         return sendMessage(res, 200, false, "Hiányzó adatok!");
     }
 
-    if (req.body.username.match(/[^a-zA-Z0-9._-]/) || req.body.email.match(/[^a-zA-Z0-9._%+-@,;:"<>[\]()\\\s]/))
+    if (!req.body.password || !req.body.confirm)
     {
-        return sendMessage(res, 200, false, "A mezők tiltott karaktereket tartalmaznak!");
-    }
-
-    if (!req.body.email.match(/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim))
-    {
-        return sendMessage(res, 200, false, "Az e-mail nem érvényes!");
+        return sendMessage(res, 200, false, "Hiányzó jelszó!");
     }
 
     if (req.body.password != req.body.confirm)
@@ -32,9 +27,11 @@ router.post("/registration", async (req, res) => {
         return sendMessage(res, 200, false, "A jelszavak nem egyeznek!");
     }
 
-    if (!req.body.password.match(passwdRegExp)){
-        return sendMessage(res, 200, false, "A megadott jelszó nem elég biztonságos!");
-    }
+    if (!validateUsername(res, req.body.username)) return;
+
+    if (!validateEmail(res, req.body.email)) return;
+
+    if (!validatePassword(res, req.body.password, req.body.confirm)) return;
 
     try
     {
@@ -76,7 +73,7 @@ router.post("/login", async (req, res) => {
             },
             attributes:
             {
-                exclude: ["password", "followerCount", "followedCount", "createdAt"]
+                exclude: ["password", "followerCount", "followedCount", "createdAt", "restoreCode"]
             }
         });
 
@@ -254,5 +251,64 @@ router.post("/followed/:username", tokenCheck, async (req, res) => {
         sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
     }
 })
+
+// Request for password reset
+router.post('/reset/request', async (req, res) => {
+    if (!validateEmail(res, req.body.email)) return;
+
+    try
+    {
+        const user = await User.findOne({
+            where: {email: req.body.email},
+            attributes: ["email", "restoreCode"]
+        });
+
+        if (!user)
+        {
+            return sendMessage(res, 200, false, "Nincs ilyen regisztrált email!")
+        }
+
+        await sendResetEmail(req.body.email, jwt.sign(JSON.parse(JSON.stringify(user)), process.env.JWT_SECRET, {expiresIn: "10min"}));
+
+        sendMessage(res, 200, true, "Email elküldve!");
+    }
+    catch
+    {
+        sendMessage(res, 200, false, "Nem sikerült elküldeni az emailt!");
+    }
+});
+
+// Reset password by token
+router.patch('/reset/password', async (req, res) => {
+    const restoreToken = verifyToken(req.query.token);
+
+    if (!restoreToken.email || !restoreToken.restoreCode)
+    {
+        sendMessage(res, 200, false, "Hiányzó adatok!");
+    }
+
+    if (!validatePassword(res, req.body.password, req.body.confirm)) return;
+
+    try
+    {
+        const user = await User.findOne({where: {email: restoreToken.email, restoreCode: restoreToken.restoreCode}})
+    
+        if (user)
+        {
+            await User.update({
+                password: String(CryptoJS.SHA1(req.body.password)),
+                restoreCode: uuid.v4()
+            }, {where: {email: restoreToken.email, restoreCode: restoreToken.restoreCode}});
+
+            return sendMessage(res, 200, true, "Jelszó sikeresen visszaállítva!");
+        }
+
+        sendMessage(res, 200, false, "Jelszó visszaállítása sikertelen!");
+    }
+    catch
+    {
+        sendMessage(res, 200, false, "Hiba az adatbázis művelet közben!");
+    }
+});
 
 module.exports = router;

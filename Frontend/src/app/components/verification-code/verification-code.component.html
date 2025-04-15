@@ -1,7 +1,0 @@
-<app-general-input-form [getInstructions]="'Írja be az E-mail címére kapott 6 számjegyű kódot, hogy visszaállíthassa jelszavát!'">
-    <app-general-input #code [getType]="'text'" [getPlaceholder]="'Kód'"></app-general-input>
-
-    <app-general-button [getText]="'Kód ellenőrzése'" (click)="checkCode()"/>
-    
-    <app-general-link [getPath]="'/login'" [getText]="'Vissza a bejelentkezéshez'"/>
-</app-general-input-form>

@@ -52,6 +52,10 @@ const User = db.define('user', {
     createdAt: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW
+    },
+    restoreCode: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4
     }
 });
 
