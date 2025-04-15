@@ -30,12 +30,5 @@ export class PostComponent implements OnInit{
   ngOnInit()
   {
     this.processedTitle = this.postData.title.replaceAll(' ', '_');
-
-    if (this.postData.liked)
-    {
-      setTimeout(() => {
-        document.getElementById(`${this.postData.postID}`)?.classList.add("liked");
-      }, 10);
-    }
   }
 }

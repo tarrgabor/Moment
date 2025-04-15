@@ -1,23 +1,29 @@
-<app-navbar></app-navbar>
+<app-navbar/>
 
-<div class="post" *ngIf="fetchedData">
-    <app-user-content-header [getProfilePicture]="postData.profilePicture" [getUsername]="postData.username" [getCreatedAt]="postData.createdAt"/>
+<div class="content-container">
+    <app-sidebar-filter class="filterSidebar"/>
 
-    <div class="post-body">
-        <h2 class="post-title">{{postData.title}}</h2>
-
-        <p class="post-description" [innerHTML]="postData.description"></p>
-
-        <p class="post-category">{{postData.category}}</p>
-
-        <app-lightbox-listener [getImage]="postData.image"/>
+    <div class="post-container">
+        <div class="post" *ngIf="fetchedData">
+            <app-user-content-header [getProfilePicture]="postData.profilePicture" [getUsername]="postData.username" [getCreatedAt]="postData.createdAt"/>
+        
+            <div class="post-body">
+                <h2 class="post-title">{{postData.title}}</h2>
+        
+                <p class="post-description" [innerHTML]="postData.description"></p>
+        
+                <p class="post-category">{{postData.category}}</p>
+        
+                <app-lightbox-listener [getImage]="postData.image"/>
+            </div>
+        
+            <div class="post-footer">
+                <app-like-button [getType]="'posts'" [getID]="postData.postID" [getLikes]="postData.likes" [getIsLiked]="postData.liked"/>
+            </div>
+        
+            <app-comment-container [getPostID]="postData.postID"/>
+        </div>
     </div>
-
-    <div class="post-footer">
-        <app-like-button [getType]="'posts'" [getID]="postData.postID" [getLikes]="postData.likes" [getIsLiked]="postData.liked"/>
-    </div>
-
-    <app-comment-container [getPostID]="postData.postID"/>
 </div>
 
 <app-lightbox/>

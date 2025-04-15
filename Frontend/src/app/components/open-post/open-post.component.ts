@@ -9,10 +9,11 @@ import { CommonModule } from '@angular/common';
 import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
 import { CommentContainerComponent } from '../comment-container/comment-container.component';
 import { UserContentHeaderComponent } from '../user-content-header/user-content-header.component';
+import { SidebarFilterComponent } from '../sidebar-filter/sidebar-filter.component';
 
 @Component({
   selector: 'app-open-post',
-  imports: [NavbarComponent, CommonModule, LightboxListenerComponent, LightboxComponent, LikeButtonComponent, PageNotFoundComponent, CommentContainerComponent, UserContentHeaderComponent],
+  imports: [NavbarComponent, CommonModule, LightboxListenerComponent, LightboxComponent, LikeButtonComponent, PageNotFoundComponent, CommentContainerComponent, UserContentHeaderComponent, SidebarFilterComponent],
   templateUrl: './open-post.component.html',
   styleUrl: './open-post.component.scss'
 })
@@ -49,13 +50,6 @@ export class OpenPostComponent implements OnInit{
         this.postData = res as Post;
 
         this.fetchedData = true;
-  
-        if (this.postData.liked)
-        {
-          setTimeout(() => {
-            document.getElementById(`${this.postData.postID}`)?.classList.add("liked");
-          }, 10);
-        }
   
         if (decodeURIComponent(window.location.pathname.match("\([^\/]+)$")![0]) != this.postData.title.replaceAll(' ', '_').match("^\([^\/]+)$")?.[1])
         {

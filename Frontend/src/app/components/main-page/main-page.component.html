@@ -1,13 +1,25 @@
-<app-navbar></app-navbar>
+<app-navbar/>
 
-<div class="mainContainer">
-    <app-sidebar-filter/>
+<app-sidebar-filter/>
 
-    <main class="contentContainer">
-        <app-post-container class="postContainer"/>
-        
-        <app-toplist class="toplist"/>
-    </main>
+<div class="main-container" style="margin-left: 50px;">
+    <div class="content-container">
+        <div class="tabs">
+            <div class="tab" (click)="selectTab('posts')">Posztok</div>
+            <div class="tab" (click)="selectTab('follows')">Követések</div>
+            <div class="tab" (click)="selectTab('users')">Felhasználók</div>
+        </div>
+    
+        <app-post *ngFor="let post of posts" [getPostData]="post"/>
+
+        <app-user *ngFor="let user of users" [getUserData]="user"/>
+
+        <app-intersection-observer (intersecting)="fetchData()"/>
+
+        <app-loading *ngIf="isFetching"/>
+    </div>
+    
+    <app-toplist class="toplist"/>
 </div>
 
 <app-lightbox/>

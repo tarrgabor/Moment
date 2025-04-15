@@ -19,51 +19,6 @@ cloudinary.config({
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-// Get posts with keyset pagination
-router.get('/', tokenCheck, async (req, res) => {
-    const oldestPost = req.query.oldestPost?.split('|');
-
-    let categories = [];
-
-    req.query.categories?.split('|').forEach(category => {
-        categories.push(`"${category}"`);
-    });
-
-    const query =
-        `SELECT
-        u.username,
-        u.profilePicture,
-        p.id AS 'postID',
-        p.title,
-        p.description,
-        c.name as 'category',
-        p.image,
-        p.likes,
-        DATE_FORMAT(p.createdAt, '%Y-%m-%d %H:%i:%s') AS createdAt,
-        IF(pl.postID IS NOT NULL, 1, 0) AS liked
-        FROM posts p
-        LEFT JOIN categories c ON c.id = p.categoryID
-        LEFT JOIN users u ON u.id = p.userID
-        LEFT JOIN postlikes pl ON pl.postID = p.id AND pl.userID = :userID
-        WHERE p.visible = 1
-        ${categories.length ? `AND c.name IN (${categories})` : ``}
-        ${oldestPost ? `AND (p.createdAt < '${oldestPost[0]}' OR (p.createdAt = '${oldestPost[0]}' AND p.id < '${oldestPost[1]}'))` : ``}
-        ORDER BY p.createdAt DESC, p.id DESC LIMIT 5`
-
-    try {
-        const posts = await db.query(query, {type: QueryTypes.SELECT, replacements: {userID: req.user.id}});
-
-        const oldestPost = posts.length ? `${posts.at(-1).createdAt}|${posts.at(-1).postID}` : null;
-        
-        res.status(200).json({ posts, oldestPost });
-    }
-    catch
-    {
-        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
-    }
-});
-
-
 // Get all posts
 router.get("/get/all", tokenCheck, async (req, res) => {
     try

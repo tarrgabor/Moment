@@ -1,6 +1,7 @@
 export interface Category {
     id: string,
-    name: string
+    name: string,
+    isSelected: boolean
 }
 
 export interface Post {
@@ -14,6 +15,12 @@ export interface Post {
     likes: number,
     createdAt: Date,
     liked: Boolean
+}
+
+export interface User {
+    username: string,
+    profilePicture: string;
+    followerCount: number
 }
 
 export interface Comment {

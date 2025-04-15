@@ -91,6 +91,16 @@ export class ApiService {
     return this.http.get(`${this.serverURL}/${table}`, this.tokenHeader());
   }
 
+  search(parameters: string)
+  {
+    return this.http.get(`${this.serverURL}/search/searchbar?${parameters}`, this.tokenHeader());
+  }
+
+  getContent(parameters: string)
+  {
+    return this.http.get(`${this.serverURL}/search?${parameters}`, this.tokenHeader());
+  }
+
   sendEmail(email: string)
   {
     return this.http.post(`${this.serverURL}/users/reset/request`, {email}, this.tokenHeader());
