@@ -4,10 +4,10 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    min-width: 175px;
-    min-height: 45px;
-    margin-left: 20px;
-    margin-right: 20px;
+    min-width: 150px;
+    min-height: 2.8rem;
+    margin-left: .5rem;
+    margin-right: .5rem;
 }
 
 .searchbar{
@@ -23,7 +23,7 @@
 .searchbar i{
     display: flex;
     align-items: center;
-    font-size: 18px;
+    font-size: 1.1rem;
     margin-left: 10px;
     margin-right: 10px;
     pointer-events: none;
@@ -32,7 +32,7 @@
 
 .searchbar input{
     width: 100%;
-    font-size: 16px;
+    font-size: 1.1rem;
     padding-right: 10px;
     background-color: transparent;
     color: $dark-text-color;
@@ -47,14 +47,13 @@
     position: absolute;
     width: 100%;
     max-height: 250px;
-    top: 45px;
+    top: 2.7rem;
     border-radius: 0 0px 20px 20px;
     overflow-x: hidden;
     overflow-y: visible;
     overscroll-behavior: contain;
     z-index: 99;
     box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.2);
-    transition: .2s;
     background-color: $dark-content-background-color;
 }
 
@@ -98,16 +97,16 @@
 }
 
 .search-result .text .title{
-    font-size: 15px;
+    font-size: 1rem;
 }
 
 .search-result .text .info{
-    font-size: 12.5px;
+    font-size: 0.8rem;
     color: rgb(160, 160, 160);
 }
 
 .results-type{
-    font-size: 14px;
+    font-size: .9rem;
     margin-top: 3px;
     margin-bottom: 3px;
     margin-left: 10px;

@@ -17,6 +17,12 @@ export interface Post {
     liked: Boolean
 }
 
+export interface User {
+    username: string,
+    profilePicture: string;
+    followerCount: number
+}
+
 export interface Comment {
     id: string,
     username: string,

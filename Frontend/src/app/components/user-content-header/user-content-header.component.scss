@@ -1,15 +1,25 @@
 @use "../../../styles.scss" as *;
 
 .content-header {
+    width: fit-content;
+    font-size: .85rem;
+}
+
+.content-header .content-info {
     display: flex;
-    align-items: center;
-    font-size: 14px;
+}
+
+.content-header .content-info p {
+    color: rgb(180, 180, 180);
+}
+
+.content-header .content-info span {
+    margin-right: 5px;
 }
 
 .content-author {
     display: flex;
     align-items: center;
-    margin-right: 5px;
     font-weight: bold;
     cursor: pointer;
 }
@@ -30,8 +40,15 @@
 .content-author img{
     width: 30px;
     height: 30px;
+    margin-right: 3px;
     border: 1px solid $dark-border-color;
     border-radius: 100%;
     user-select: none;
     -webkit-user-drag: none;
+}
+
+@media screen and (max-width: 800px) {
+    .content-header .content-info {
+        flex-direction: column;
+    }
 }

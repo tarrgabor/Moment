@@ -17,7 +17,9 @@ export class SearchbarComponent implements AfterViewInit{
 
   searchDebouncer: any;
   data: any;
-  searchText: string = "";
+  searchbarText: string = "";
+  queryString: string = "";
+  queryParams = new URLSearchParams();
   selectedCategories: string = "";
   isFocused: boolean = false;
 
@@ -27,13 +29,13 @@ export class SearchbarComponent implements AfterViewInit{
   )
   {
     this.searchDebouncer = this.debounce(750, (filterText: any) => {
-      this.searchText = filterText;
+      this.searchbarText = filterText;
 
-      this.isFocused = true;
+      this.setSearchParams();
 
-      if (this.searchText.length)
+      if (this.searchbarText.length)
       {
-        this.api.search(`search=${filterText}`).subscribe((res: any) => {
+        this.api.search(`q=${filterText}`).subscribe((res: any) => {
           this.data = res;
         });
       }
@@ -53,9 +55,21 @@ export class SearchbarComponent implements AfterViewInit{
       })
 
       this.selectedCategories = this.selectedCategories.replace('|', '');
+
+      this.setSearchParams();
     });
 
-    this.searchbar.nativeElement.value = new URLSearchParams(window.location.search).get("search");
+    this.searchbar.nativeElement.value = new URLSearchParams(window.location.search).get("q");
+  }
+
+  setSearchParams()
+  {
+    this.queryParams = new URLSearchParams();
+
+    this.searchbarText ? this.queryParams.append("q", this.searchbarText) : null;
+    this.selectedCategories ? this.queryParams.append("categories", this.selectedCategories) : null;
+
+    this.queryString = "?" + this.queryParams.toString();
   }
 
   updateSearchbar()
@@ -63,8 +77,12 @@ export class SearchbarComponent implements AfterViewInit{
     if (!this.searchbar.nativeElement.value)
     {
       this.data = null;
-      this.searchText = "";
+      this.searchbarText = "";
     }
+
+    this.isFocused = true;
+
+    this.setSearchParams();
 
     this.searchDebouncer(this.searchbar.nativeElement.value);
   };

@@ -76,7 +76,7 @@ router.post("/login", async (req, res) => {
             },
             attributes:
             {
-                exclude: ["password", "followerCount"]
+                exclude: ["password", "followerCount", "followedCount", "createdAt"]
             }
         });
 

@@ -6,11 +6,6 @@
     text-decoration: none;
 }
 
-html{
-   scrollbar-width: none;
-   min-width: 400px;
-}
-
 body{
     background-color:#101216;
     box-sizing: border-box;
@@ -18,6 +13,16 @@ body{
 
 button, a, span{
     transition: .15s;
+}
+
+html{
+    font-size: 16px;
+}
+
+@media screen and (max-width: 800px) {
+    html{
+        font-size: 14px;
+    }
 }
 
 //-------------------Light Mode---------------------\\ - LIGHT MODE COLORS ARE PLACEHOLDERS

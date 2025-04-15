@@ -1,7 +1,7 @@
 @use "../../../styles.scss" as *;
 
 .form-container{
-    width: 100vw;
+    width: 100%;
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -9,8 +9,8 @@
 }
 
 .form-box{
-    width: 350px;
-    padding: 40px;
+    width: 22.5rem;
+    padding: 2.5rem;
 }
 
 .form-items{

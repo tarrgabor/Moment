@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Category } from '../../interfaces/interfaces';
 import { CategoryFilterPipe } from '../../pipes/caregoryFilter.pipe';
@@ -15,6 +15,8 @@ import { CategoryService } from '../../services/category.service';
 
 export class SidebarFilterComponent implements OnInit{
   constructor(private categoryService: CategoryService){};
+
+  @ViewChild("filter") filter!: ElementRef;
 
   categories: Category[] = [];
 
@@ -51,5 +53,10 @@ export class SidebarFilterComponent implements OnInit{
   toggleCategorySelection(categoryID: string)
   {
     this.categoryService.toggleCategorySelection(categoryID);
+  }
+
+  focusFilter()
+  {
+    this.filter.nativeElement.focus();
   }
 }

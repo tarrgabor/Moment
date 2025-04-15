@@ -9,12 +9,12 @@
             <app-searchbar/>
         </div>
 
-        <div class="navbarProfile" (click)="openSidebarMenu()">
+        <div class="navbarProfile" (click)="openSidebarMenu($event)">
             <img src="{{profilePicture}}" alt="">
         </div>
     </div>
 
-    <div class="linksContainer">
+    <div class="linksContainer" (leftBoundary)="closeSidebarMenu()">
         <div class="linksHeader">
             <div class="user-data">
                 <img src="{{profilePicture}}" alt="">
@@ -30,6 +30,4 @@
         <span routerLink="/"><i class="bi bi-gear"></i> Beállítások</span>
         <span (click)="logout()"><i class="bi bi-box-arrow-right"></i> Kijelentkezés</span>
     </div>
-
-    <div id="overlay" (click)="closeSidebarMenu()"></div>
 </nav>
