@@ -60,6 +60,17 @@ export class SearchbarComponent implements AfterViewInit{
     });
 
     this.searchbar.nativeElement.value = new URLSearchParams(window.location.search).get("q");
+
+    this.searchbar.nativeElement.addEventListener("keydown", (event: any) => {
+      if (event.key == "Enter" && this.searchbar.nativeElement.value)
+      {
+        this.searchbarText = this.searchbar.nativeElement.value;
+
+        this.setSearchParams();
+
+        window.location.href = `${this.queryString}`;
+      }
+    })
   }
 
   setSearchParams()
