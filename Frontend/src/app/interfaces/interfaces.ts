@@ -14,7 +14,8 @@ export interface Post {
     image: string,
     likes: number,
     createdAt: Date,
-    liked: Boolean
+    liked: Boolean,
+    owned: Boolean
 }
 
 export interface User {

@@ -22,7 +22,8 @@ export class PostComponent implements OnInit{
     image: '',
     likes: 0,
     createdAt: new Date(),
-    liked: false
+    liked: false,
+    owned: false
   };
 
   processedTitle: string = "";

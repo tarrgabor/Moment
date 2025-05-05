@@ -24,6 +24,11 @@
     max-width: 850px;
 }
 
+.post-header{
+    display: flex;
+    justify-content: space-between;
+}
+
 .post-title{
     font-size: 1.3rem;
     word-wrap: break-word;
@@ -50,4 +55,38 @@
     margin-top: 5px;
     margin-bottom: 5px;
     font-size: 1rem;
+}
+
+.editor-buttons-container{
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.editor-button{
+    padding: 4px;
+    margin: 2px;
+    border-radius: 10px;
+    outline: none;
+    background-color: transparent;
+    color: $dark-text-color;
+}
+
+.cancel-button{
+    background-color: $dark-content-background-color;
+}
+
+.cancel-button:hover{
+    background-color: $dark-content-hover-background-color;
+}
+
+.save-button{
+    color: $dark-text-color;
+    background-color: $button-background-color;
+    margin-left: 2px;
+}
+
+.save-button:hover{
+    color: $button-text-hover-color;
+    background-color: $button-hover-background-color;
 }

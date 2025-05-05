@@ -56,6 +56,16 @@ export class ApiService {
     return this.http.post(`${this.serverURL}/${table}/create`, data, this.tokenHeader());
   }
 
+  updatePost(table: string, postID: string, data: object)
+  {
+    return this.http.patch(`${this.serverURL}/${table}/update/${postID}`, data, this.tokenHeader());
+  }
+
+  deletePost(table: string, postID: string)
+  {
+    return this.http.delete(`${this.serverURL}/${table}/delete/${postID}`, this.tokenHeader());
+  }
+
   getCommentsUnderPost(table: string, postID: string)
   {
     return this.http.get(`${this.serverURL}/${table}/post/${postID}`, this.tokenHeader());
