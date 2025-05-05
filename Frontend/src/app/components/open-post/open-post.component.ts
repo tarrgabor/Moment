@@ -17,10 +17,11 @@ import { MessageService } from '../../services/message.service';
 import { Router } from '@angular/router';
 import { GeneralTextareaComponent } from '../general-textarea/general-textarea.component';
 import { GeneralDropdownComponent } from '../general-dropdown/general-dropdown.component';
+import { CopyComponent } from '../copy/copy.component';
 
 @Component({
   selector: 'app-open-post',
-  imports: [NavbarComponent, CommonModule, LightboxListenerComponent, LightboxComponent, LikeButtonComponent, PageNotFoundComponent, CommentContainerComponent, UserContentHeaderComponent, SidebarFilterComponent, ContentMenuComponent, DialogComponent, GeneralTextareaComponent, GeneralDropdownComponent],
+  imports: [NavbarComponent, CommonModule, LightboxListenerComponent, LightboxComponent, LikeButtonComponent, PageNotFoundComponent, CommentContainerComponent, UserContentHeaderComponent, SidebarFilterComponent, ContentMenuComponent, DialogComponent, GeneralTextareaComponent, GeneralDropdownComponent, CopyComponent],
   templateUrl: './open-post.component.html',
   styleUrl: './open-post.component.scss'
 })
@@ -143,5 +144,10 @@ export class OpenPostComponent implements OnInit{
         this.message.error("Poszt törlése sikertelen!");
       });
     })
+  }
+
+  copyURL()
+  {
+    navigator.clipboard.writeText(`http://localhost:4200/post/${this.postData.postID}/${this.postData.title.replaceAll(' ', '_')}`);
   }
 }

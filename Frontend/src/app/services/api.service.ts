@@ -51,6 +51,11 @@ export class ApiService {
     return this.http.get(`${this.serverURL}/${table}/${postID}`, this.tokenHeader());
   }
 
+  getUsersPosts(table: string, query?: string)
+  {
+    return this.http.get(`${this.serverURL}/${table}?${query ? query : ''}`, this.tokenHeader());
+  }
+
   createPost(table: string, data: object)
   {
     return this.http.post(`${this.serverURL}/${table}/create`, data, this.tokenHeader());

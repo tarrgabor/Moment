@@ -8,6 +8,7 @@ import { UserAuthGuard } from './guards/user-auth-guard';
 import { MainPageComponent } from './components/main-page/main-page.component';
 import { OpenPostComponent } from './components/open-post/open-post.component';
 import { UploadPostComponent } from './components/upload-post/upload-post.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 export const routes: Routes = [
     // Possible pages to visit before logging in
@@ -38,7 +39,7 @@ export const routes: Routes = [
         path: "post/:id/:postTitle", component: OpenPostComponent, canActivate: [UserAuthGuard]
     },
     {
-        path: "user/:id", component: PageNotFoundComponent, canActivate: [UserAuthGuard]
+        path: "user/:username", component: ProfileComponent, canActivate: [UserAuthGuard]
     },
 
     // Not valid page entered

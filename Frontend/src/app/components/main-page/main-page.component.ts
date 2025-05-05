@@ -22,7 +22,7 @@ export class MainPageComponent implements OnInit{
   constructor(private api: ApiService){}
 
   posts: Post[] = [];
-  users: any[] = [];
+  users: User[] = [];
 
   isFetching: boolean = false;
   hasMoreData: boolean = true;
