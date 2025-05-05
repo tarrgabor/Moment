@@ -1,0 +1,53 @@
+@use "../../../styles.scss" as *;
+
+.dropdown-content-menu-container{
+    position: relative;
+    z-index: 500;
+}
+
+.menu-toggle{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    transition: .2s;
+    cursor: pointer;
+}
+
+.menu-toggle:hover{
+    background-color: $dark-content-background-color;
+}
+
+.dropdown-content-menu{
+    position: absolute;
+    right: 5px;
+    background-color: $dark-background-color;
+    border: 1px solid $dark-border-color;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.content-option{
+    display: flex;
+    padding: 6px 10px;
+    transition: .2s;
+    cursor: pointer;
+}
+
+.content-option:hover{
+    background-color: $dark-content-hover-background-color;
+}
+
+.content-option i{
+    margin-right: 5px;
+}
+
+.content-option:first-child{
+    color: rgb(250, 150, 0);
+}
+
+.content-option:last-child{
+    color: rgb(240, 30, 30);
+}

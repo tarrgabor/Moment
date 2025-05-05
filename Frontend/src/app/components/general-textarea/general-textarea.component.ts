@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -8,17 +8,31 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './general-textarea.component.scss'
 })
 
-export class GeneralTextareaComponent {
+export class GeneralTextareaComponent implements OnInit{
   @Input("getTitle") title: string = "Textarea title";
   @Input("getMaxLength") maxLength: number = 0;
+  @Input("getInitialText") initialText: string = "";
 
   @ViewChild("textarea") textarea!: ElementRef;
 
   charsUsed: number = 0;
 
+  ngOnInit()
+  {
+    setTimeout(() => {
+      this.setValue();
+      this.updateCharLeftInfo();
+    }, 0);
+  }
+
   getValue()
   {
     return this.textarea.nativeElement.textContent.substring(0, this.maxLength);
+  }
+
+  setValue()
+  {
+    this.textarea.nativeElement.textContent = this.initialText;
   }
 
   updateCharLeftInfo()

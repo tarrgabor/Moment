@@ -1,0 +1,9 @@
+<div class="dropdown-content-menu-container">
+    <i class="bi bi-three-dots-vertical menu-toggle" (click)="openMenu()"></i>
+
+    <div #menu class="dropdown-content-menu" (leftBoundary)="closeMenu()" *ngIf="open">
+        <div class="content-option" (click)="modify()"><i class="bi bi-pencil edit-button"></i>Módosítás</div>
+        
+        <div class="content-option" (click)="delete()"><i class="bi bi-trash delete-button"></i>Törlés</div>
+    </div>
+</div>

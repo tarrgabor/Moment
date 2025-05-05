@@ -52,12 +52,13 @@ router.get("/:postID", tokenCheck, async (req, res) => {
             p.image,
             p.likes,
             DATE_FORMAT(p.createdAt, '%Y-%m-%d %H:%i:%s') AS createdAt,
+            IF(p.userID = :userID, 1 , 0) as owned,
             IF(pl.postID IS NOT NULL, 1, 0) AS liked
             FROM posts p
             LEFT JOIN categories c ON c.id = p.categoryID
             LEFT JOIN users u ON u.id = p.userID
             LEFT JOIN postlikes pl ON pl.postID = p.id AND pl.userID = :userID
-            WHERE p.visible = 1 AND p.id = :postID`
+            WHERE (p.visible = 1 OR p.userID = :userID) AND p.id = :postID`
 
         const results = await db.query(query, {type: QueryTypes.SELECT, replacements: {postID: req.params.postID, userID: req.user.id}});
         
