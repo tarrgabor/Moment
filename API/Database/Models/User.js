@@ -39,11 +39,23 @@ const User = db.define('user', {
         type: DataTypes.INTEGER,
         defaultValue: 0,
     },
+    followedCount:  {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+    },
     status: {
         type: DataTypes.ENUM,
         values: ["active", "inactive", "banned"],
         defaultValue: "active",
         allowNull: false
+    },
+    createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
+    },
+    restoreCode: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4
     }
 });
 

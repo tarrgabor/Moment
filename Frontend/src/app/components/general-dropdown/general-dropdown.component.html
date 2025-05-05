@@ -1,0 +1,11 @@
+<div class="dropdown-container" (click)="toggleDropdown()">
+    <div class="selected">
+        <p id="{{selectedOption.id}}">{{selectedOption.text}}</p>
+        <i class="bi bi-caret-down-fill icon"></i>
+    </div>
+    <div #optionsContainer class="options">
+        <ul>
+            <li id="{{option.id}}" *ngFor="let option of options" (click)="selectOption($event)">{{option.text}}</li>
+        </ul>
+    </div>
+</div>

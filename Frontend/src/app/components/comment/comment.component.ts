@@ -7,10 +7,12 @@ import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 import { MessageInputComponent } from '../message-input/message-input.component';
 import { AuthService } from '../../services/auth.service';
+import { ContentMenuComponent } from '../content-menu/content-menu.component';
+import { DialogService } from '../../services/dialog.service';
 
 @Component({
   selector: 'app-comment',
-  imports: [LikeButtonComponent, UserContentHeaderComponent, CommonModule, FormsModule, MessageInputComponent],
+  imports: [LikeButtonComponent, UserContentHeaderComponent, CommonModule, FormsModule, MessageInputComponent, ContentMenuComponent],
   templateUrl: './comment.component.html',
   styleUrl: './comment.component.scss'
 })
@@ -19,6 +21,7 @@ export class CommentComponent implements OnInit {
   constructor(
     private api: ApiService,
     private auth: AuthService,
+    private dialog: DialogService
   ){}
   
   @Input("getCommentData") commentData: Comment = {
@@ -50,13 +53,6 @@ export class CommentComponent implements OnInit {
     if (!this.parentID)
     {
       this.parentID = this.commentData.id;
-    }
-
-    if (this.commentData.liked)
-    {
-      setTimeout(() => {
-        document.getElementById(`${this.commentData.id}`)?.classList.add("liked");
-      }, 10);
     }
   }
 
@@ -118,14 +114,16 @@ export class CommentComponent implements OnInit {
       }
     });
   }
-
+  
   deleteComment()
   {
-    this.api.deleteComment("comments", this.commentData.id).subscribe((res: any) => {
-      if (res.success)
-      {
-        this.onDelete.emit({id: this.commentData.id, parentID: this.parentID});
-      }
+    this.dialog.showDialog(() => {
+      this.api.deleteComment("comments", this.commentData.id).subscribe((res: any) => {
+        if (res.success)
+        {
+          this.onDelete.emit({id: this.commentData.id, parentID: this.parentID});
+        }
+      })
     })
   }
 }

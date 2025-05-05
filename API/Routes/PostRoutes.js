@@ -3,7 +3,7 @@ require("dotenv").config();
 const db = require("../Database/database");
 const { QueryTypes } = require("sequelize");
 const multer  = require('multer')
-const { sendMessage, tokenCheck, formatFileName } = require("../utils");
+const { sendMessage, tokenCheck, uploadImage } = require("../utils");
 const cloudinary = require("cloudinary").v2;
 
 const { Post } = require("../Database/Models/Post");
@@ -18,51 +18,6 @@ cloudinary.config({
 });
 
 const upload = multer({ storage: multer.memoryStorage() });
-
-// Get posts with keyset pagination
-router.get('/', tokenCheck, async (req, res) => {
-    const oldestPost = req.query.oldestPost?.split('|');
-
-    let categories = [];
-
-    req.query.categories?.split('|').forEach(category => {
-        categories.push(`"${category}"`);
-    });
-
-    const query =
-        `SELECT
-        u.username,
-        u.profilePicture,
-        p.id AS 'postID',
-        p.title,
-        p.description,
-        c.name as 'category',
-        p.image,
-        p.likes,
-        DATE_FORMAT(p.createdAt, '%Y-%m-%d %H:%i:%s') AS createdAt,
-        IF(pl.postID IS NOT NULL, 1, 0) AS liked
-        FROM posts p
-        LEFT JOIN categories c ON c.id = p.categoryID
-        LEFT JOIN users u ON u.id = p.userID
-        LEFT JOIN postlikes pl ON pl.postID = p.id AND pl.userID = :userID
-        WHERE p.visible = 1
-        ${categories.length ? `AND c.name IN (${categories})` : ``}
-        ${oldestPost ? `AND (p.createdAt < '${oldestPost[0]}' OR (p.createdAt = '${oldestPost[0]}' AND p.id < '${oldestPost[1]}'))` : ``}
-        ORDER BY p.createdAt DESC, p.id DESC LIMIT 5`
-
-    try {
-        const posts = await db.query(query, {type: QueryTypes.SELECT, replacements: {userID: req.user.id}});
-
-        const oldestPost = posts.length ? `${posts.at(-1).createdAt}|${posts.at(-1).postID}` : null;
-        
-        res.status(200).json({ posts, oldestPost });
-    }
-    catch
-    {
-        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
-    }
-});
-
 
 // Get all posts
 router.get("/get/all", tokenCheck, async (req, res) => {
@@ -97,12 +52,13 @@ router.get("/:postID", tokenCheck, async (req, res) => {
             p.image,
             p.likes,
             DATE_FORMAT(p.createdAt, '%Y-%m-%d %H:%i:%s') AS createdAt,
+            IF(p.userID = :userID, 1 , 0) as owned,
             IF(pl.postID IS NOT NULL, 1, 0) AS liked
             FROM posts p
             LEFT JOIN categories c ON c.id = p.categoryID
             LEFT JOIN users u ON u.id = p.userID
             LEFT JOIN postlikes pl ON pl.postID = p.id AND pl.userID = :userID
-            WHERE p.visible = 1 AND p.id = :postID`
+            WHERE (p.visible = 1 OR p.userID = :userID) AND p.id = :postID`
 
         const results = await db.query(query, {type: QueryTypes.SELECT, replacements: {postID: req.params.postID, userID: req.user.id}});
         
@@ -121,42 +77,33 @@ router.post("/create", tokenCheck, upload.single('file'), async (req, res) => {
         return sendMessage(res, 200, false, "Hiányzó adatok!");
     }
 
-    if (!req.body.title.match(/^[a-zA-Z0-9?!.\s]*$/))
+    if (!req.body.title.match(/^[\p{L}0-9?!.\s]*$/u))
     {
         return sendMessage(res, 200, false, "A cím nem tartalmazhat tiltott speciális karaktereket!");
     }
 
     try
     {
-        cloudinary.uploader.upload_stream({
-            
-            public_id: formatFileName(req.file.originalname),
-            resource_type: "image"
-        }, async (error, uploadResults) => {
-            if (error) return new Error("Kép feltöltés sikertelen!");
-
-            await Post.create({
-                userID: req.user.id,
-                title: req.body.title,
-                description: req.body.description,
-                categoryID: req.body.categoryID,
-                image: cloudinary.url(uploadResults.public_id, {
-                    transformation: [
-                        {
-                            quality: "auto",
-                            fetch_format: "auto"
-                        }
-                    ],
-                }),
-                visible: req.body.visible
-            });
-        }).end(req.file.buffer)
-
-        sendMessage(res, 200, true, "Poszt létrehozva!");
+        const uploadResults = await uploadImage(req.file.originalname, req.file.buffer);
+        
+        const post = await Post.create({
+            userID: req.user.id,
+            title: req.body.title,
+            description: req.body.description,
+            categoryID: req.body.categoryID,
+            image: cloudinary.url(uploadResults.public_id, {
+                transformation: [{
+                    quality: "auto",
+                    fetch_format: "auto"
+                }]
+            }),
+            visible: req.body.visible
+        });
+        
+        res.status(200).send({success: true, message: "Poszt létrehozva!", id: post.id});
     }
     catch
     {
-
         sendMessage(res, 200, false, "Poszt létrehozása sikertelen!");
     }
 })

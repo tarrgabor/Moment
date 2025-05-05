@@ -1,24 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { LightboxListenerComponent } from '../lightbox-listener/lightbox-listener.component';
 import { LightboxComponent } from '../lightbox/lightbox.component';
 import { LikeButtonComponent } from '../like-button/like-button.component';
-import { Post } from '../../interfaces/interfaces';
+import { Option, Post } from '../../interfaces/interfaces';
 import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
 import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
 import { CommentContainerComponent } from '../comment-container/comment-container.component';
 import { UserContentHeaderComponent } from '../user-content-header/user-content-header.component';
+import { SidebarFilterComponent } from '../sidebar-filter/sidebar-filter.component';
+import { ContentMenuComponent } from '../content-menu/content-menu.component';
+import { DialogService } from '../../services/dialog.service';
+import { DialogComponent } from '../dialog/dialog.component';
+import { MessageService } from '../../services/message.service';
+import { Router } from '@angular/router';
+import { GeneralTextareaComponent } from '../general-textarea/general-textarea.component';
+import { GeneralDropdownComponent } from '../general-dropdown/general-dropdown.component';
+import { CopyComponent } from '../copy/copy.component';
 
 @Component({
   selector: 'app-open-post',
-  imports: [NavbarComponent, CommonModule, LightboxListenerComponent, LightboxComponent, LikeButtonComponent, PageNotFoundComponent, CommentContainerComponent, UserContentHeaderComponent],
+  imports: [NavbarComponent, CommonModule, LightboxListenerComponent, LightboxComponent, LikeButtonComponent, PageNotFoundComponent, CommentContainerComponent, UserContentHeaderComponent, SidebarFilterComponent, ContentMenuComponent, DialogComponent, GeneralTextareaComponent, GeneralDropdownComponent, CopyComponent],
   templateUrl: './open-post.component.html',
   styleUrl: './open-post.component.scss'
 })
 
 export class OpenPostComponent implements OnInit{
-  constructor(private api: ApiService){}
+  @ViewChild("postTitle") postTitle!: GeneralTextareaComponent;
+  @ViewChild("postDescription") postDescription!: GeneralTextareaComponent;
+  @ViewChild("categoryOptions") categoryOptions!: GeneralDropdownComponent
+  @ViewChild("visibilityOptions") visibilityOptions!: GeneralDropdownComponent
+
+  constructor(
+    private api: ApiService,
+    private dialog: DialogService,
+    private message: MessageService,
+    private router: Router
+  ){}
 
   postData: Post = {
     username: '',
@@ -30,14 +49,15 @@ export class OpenPostComponent implements OnInit{
     image: '',
     likes: 0,
     createdAt: new Date(),
-    liked: false
+    liked: false,
+    owned: false
   };
-
-  isLiked = false;
-
+  
   fetchedData = false;
 
   postFound = true;
+
+  isEditing = false;
 
   ngOnInit()
   {
@@ -50,13 +70,6 @@ export class OpenPostComponent implements OnInit{
 
         this.fetchedData = true;
   
-        if (this.postData.liked)
-        {
-          setTimeout(() => {
-            document.getElementById(`${this.postData.postID}`)?.classList.add("liked");
-          }, 10);
-        }
-  
         if (decodeURIComponent(window.location.pathname.match("\([^\/]+)$")![0]) != this.postData.title.replaceAll(' ', '_').match("^\([^\/]+)$")?.[1])
         {
           window.location.pathname = `post/${postID}/${this.postData.title.replaceAll(' ', '_')}`;
@@ -67,5 +80,74 @@ export class OpenPostComponent implements OnInit{
 
       this.postFound = false;
     });
+  }
+
+  cancelUpdate()
+  {
+    this.isEditing = false;
+  }
+
+  modifyPost()
+  {
+    this.isEditing = true;
+
+    this.api.getCategories("categories").subscribe((res: any) => {
+      let options: Option[] = [];
+      res.forEach((element: any) => {
+        options.push({id: element.id, text: element.name});
+      });
+    
+      this.categoryOptions.getOptions(options);
+
+      this.visibilityOptions.getOptions([
+        {
+          id: "1",
+          text: "Mindenkinek látható"
+        },
+        {
+          id: "0",
+          text: "Csak ön számára"
+        }
+      ]);
+    });
+  }
+
+  updatePost()
+  {
+    this.api.updatePost("posts", this.postData.postID, {
+        title: this.postTitle.getValue(),
+        description: this.postDescription.getValue(),
+        categoryID: this.categoryOptions.getValue(),
+        visible: this.visibilityOptions.getValue()
+      }).subscribe((res: any) => {
+      if (res.success)
+      {
+        document.location.reload();
+        return;
+      }
+
+      this.message.error("Poszt módosítás sikertelen!");
+    })
+  }
+
+  deletePost()
+  {
+    this.dialog.showDialog(() => {
+      this.api.deletePost("posts", this.postData.postID).subscribe((res: any) => {
+        if (res.success)
+        {
+          this.message.success("Poszt törölve!");
+          this.router.navigate(["/"]);
+          return;
+        }
+
+        this.message.error("Poszt törlése sikertelen!");
+      });
+    })
+  }
+
+  copyURL()
+  {
+    navigator.clipboard.writeText(`http://localhost:4200/post/${this.postData.postID}/${this.postData.title.replaceAll(' ', '_')}`);
   }
 }

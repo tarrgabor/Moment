@@ -1,6 +1,7 @@
 export interface Category {
     id: string,
-    name: string
+    name: string,
+    isSelected: boolean
 }
 
 export interface Post {
@@ -13,7 +14,14 @@ export interface Post {
     image: string,
     likes: number,
     createdAt: Date,
-    liked: Boolean
+    liked: Boolean,
+    owned: Boolean
+}
+
+export interface User {
+    username: string,
+    profilePicture: string;
+    followerCount: number
 }
 
 export interface Comment {
@@ -34,4 +42,10 @@ export interface Message {
     type: string,
     icon: string,
     message: string
+}
+
+export interface Option
+{
+  id: string,
+  text: string
 }

@@ -1,0 +1,82 @@
+@use "../../../styles.scss" as *;
+
+.dropdown-container{
+    width: 100%;
+    min-width: 100px;
+    height: 45px;
+    position: relative;
+    border-radius: 10px;
+    transition: .2s;
+    cursor: pointer;
+    background-color: $dark-content-background-color;
+    border: 1px solid $dark-border-color;
+}
+
+.dropdown-container .selected{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    transition: .2s;
+}
+
+.dropdown-container .selected:hover{
+    background-color: $dark-content-hover-background-color;
+}
+
+.dropdown-container .options{
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    opacity: 0;
+    pointer-events: none;
+    transition: .2s ease-in-out;
+    max-height: 0;
+    overflow-y: auto;
+    scrollbar-width: none;
+    border-radius: 0 0 10px 10px;
+    z-index: 100;
+    background-color: $dark-content-background-color;
+}
+
+.dropdown-container .options.open{
+    opacity: 1;
+    pointer-events: auto;
+    top: 44px;
+    max-height: calc(3 * 52px);
+}
+
+.dropdown-container:has(.options.open){
+    border-radius: 10px 10px 0 0;
+}
+
+.dropdown-container:has(.options.open) .selected:hover{
+    border-radius: 10px 10px 0 0;
+}
+
+.dropdown-container .selected .icon{
+    transition: .2s;
+}
+
+.dropdown-container:has(.options.open) .selected .icon{
+    transform: rotateZ(180deg);
+}
+
+.dropdown-container .options ul li{
+    width: 100%;
+    padding: 10px;
+    list-style-type: none;
+    transition: .2s;
+    background-color: $dark-content-background-color;
+}
+
+.dropdown-container .options ul li:hover{
+    background-color: $dark-content-hover-background-color;
+}
+
+.dropdown-container .options ul li:last-child{
+    border-radius: 0 0 10px 10px;
+}

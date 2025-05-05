@@ -1,0 +1,22 @@
+@use "../../../styles.scss" as *;
+
+.copy-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 2rem;
+    margin-right: 5px;
+    border-radius: 20px;
+    background-color: $dark-button-background-color;
+    cursor: pointer;
+}
+
+.copy-button:hover path{
+    fill: gray;
+}
+
+.copy-button path{
+    fill: $dark-text-color;
+    transition: .2s;
+}

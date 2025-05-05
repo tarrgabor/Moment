@@ -1,16 +1,20 @@
 <nav>
-    <div class="navbar">
-        <a routerLink="/" class="logo">
+    <div class="navbar-header">
+        <a href="/" class="logo">
             <img src="momentLogo.png">
             <h1>MOMENT</h1>
         </a>
-    
-        <div class="navbarProfile" (click)="openSidebarMenu()">
+
+        <div class="searchbar-container">
+            <app-searchbar/>
+        </div>
+
+        <div class="navbarProfile" (click)="openSidebarMenu($event)">
             <img src="{{profilePicture}}" alt="">
         </div>
     </div>
 
-    <div class="linksContainer">
+    <div class="linksContainer" (leftBoundary)="closeSidebarMenu()">
         <div class="linksHeader">
             <div class="user-data">
                 <img src="{{profilePicture}}" alt="">
@@ -21,11 +25,10 @@
         </div>
 
         <hr>
-        <span routerLink="/postupload"><i class="bi bi-file-earmark-arrow-up"></i> Poszt feltöltés</span>
+
+        <span routerLink="/postupload"><i class="bi bi-file-earmark-arrow-up"></i> Poszt létrehozása</span>
         <span routerLink="/user/{{username}}"><i class="bi bi-person"></i> Saját profil</span>
         <span routerLink="/"><i class="bi bi-gear"></i> Beállítások</span>
         <span (click)="logout()"><i class="bi bi-box-arrow-right"></i> Kijelentkezés</span>
     </div>
-
-    <div id="overlay" (click)="closeSidebarMenu()"></div>
 </nav>

@@ -1,148 +1,145 @@
 @use "../../../styles.scss" as *;
 
-.openFilterButton{
-    display: none;
+.sidebar{
     position: fixed;
-    align-items: center;
-    font-size: 25px;
-    margin-top: 2px;
-    padding: 2px;
-    border-radius: 10px;
-    transition: .5s;
-}
-
-label{
-    color: $dark-text-color;
-}
-
-.openFilterButton:hover{
-    background-color: $light-background-color;
-}
-
-.closeFilterButton{
-    display: none;
-    justify-self: flex-end;
-    font-size: 22px;
-    border-radius: 5px;
-    margin: 2px;
-    cursor: pointer;
+    width: 60px;
+    height: calc(100% - 55px);
+    padding: 2px 10px;
     transition: .2s;
-    color: $dark-button-close-color;
-}
-
-.closeFilterButton:hover{
-    color: $dark-button-close-color;
-    background-color: $dark-button-close-hover-background-color;
-}
-
-
-aside{
-    position: sticky;
-    top: 55px;
+    z-index: 50;
+    box-shadow: 2px 0 10px 6px rgba(0, 0, 0, .3);
+    border-right: 1px solid $dark-border-color;
+    color: $dark-text-color;
     background-color: $dark-background-color;
 }
 
-.sidebarContainer{
-    width: 250px;
-    height: calc(100vh - 55px);
-    border-right: 1px solid $dark-border-color;
-    padding: 5px;
+.sidebar.open{
+    width: 15rem;
+}
+
+.sidebar-header .toggle{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 10px;
+    right: -24px;
+    font-size: 18px;
+    border-radius: 100%;
+    transition: .2s;
+    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.4);
+    border: 1px solid $dark-border-color;
+    background-color: $dark-background-color;
+}
+
+.sidebar-header .toggle:hover{
+    background-color: $dark-content-hover-background-color;
+}
+
+.sidebar.open .sidebar-header .toggle{
+    transform: rotateZ(180deg);
+}
+
+.sidebar .text, .sidebar .category-list{
+    opacity: 0;
+    pointer-events: none;
+    transition: .2s;
+}
+
+.sidebar.open .text, .sidebar.open .category-list{
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.sidebar-header{
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.sidebar-header i:first-child{
+    font-size: 1.8rem;
+    margin-left: 5px;
+}
+
+.sidebar-header .text{
+    white-space: nowrap;
+    font-size: 20px;
+    font-size: 1.25rem;
+    margin-left: 20px;
+    overflow: hidden;
+}
+
+.category-list{
+    max-height: calc(100% - 100px);
     overflow-y: scroll;
+    overflow-x: hidden;
     scrollbar-width: none;
     overscroll-behavior: contain;
-    transition: .2s;
-    background-color: $dark-background-color;
-}
-
-.sidebarContainer hr{
-    margin: 0;
-    padding: 0;
-}
-
-.searchBar i{
-    position: absolute;
-    text-indent: 5px;
-    font-size: 20px;
-}
-
-.searchBar input{
-    width: 100%;
-    border-radius: 20px;
-    border: 1px solid $dark-border-color;
-    text-indent: 35px;
-    font-size: 18px;
-    user-select: none;
-}
-
-.searchBar input:hover{
-    border: 1px solid $dark-border-color;
-}
-
-.selectedCategoriesContainer{
-    margin: 5px;
-}
-
-.filterButton{
-    width: 100%;
-    height: 30px;
-    border-radius: 50px;
-    transition: .2s;
-    background-color: $button-background-color;
-    color: $button-text-color;
-}
-
-.filterButton:hover{
-    color: $button-text-hover-color;
-    background-color: $button-hover-background-color;
-}
-
-.filterButton:active{
-    color: $button-active-text-color;
-    background-color: $button-active-background-color;
-}
-
-.filterButton:hover{
-    background-color: $button-hover-background-color;
-}
-
-.categoryContainer{
-    display: flex;
-    flex-wrap: wrap;
 }
 
 .category{
-    padding-right: 10px;
-    padding-left: 10px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    font-size: 15px;
-    border: 1px solid $dark-border-color;
-    border-radius: 20px;
-    margin: 5px;
-    color: $dark-text-color;
-    user-select: none;
-    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 3.2rem;
+    padding: 2px;
+    margin-bottom: 10px;
+    border-radius: 10px;
     transition: .2s;
+    overflow: hidden;
+    user-select: none;
+    border: 1px solid $dark-border-color;
+    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.4);
 }
 
 .category:hover{
+    background-color: $dark-content-hover-background-color;
+}
+
+.category input{
+    margin-left: 20px;
+    margin-right: 20px;
+    scale: 1.25;
+}
+
+.categoryFilter{
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 35px;
+    height: 2.3rem;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
     border: 1px solid $dark-border-color;
     background-color: $dark-content-background-color;
 }
 
-@media screen and (max-width: 768px){
-    .openFilterButton, .closeFilterButton{
-        display: flex;
-    }
+.categoryFilter i{
+    display: flex;
+    align-items: center;
+    padding: 3px;
+    height: 100%;
+    margin-left: 8px;
+    font-size: 1rem;
+}
 
-    .sidebarContainer{
-        position: fixed;
-        left: -100%;
-        opacity: 0;
-    }
+.categoryFilter input{
+    width: 100%;
+    height: 100%;
+    font-size: 1rem;
+    text-indent: 8px;
+    user-select: none;
+    color: $dark-text-color;
+    background-color: transparent;
+}
 
-    .sidebarContainer.open{
-        left: 0;
-        opacity: 1;
+@media screen and (max-width: 800px) {
+    .category input{
+        scale: 1.15;
     }
 }
