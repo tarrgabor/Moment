@@ -1,1 +1,95 @@
 @use "../../../styles.scss" as *;
+
+.mainContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  width: 100%; 
+}
+
+.datacard {
+  display: flex;
+  flex-direction: row;
+  color: white;
+  border-radius: 9px;
+  background-color: $dark-content-background-color;
+  width: 95%;
+  margin-top: 10px;
+  padding: 20px;
+  border-radius: 10px;
+  gap: 10px;
+  margin-bottom: 15px;
+  
+
+  @media (max-width: 1024px) {
+    width: 90%;
+  }
+
+  @media (max-width: 768px) {
+    width: 85%;
+  }
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    text-align: center;
+    width: 95%;
+    padding: 15px;
+  }
+
+  @media (max-width: 300px) {
+    flex-direction: column;
+    text-align: center;
+    width: 100%;
+    padding: 10px;
+  }
+
+}
+
+.datacard img {
+  border-radius: 100%;
+  height: 4em;
+  width: 4em;
+
+  @media (max-width: 480px) {
+    height: 4em;
+    width: 4em;
+  }
+}
+
+#username{
+  margin-top: 10px;
+  text-align: center;
+}
+
+.kovetok, .kovetesek{
+  display: flex;
+  flex-direction: column;
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+app-follow-button{
+  margin-left: auto;
+  margin-top: 10px;
+  @media (max-width: 480px) {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
