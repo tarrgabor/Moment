@@ -25,7 +25,6 @@ export class UploadPostComponent implements OnInit {
   @ViewChild("postDescription") postDescription!: GeneralTextareaComponent;
 
   @ViewChild("categoryOptions") categoryOptions!: GeneralDropdownComponent
-  @ViewChild("visibilityOptions") visibilityOptions!: GeneralDropdownComponent
 
   constructor(
     private message: MessageService,
@@ -42,17 +41,6 @@ export class UploadPostComponent implements OnInit {
       });
 
       this.categoryOptions.getOptions(options);
-
-      this.visibilityOptions.getOptions([
-        {
-          id: "1",
-          text: "Mindenkinek látható"
-        },
-        {
-          id: "0",
-          text: "Csak ön számára"
-        }
-      ]);
     });
   }
   
@@ -111,21 +99,12 @@ export class UploadPostComponent implements OnInit {
     formData.append("title", this.postTitle.getValue());
     formData.append("description", this.postDescription.getValue());
     formData.append("categoryID", this.categoryOptions.getValue());
-    formData.append("visible", this.visibilityOptions.getValue());
     formData.append("file", this.imageInput.nativeElement.files[0]);
 
     this.api.createPost("posts", formData).subscribe((res: any) => {
       if (res.success)
       {
-        if (Number(this.visibilityOptions.getValue()))
-        {
-          this.router.navigate([`/post/${res.id}`])
-        }
-        else
-        {
-          this.router.navigate(["/"]);
-        }
-        
+        this.router.navigate([`/post/${res.id}`]);
         return;
       }
 

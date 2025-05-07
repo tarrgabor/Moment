@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-follow-button',
@@ -8,23 +8,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrl: './follow-button.component.scss'
 })
 
-export class FollowButtonComponent implements OnInit{
-  isFollowing = false;
-
-  followingStatus = "";
-
-  ngOnInit()
-  {
-    if (this.isFollowing)
-    {
-      return this.followingStatus = "Követem";
-    }
-
-    return this.followingStatus = "Követés"
-  }
-
-  toggleFollow(e: Event, table: string)
-  {
-    e.preventDefault();
-  }
+export class FollowButtonComponent {
+  @Input("isFollowed") followed: boolean = false;
 }

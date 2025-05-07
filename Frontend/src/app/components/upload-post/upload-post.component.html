@@ -23,8 +23,6 @@
         <app-general-textarea #postTitle [getTitle]="'Cím'" [getMaxLength]="120"/>
         <app-general-textarea #postDescription [getTitle]="'Leírás'" [getMaxLength]="600"/>
 
-        <app-general-dropdown #visibilityOptions class="dropdown"/>
-
-        <app-general-button [getText]="'Poszt létrehozása'" (click)="createPost()"/>
+        <app-general-button [getText]="'Poszt létrehozása'" (click)="createPost()" class="create-button"/>
     </div>
 </div>

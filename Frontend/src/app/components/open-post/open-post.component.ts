@@ -30,7 +30,6 @@ export class OpenPostComponent implements OnInit{
   @ViewChild("postTitle") postTitle!: GeneralTextareaComponent;
   @ViewChild("postDescription") postDescription!: GeneralTextareaComponent;
   @ViewChild("categoryOptions") categoryOptions!: GeneralDropdownComponent
-  @ViewChild("visibilityOptions") visibilityOptions!: GeneralDropdownComponent
 
   constructor(
     private api: ApiService,
@@ -98,17 +97,6 @@ export class OpenPostComponent implements OnInit{
       });
     
       this.categoryOptions.getOptions(options);
-
-      this.visibilityOptions.getOptions([
-        {
-          id: "1",
-          text: "Mindenkinek látható"
-        },
-        {
-          id: "0",
-          text: "Csak ön számára"
-        }
-      ]);
     });
   }
 
@@ -117,8 +105,7 @@ export class OpenPostComponent implements OnInit{
     this.api.updatePost("posts", this.postData.postID, {
         title: this.postTitle.getValue(),
         description: this.postDescription.getValue(),
-        categoryID: this.categoryOptions.getValue(),
-        visible: this.visibilityOptions.getValue()
+        categoryID: this.categoryOptions.getValue()
       }).subscribe((res: any) => {
       if (res.success)
       {

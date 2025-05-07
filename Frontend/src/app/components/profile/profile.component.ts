@@ -1,26 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
-import { LightboxComponent } from '../lightbox/lightbox.component';
-import { PostContainerComponent } from '../post-container/post-container.component';
-import { AuthService } from '../../services/auth.service';
-import { FollowButtonComponent } from '../follow-button/follow-button.component';
-import { ApiService } from '../../services/api.service';
 import { SidebarFilterComponent } from '../sidebar-filter/sidebar-filter.component';
-import { HttpClient } from '@angular/common/http';
-
+import { LightboxComponent } from '../lightbox/lightbox.component';
+import { ApiService } from '../../services/api.service';
+import { Post } from '../../interfaces/interfaces';
+import { PostComponent } from '../post/post.component';
+import { IntersectionObserverComponent } from '../intersection-observer/intersection-observer.component';
+import { LoadingComponent } from '../loading/loading.component';
+import { FollowButtonComponent } from '../follow-button/follow-button.component';
+import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
+import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
 
 @Component({
   selector: 'app-profile',
-imports: [NavbarComponent, LightboxComponent, PostContainerComponent, FollowButtonComponent, SidebarFilterComponent],
+  imports: [CommonModule, NavbarComponent, SidebarFilterComponent, LightboxComponent, PostComponent, IntersectionObserverComponent, LoadingComponent, FollowButtonComponent, PageNotFoundComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
 
-export class ProfileComponent {
-  constructor(private auth: AuthService, private api: ApiService, private http: HttpClient){}
-  
-  isFollowersList = false;
-  isFollowsList = false;
+export class ProfileComponent implements OnInit{
+  constructor(
+    private api: ApiService,
+    private auth: AuthService
+  ){}
 
   profile: any = {
     username: "",
@@ -32,31 +35,81 @@ export class ProfileComponent {
     status: ""
   }
 
+  posts: Post[] = [];
 
-  ngOnInit(): void {
-    document.body.style.overflow = "auto";
-    
-    this.fetchProfileData();
-  }
+  isFetching: boolean = false;
+  hasMoreData: boolean = true;
+  userFound = true;
 
-  togglePopupFollowers() {
-    this.isFollowersList = !this.isFollowersList;
-  }
+  cursor: string = "";
 
-  togglePopupFollows() {
-    this.isFollowsList = !this.isFollowsList;
-  }
+  username: string = "";
 
-  closePopup() {
-    this.isFollowersList = false;
-    this.isFollowsList = false;
-  }
+  self: boolean = false;
 
-  fetchProfileData()
+  ngOnInit()
   {
-    this.api.getProfile(window.location.pathname.split('/')[2]).subscribe((res: any) => {
+    this.username = window.location.pathname.split('/')[2];
+    this.getUserData();
+
+    if (this.auth.getLoggedInUser().username == this.username)
+    {
+      this.self = true;
+    }
+  }
+
+  getUserData()
+  {
+    this.api.getProfile(this.username).subscribe((res: any) => {
       this.profile = res.user;
+
+      if (!res.success)
+      {
+        this.userFound = false;
+      }
+    });
+  }
+
+  fetchData()
+  {
+    const searchParams = new URLSearchParams();
+
+    this.cursor ? searchParams.set("cursor", this.cursor) : null;
+
+    if (this.hasMoreData)
+    {
+      this.isFetching = true;
+
+      this.api.getUsersPosts("posts", this.username, searchParams.toString()).subscribe((res: any) => {
+        this.posts.push(...res.posts as Post[]);
+
+        this.cursor = String(res.nextCursor).replace(' ', '+');
+
+        if (res.posts.length == 0)
+        {
+          this.hasMoreData = false;
+        }
+      })
+
+      this.isFetching = false;
+    }
+  }
+
+  toggleFollow()
+  {
+    this.api.toggleFollow("users", this.username).subscribe((res: any) => {
+      if (res.success)
+      {
+        this.profile.followed = res.followed;
+
+        if (res.followed)
+        {
+          this.profile.followerCount++;
+          return;
+        }
+
+        this.profile.followerCount--;
+      }
     });
   }
 }
-

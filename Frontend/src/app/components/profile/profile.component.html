@@ -1,64 +1,33 @@
-<app-navbar></app-navbar>
+<app-navbar/>
 
-<div class="mainContainer">
+<app-sidebar-filter/>
 
-    <app-sidebar-filter/>
+<div class="main-container" style="margin-left: 50px;" *ngIf="userFound">
+    <div class="content-container">
+        <div class="profile-card">
+            <div class="profile-data">
+                <img src="{{profile.profilePicture}}">
 
-    <main class="contentContainer">
-
-        <div class="datacard">
-            <div class="profil">
-                <img src="{{profile.profilePicture}}" alt="">
-                
-                
+                <div class="profile-info">
+                    <h5 class="username">{{profile.username}}</h5>
+                    <div>Kővetők: {{profile.followerCount}}</div>
+                    <div>Követések: {{profile.followedCount}}</div>
+                </div>
             </div>
-            
-            <p id="username">{{profile.username}}</p>
 
-                <div class="kovetok">
-                    <p>{{ profile.followerCount }}</p>
-                    <span (click)="togglePopupFollwers()">Követő</span>
-                </div>
-
-                <div class="kovetesek">
-                    <p>{{ profile.followedCount }}</p>
-                    <span (click)="togglePopupFollows()">Követés</span>
-                </div>
-                
-                <div *ngIf="isFollowersList" class="popup-overlay" (click)="closePopup()">
-  
-                    <div class="popup-container" (click)="$event.stopPropagation()">
-                      
-                      <i class="bi bi-x-lg closeMenuButton" (click)="closeSidebarMenu()"></i>
-                      
-                      <div class="popup-content">
-                        
-                      </div>
-                    </div>
-                  </div>
-
-                  <div *ngIf="isFollowsList" class="popup-overlay" (click)="closePopup()">
-  
-                    <div class="popup-container" (click)="$event.stopPropagation()">
-                      
-                      <i class="bi bi-x-lg closeMenuButton" (click)="closeSidebarMenu()"></i>
-                      
-                      <div class="popup-content">
-                        
-                      </div>
-                    </div>
-                  </div>
-
-            <app-follow-button/>
-
+            <app-follow-button [isFollowed]="profile.followed" (click)="toggleFollow()" *ngIf="!self"/>
         </div>
-        
-        <app-post-container class="postContainer"/>
 
-    </main>
+        <br>
+
+        <app-post *ngFor="let post of posts" [getPostData]="post"/>
+
+        <app-intersection-observer (intersecting)="fetchData()"/>
+
+        <app-loading *ngIf="isFetching"/>
+    </div>
 </div>
 
 <app-lightbox/>
 
-
-
+<app-page-not-found *ngIf="!userFound"/>

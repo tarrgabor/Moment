@@ -99,19 +99,25 @@ router.post("/login", async (req, res) => {
 router.get("/profile/:username", tokenCheck, async (req, res) => {
     try
     {
-        const user = await User.findOne({where: {username: req.params.username},
-            attributes:
-            {
-                exclude: ["id", "password"]
-            }
-        });
+        const query =
+        `SELECT
+        u.username,
+        u.profilePicture,
+        u.followerCount,
+        u.followedCount,
+        IF(uf.followerID = :userID, 1, 0) as "followed"
+        FROM users u
+        LEFT JOIN userfollows uf ON u.id = uf.followedID
+        WHERE u.username = :username`;
 
-        if (user == null)
+        const user = await db.query(query, {type: QueryTypes.SELECT, replacements: {userID: req.user.id, username: req.params.username}});
+
+        if (user[0] == null)
         {
             return sendMessage(res, 200, false, "A felhasználó nem található!");
         }
 
-        res.status(200).json({success: true, user});
+        res.status(200).json({success: true, user: user[0]});
     }
     catch
     {

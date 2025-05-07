@@ -51,9 +51,9 @@ export class ApiService {
     return this.http.get(`${this.serverURL}/${table}/${postID}`, this.tokenHeader());
   }
 
-  getUsersPosts(table: string, query?: string)
+  getUsersPosts(table: string, username: string, query?: string)
   {
-    return this.http.get(`${this.serverURL}/${table}?${query ? query : ''}`, this.tokenHeader());
+    return this.http.get(`${this.serverURL}/${table}/user/${username}?${query ? query : ''}`, this.tokenHeader());
   }
 
   createPost(table: string, data: object)
@@ -99,6 +99,11 @@ export class ApiService {
   toggleLike(table: string, id: string)
   {
     return this.http.post(`${this.serverURL}/${table}/like/${id}`, null, this.tokenHeader());
+  }
+
+  toggleFollow(table: string, username: string)
+  {
+    return this.http.post(`${this.serverURL}/${table}/follow/${username}`, null, this.tokenHeader());
   }
 
   getProfile(username: string)
