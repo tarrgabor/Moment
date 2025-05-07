@@ -1,47 +1,71 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../navbar/navbar.component';
-import { ReportsComponent } from '../reports/reports.component';
-import { CategoryUploadComponent } from '../category-upload/category-upload.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { ApiService } from '../../services/api.service';
+import { FormsModule } from '@angular/forms';
+import { MessageService } from '../../services/message.service';
+import { DialogService } from '../../services/dialog.service';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-admin-page',
   standalone: true,
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    NavbarComponent,
-    ReportsComponent,
-    CategoryUploadComponent
-  ],
+  imports: [CommonModule, NavbarComponent, FormsModule, DialogComponent],
   templateUrl: './admin-page.component.html',
   styleUrls: ['./admin-page.component.scss']
 })
 export class AdminPageComponent implements OnInit {
-  activeTabId: string = 'general';
-  users: any[] = [];
+  activeTabId: string = 'categories';
+  categories: any[] = [];
 
-  constructor(private http: HttpClient) {}
+  newCategoryName: string = "";
 
-  ngOnInit(): void {
-    this.getAllUsers();
+  constructor(
+    private api: ApiService,
+    private message: MessageService,
+    private dialog: DialogService
+  ) {}
+
+  ngOnInit()
+  {
+    this.getCategories();
   }
 
-  getAllUsers(): void {
-    this.http.get<any>('http://localhost:3000/api/users/all', {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
+  getCategories()
+  {
+    this.api.getCategories("categories").subscribe((res: any) => {
+      this.categories = res;
+    })
+  }
+
+  createCategory()
+  {
+    this.api.createCategory("categories", this.newCategoryName).subscribe((res: any) => {
+      if (res.success)
+      {
+        this.message.success(res.message);
+        this.categories.push({id: res.categoyID, name: this.newCategoryName});
+        this.newCategoryName = "";
+        return;
       }
-    }).subscribe({
-      next: (res) => {
-        if (res.success) {
-          this.users = res.users;
+
+      this.message.error(res.message);
+    });
+  }
+
+  deleteCategoryByID(id: string)
+  {
+    this.dialog.showDialog(() => {
+      this.api.deleteCategory("categories", id).subscribe((res: any) => {
+        if (res.success)
+        {
+          this.message.success(res.message);
+          this.categories = this.categories.filter(category => category.id !== id);
+          return;
         }
-      },
-      error: (err) => {
-        console.error('Nem sikerült betölteni a felhasználókat:', err);
-      }
+
+        this.message.error(res.message);
+      });
     });
   }
 }

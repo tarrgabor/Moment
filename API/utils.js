@@ -84,6 +84,14 @@ function tokenCheck(req, res, next){
     }
 }
 
+function adminCheck(req, res, next){
+    if (req.user.role !== "admin") {
+        return sendMessage(res, 200, false, "Nincs jogosultságod a művelethez!");
+    }
+
+    next();
+}
+
 function formatFileName(fileName){
     const originalname = fileName.replaceAll(' ', '_');
     const name = originalname.substring(0, originalname.lastIndexOf('.'));
@@ -239,6 +247,7 @@ async function sendResetEmail(email, token) {
 module.exports = {
     sendMessage,
     tokenCheck,
+    adminCheck,
     formatFileName,
     uploadImage,
     sendResetEmail,

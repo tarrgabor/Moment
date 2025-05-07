@@ -318,38 +318,4 @@ router.patch('/reset/password', async (req, res) => {
     }
 });
 
-// Get all users (only accessible by admin)
-router.get("/users/all", tokenCheck, async (req, res) => {
-    
-    if (req.user.role !== "admin") {
-        return sendMessage(res, 403, false, "Nincs jogosultságod a művelethez!");
-    }
-
-    try {
-        const users = await User.findAll({
-            attributes: [
-                "id",
-                "username",
-                "email",
-                "role",
-                "profilePicture",
-                "followerCount",
-                "status",
-                "createdAt"
-            ],
-            order: [["createdAt", "DESC"]] 
-        });
-
-        if (!users.length) {
-            return sendMessage(res, 200, false, "Nincsenek felhasználók!");
-        }
-
-        res.status(200).json({ success: true, users });
-    } catch (error) {
-        console.error("Get users error:", error);
-        sendMessage(res, 500, false, "Hiba a felhasználók lekérdezése közben!");
-    }
-});
-
-
 module.exports = router;

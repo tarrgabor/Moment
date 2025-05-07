@@ -67,7 +67,7 @@ router.get('/', tokenCheck, async (req, res) => {
             ${q ? `AND u.username like :q` : ``}
             ${cursor ? `AND u.createdAt > :cursor` : ``}
             ORDER BY u.createdAt ASC, u.username DESC
-            LIMIT 15`
+            LIMIT 20`
 
             const users = await db.query(query, {type: QueryTypes.SELECT, replacements: {q: "%" + q + "%", cursor: cursor ? cursor[0] : ""}});
 

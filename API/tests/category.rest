@@ -38,16 +38,6 @@ Authorization: Bearer {{token}}
     "name": "Tájkép"
 }
 
-### update category by categoryID
-
-PATCH {{serverURL}}/categories/update/{{categoryID}}
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-{
-    "name": "Megbeszélés"
-}
-
 ### delete category by categoryID
 
 DELETE {{serverURL}}/categories/delete/{{categoryID}}

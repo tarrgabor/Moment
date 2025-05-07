@@ -116,6 +116,16 @@ export class ApiService {
     return this.http.get(`${this.serverURL}/${table}`, this.tokenHeader());
   }
 
+  createCategory(table: string, name: string)
+  {
+    return this.http.post(`${this.serverURL}/${table}/create`, {name}, this.tokenHeader());
+  }
+
+  deleteCategory(table: string, id: string)
+  {
+    return this.http.delete(`${this.serverURL}/${table}/delete/${id}`, this.tokenHeader());
+  }
+
   search(parameters: string)
   {
     return this.http.get(`${this.serverURL}/search/searchbar?${parameters}`, this.tokenHeader());

@@ -1,83 +1,122 @@
 @use "../../../styles.scss" as *;
 
 .tab-container {
-    width: 100%;
-    max-width: 800px;
-    margin: 30px auto;
+  width: 100%;
+  max-width: 800px;
+  margin: 30px auto;
     
-    color: $dark-text-color;
+  color: $dark-text-color;
+}
+  
+.tab-header {
+  display: flex;
+  justify-content: center; 
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px 0;
+  border-bottom: 1px solid $dark-border-color;
+}
+  
+li {
+  padding: 10px 20px;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s;
+  color: $dark-link-color;
+  background-color: transparent;
+  user-select: none;
+  
+  &.active {
+    border-bottom: 1px solid $theme-color;
+    font-weight: bold;
+    color: $theme-color;
   }
   
-  .tab-header {
-    display: flex;
-    justify-content: center; 
-    list-style: none;
-    padding: 0;
-    margin: 0 0 10px 0;
-    border-bottom: 1px solid $dark-border-color;
-  
-    li {
-      padding: 10px 20px;
-      cursor: pointer;
-      border-bottom: 1px solid transparent;
-      transition: all 0.3s;
-      color: $dark-link-color;
-      background-color: transparent;
-  
-      &.active {
-        border-bottom: 1px solid $theme-color;
-        font-weight: bold;
-        color: $theme-color;
-      }
-  
-      &:hover {
-        background-color: $dark-content-hover-background-color;
-        color: $dark-link-hover-color;
-      }
-    }
+  &:hover {
+    background-color: $dark-content-hover-background-color;
+    color: $dark-link-hover-color;
   }
+}
   
-  .tab-body {
-    padding: 20px;
-    border: 1px solid $dark-border-color;
-    border-radius: 6px;
-    background-color: $dark-content-background-color;
-    color: $dark-text-color;
- 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-  
-      th, td {
-        text-align: left;
-        padding: 12px;
-        border-bottom: 1px solid $dark-border-color;
-      }
-  
-      th {
-        background-color: $dark-content-background-color;
-        color: $dark-text-color;
-      }
-  
-      tr:hover {
-        background-color: $dark-content-hover-background-color;
-      }
-  
-      td {
-        color: $dark-text-color;
-      }
-  
-      .admin {
-        color: $theme-color;
-        font-weight: bold;
-      }
-  
-      .banned {
-        color: red;
-        font-weight: bold;
-      }
-    }
+.tab-body {
+  padding: 20px;
+  border: 1px solid $dark-border-color;
+  border-radius: 6px;
+  background-color: $dark-content-background-color;
+  color: $dark-text-color;
+}
+
+.createField{
+  min-width: 180px;
+  height: 35px;
+  border-radius: 10px;
+  text-indent: 15px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  background-color: $dark-input-background-color;
+  color: $dark-input-text-color;
+}
+
+.createButton{
+  height: 35px;
+  border-radius: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 5px 10px;
+  background-color: $button-background-color;
+  color: $button-text-color;
+
+  &:hover{
+    color: $button-text-hover-color;
+    background-color: $button-hover-background-color;
   }
-  
-  
+
+  &:active{
+    color: $button-active-text-color;
+    background-color: $button-active-background-color;
+  }
+}
+
+
+table {
+  width: 100%;
+  margin-top: 6px;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  background-color: $dark-content-background-color;
+  color: $dark-text-color;
+  border-radius: 10px;
+}
+
+tr {
+  border: 1px solid $dark-border-color;
+  border-radius: 10px;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+tr:hover {
+  background-color: $dark-content-hover-background-color;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+td{
+  padding: 8px 10px;
+}
+
+.delete-button{
+  display: flex;
+  float: right;
+  width: fit-content;
+  padding: 5px;
+  padding-right: 12px;
+  transition: .2s;
+  color: rgb(240, 30, 30);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.delete-button:hover{
+  background-color: rgb(70, 40, 40);;
+}
