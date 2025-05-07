@@ -1,22 +1,37 @@
 @use "../../../styles.scss" as *;
 
-.post{
+.content-container{
     display: flex;
-    flex-direction: column;
+    overflow-x: hidden;
+}
+
+.post-container{
+    display: flex;
+    width: calc(100% - 50px);
+    padding: 15px;
+    justify-content: center;
+}
+
+.filterSidebar{
+    margin-right: 55px;
+}
+
+.post{
     color: $dark-text-color;
-    margin: auto;
-    margin-top:30px;
-    margin-bottom:30px;
-    border-radius: 15px;
+    margin-top: 6px;
+    margin-bottom: 30px;
+    width: 100%;
     max-width: 850px;
-    padding: 10px;
+}
+
+.post-header{
+    display: flex;
+    justify-content: space-between;
 }
 
 .post-title{
-    font-size: 22px;
-    margin: 0;
+    font-size: 1.3rem;
     word-wrap: break-word;
-    width: 100%;
 }
 
 .post-category{
@@ -25,7 +40,7 @@
     padding-top: 2px;
     padding-bottom: 2px;
     margin-bottom: 4px;
-    font-size: 14px;
+    font-size: .85rem;
     width: fit-content;
     border-radius: 20px;
     background-color: $dark-button-background-color;
@@ -35,8 +50,47 @@
     margin-bottom: 10px;
 }
 
+.post-footer{
+    display: flex;
+}
+
 .post-description{
     word-wrap: break-word;
     margin-top: 5px;
     margin-bottom: 5px;
+    font-size: 1rem;
+}
+
+.editor-buttons-container{
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.editor-button{
+    padding: 4px;
+    margin: 2px;
+    border-radius: 10px;
+    outline: none;
+    background-color: transparent;
+    color: $dark-text-color;
+}
+
+.cancel-button{
+    background-color: $dark-content-background-color;
+}
+
+.cancel-button:hover{
+    background-color: $dark-content-hover-background-color;
+}
+
+.save-button{
+    color: $dark-text-color;
+    background-color: $button-background-color;
+    margin-left: 2px;
+}
+
+.save-button:hover{
+    color: $button-text-hover-color;
+    background-color: $button-hover-background-color;
 }

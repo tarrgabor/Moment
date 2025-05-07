@@ -9,5 +9,6 @@
 
     <div class="post-footer">
         <app-like-button [getType]="'posts'" [getID]="postData.postID" [getLikes]="postData.likes" [getIsLiked]="postData.liked"/>
+        <app-copy (click)="copyURL()" title="URL másolása"/>
     </div>
 </a>

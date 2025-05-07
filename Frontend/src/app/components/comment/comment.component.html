@@ -2,10 +2,7 @@
     <div class="comment-header">
         <app-user-content-header [getProfilePicture]="commentData.profilePicture" [getUsername]="commentData.username" [getCreatedAt]="commentData.createdAt"/>
 
-        <div *ngIf="commentData.owned">
-            <i class="bi bi-pencil edit-button" (click)="openUpdate()"></i>
-            <i class="bi bi-trash delete-button" (click)="deleteComment()"></i>
-        </div>
+        <app-content-menu *ngIf="commentData.owned" (onModify)="openUpdate()" (onDelete)="deleteComment()"/>
     </div>
 
     <div class="comment-content">

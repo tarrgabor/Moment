@@ -19,51 +19,6 @@ cloudinary.config({
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-// Get posts with keyset pagination
-router.get('/', tokenCheck, async (req, res) => {
-    const oldestPost = req.query.oldestPost?.split('|');
-
-    let categories = [];
-
-    req.query.categories?.split('|').forEach(category => {
-        categories.push(`"${category}"`);
-    });
-
-    const query =
-        `SELECT
-        u.username,
-        u.profilePicture,
-        p.id AS 'postID',
-        p.title,
-        p.description,
-        c.name as 'category',
-        p.image,
-        p.likes,
-        DATE_FORMAT(p.createdAt, '%Y-%m-%d %H:%i:%s') AS createdAt,
-        IF(pl.postID IS NOT NULL, 1, 0) AS liked
-        FROM posts p
-        LEFT JOIN categories c ON c.id = p.categoryID
-        LEFT JOIN users u ON u.id = p.userID
-        LEFT JOIN postlikes pl ON pl.postID = p.id AND pl.userID = :userID
-        WHERE p.visible = 1
-        ${categories.length ? `AND c.name IN (${categories})` : ``}
-        ${oldestPost ? `AND (p.createdAt < '${oldestPost[0]}' OR (p.createdAt = '${oldestPost[0]}' AND p.id < '${oldestPost[1]}'))` : ``}
-        ORDER BY p.createdAt DESC, p.id DESC LIMIT 5`
-
-    try {
-        const posts = await db.query(query, {type: QueryTypes.SELECT, replacements: {userID: req.user.id}});
-
-        const oldestPost = posts.length ? `${posts.at(-1).createdAt}|${posts.at(-1).postID}` : null;
-        
-        res.status(200).json({ posts, oldestPost });
-    }
-    catch
-    {
-        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
-    }
-});
-
-
 // Get all posts
 router.get("/get/all", tokenCheck, async (req, res) => {
     try
@@ -75,6 +30,47 @@ router.get("/get/all", tokenCheck, async (req, res) => {
         sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
     }
 })
+
+// Get user's posts with keyset pagination
+router.get('/user/:username', tokenCheck, async (req, res) => {
+    const cursor = req.query.cursor?.split('|');
+
+    let nextCursor = null;
+
+    try
+    {
+        const query =
+        `SELECT
+        u.username,
+        u.profilePicture,
+        p.id AS 'postID',
+        p.title,
+        p.description,
+        c.name as 'category',
+        p.image,
+        p.likes,
+        DATE_FORMAT(p.createdAt, '%Y-%m-%d %H:%i:%s') AS createdAt,
+        IF(pl.postID IS NOT NULL, 1, 0) AS liked,
+        IF(p.userID = :userID, 1, 0) as owned
+        FROM posts p
+        LEFT JOIN categories c ON c.id = p.categoryID
+        LEFT JOIN users u ON u.id = p.userID
+        LEFT JOIN postlikes pl ON pl.postID = p.id AND pl.userID = :userID
+        WHERE p.visible = 1 AND u.username = :username
+        ${cursor ? `AND (p.createdAt < '${cursor[0]}' OR (p.createdAt = '${cursor[0]}' AND p.id < '${cursor[1]}'))` : ``}
+        ORDER BY p.createdAt DESC, p.id DESC LIMIT 10`
+
+        const posts = await db.query(query, {type: QueryTypes.SELECT, replacements: {userID: req.user.id, username: req.params.username}});
+
+        nextCursor = posts.length ? `${posts.at(-1).createdAt}|${posts.at(-1).postID}` : null;
+        
+        res.status(200).json({posts, nextCursor});
+    }
+    catch
+    {
+        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
+    }
+});
 
 
 // Get post by postID
@@ -97,12 +93,13 @@ router.get("/:postID", tokenCheck, async (req, res) => {
             p.image,
             p.likes,
             DATE_FORMAT(p.createdAt, '%Y-%m-%d %H:%i:%s') AS createdAt,
+            IF(p.userID = :userID, 1 , 0) as owned,
             IF(pl.postID IS NOT NULL, 1, 0) AS liked
             FROM posts p
             LEFT JOIN categories c ON c.id = p.categoryID
             LEFT JOIN users u ON u.id = p.userID
             LEFT JOIN postlikes pl ON pl.postID = p.id AND pl.userID = :userID
-            WHERE p.visible = 1 AND p.id = :postID`
+            WHERE (p.visible = 1 OR p.userID = :userID) AND p.id = :postID`
 
         const results = await db.query(query, {type: QueryTypes.SELECT, replacements: {postID: req.params.postID, userID: req.user.id}});
         
@@ -116,7 +113,7 @@ router.get("/:postID", tokenCheck, async (req, res) => {
 
 // Create a post
 router.post("/create", tokenCheck, upload.single('file'), async (req, res) => {
-    if (!req.body.title || !req.body.description || !String(req.body.visible) || !req.body.categoryID || !req.file)
+    if (!req.body.title || !req.body.description || !req.body.categoryID || !req.file)
     {
         return sendMessage(res, 200, false, "Hiányzó adatok!");
     }
@@ -141,7 +138,7 @@ router.post("/create", tokenCheck, upload.single('file'), async (req, res) => {
                     fetch_format: "auto"
                 }]
             }),
-            visible: req.body.visible
+            visible: 1
         });
         
         res.status(200).send({success: true, message: "Poszt létrehozva!", id: post.id});
@@ -159,7 +156,7 @@ router.patch("/update/:postID", tokenCheck, async (req, res) => {
         return sendMessage(res, 200, false, "Nem található poszt azonosító!");
     }
 
-    if (!req.body.title || !req.body.description || !String(req.body.visible) || !req.body.categoryID)
+    if (!req.body.title || !req.body.description || !req.body.categoryID)
     {
         return sendMessage(res, 200, false, "Hiányzó adatok!");
     }
@@ -174,8 +171,7 @@ router.patch("/update/:postID", tokenCheck, async (req, res) => {
         await Post.update({
                 title: req.body.title,
                 description: req.body.description,
-                categoryID: req.body.categoryID,
-                visible: req.body.visible
+                categoryID: req.body.categoryID
             }, {
                 where: {id: req.params.postID}
             }

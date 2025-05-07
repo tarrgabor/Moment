@@ -46,6 +46,7 @@ router.post("/registration", async (req, res) => {
             username: req.body.username,
             email: req.body.email,
             password: String(CryptoJS.SHA1(req.body.password)),
+            restoreCode: uuid.v4()
         });
 
         sendMessage(res, 200, true, "Sikeres regisztráció!");
@@ -73,7 +74,7 @@ router.post("/login", async (req, res) => {
             },
             attributes:
             {
-                exclude: ["password", "followerCount", "restoreCode"]
+                exclude: ["password", "followerCount", "followedCount", "createdAt", "restoreCode"]
             }
         });
 
@@ -99,19 +100,25 @@ router.post("/login", async (req, res) => {
 router.get("/profile/:username", tokenCheck, async (req, res) => {
     try
     {
-        const user = await User.findOne({where: {username: req.params.username},
-            attributes:
-            {
-                exclude: ["id", "password"]
-            }
-        });
+        const query =
+        `SELECT
+        u.username,
+        u.profilePicture,
+        u.followerCount,
+        u.followedCount,
+        IF(uf.followerID = :userID, 1, 0) as "followed"
+        FROM users u
+        LEFT JOIN userfollows uf ON u.id = uf.followedID
+        WHERE u.username = :username`;
 
-        if (user == null)
+        const user = await db.query(query, {type: QueryTypes.SELECT, replacements: {userID: req.user.id, username: req.params.username}});
+
+        if (user[0] == null)
         {
             return sendMessage(res, 200, false, "A felhasználó nem található!");
         }
 
-        res.status(200).json({success: true, user});
+        res.status(200).json({success: true, user: user[0]});
     }
     catch
     {
@@ -282,9 +289,9 @@ router.post('/reset/request', async (req, res) => {
 router.patch('/reset/password', async (req, res) => {
     const restoreToken = verifyToken(req.query.token);
 
-    if (!restoreToken.email || !restoreToken.restoreCode)
+    if (!restoreToken || !restoreToken.email || !restoreToken.restoreCode)
     {
-        sendMessage(res, 200, false, "Hiányzó adatok!");
+        return sendMessage(res, 200, false, "Nem megfelelő adatok!");
     }
 
     if (!validatePassword(res, req.body.password, req.body.confirm)) return;

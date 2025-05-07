@@ -9,23 +9,25 @@ import { MainPageComponent } from './components/main-page/main-page.component';
 import { OpenPostComponent } from './components/open-post/open-post.component';
 import { UploadPostComponent } from './components/upload-post/upload-post.component';
 import { AdminPageComponent } from './components/admin-page/admin-page.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { LoginGuard } from './guards/login.guard';
 
 export const routes: Routes = [
     // Possible pages to visit before logging in
     {
-        path: "login", component: LoginComponent
+        path: "login", component: LoginComponent, canActivate: [LoginGuard]
     },
     {
-        path: "registration", component: RegistrationComponent
+        path: "registration", component: RegistrationComponent, canActivate: [LoginGuard]
     },
     {
-        path: "forgot", component: ForgotPasswordComponent
+        path: "forgot", component: ForgotPasswordComponent, canActivate: [LoginGuard]
     },
     {
-        path: "restore", component: RestorePasswordComponent
+        path: "restore", component: RestorePasswordComponent, canActivate: [LoginGuard]
     },
     {
-        path: "postupload", component: UploadPostComponent
+        path: "postupload", component: UploadPostComponent, canActivate: [UserAuthGuard]
     },
     {
         path: "admin", component: AdminPageComponent
@@ -42,7 +44,7 @@ export const routes: Routes = [
         path: "post/:id/:postTitle", component: OpenPostComponent, canActivate: [UserAuthGuard]
     },
     {
-        path: "user/:id", component: PageNotFoundComponent, canActivate: [UserAuthGuard]
+        path: "user/:username", component: ProfileComponent, canActivate: [UserAuthGuard]
     },
 
     // Not valid page entered

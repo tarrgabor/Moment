@@ -51,9 +51,24 @@ export class ApiService {
     return this.http.get(`${this.serverURL}/${table}/${postID}`, this.tokenHeader());
   }
 
+  getUsersPosts(table: string, username: string, query?: string)
+  {
+    return this.http.get(`${this.serverURL}/${table}/user/${username}?${query ? query : ''}`, this.tokenHeader());
+  }
+
   createPost(table: string, data: object)
   {
     return this.http.post(`${this.serverURL}/${table}/create`, data, this.tokenHeader());
+  }
+
+  updatePost(table: string, postID: string, data: object)
+  {
+    return this.http.patch(`${this.serverURL}/${table}/update/${postID}`, data, this.tokenHeader());
+  }
+
+  deletePost(table: string, postID: string)
+  {
+    return this.http.delete(`${this.serverURL}/${table}/delete/${postID}`, this.tokenHeader());
   }
 
   getCommentsUnderPost(table: string, postID: string)
@@ -86,9 +101,29 @@ export class ApiService {
     return this.http.post(`${this.serverURL}/${table}/like/${id}`, null, this.tokenHeader());
   }
 
+  toggleFollow(table: string, username: string)
+  {
+    return this.http.post(`${this.serverURL}/${table}/follow/${username}`, null, this.tokenHeader());
+  }
+
+  getProfile(username: string)
+  {
+    return this.http.get(`${this.serverURL}/users/profile/${username}`, this.tokenHeader())
+  }
+  
   getCategories(table: string)
   {
     return this.http.get(`${this.serverURL}/${table}`, this.tokenHeader());
+  }
+
+  search(parameters: string)
+  {
+    return this.http.get(`${this.serverURL}/search/searchbar?${parameters}`, this.tokenHeader());
+  }
+
+  getContent(parameters: string)
+  {
+    return this.http.get(`${this.serverURL}/search?${parameters}`, this.tokenHeader());
   }
 
   sendEmail(email: string)

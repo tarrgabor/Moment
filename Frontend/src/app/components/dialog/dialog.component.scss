@@ -1,0 +1,46 @@
+@use "../../../styles.scss" as *;
+
+.popup-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 1001;
+}
+
+.popup-box{
+    width: fit-content;
+    height: fit-content;
+    padding: 8px;
+    border-radius: 10px;
+    color: $dark-text-color;
+    background-color: $dark-content-background-color;
+}
+
+.popup-buttons{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+}
+
+.popup-buttons button{
+    padding: 3px 6px;
+    border-radius: 10px;
+}
+
+.cancel-button{
+    background-color: transparent;
+    outline: none;
+    color: $dark-text-color;
+}
+
+.confirm-button{
+    background-color: #e22323;
+    outline: none;
+    color: $dark-text-color;
+}

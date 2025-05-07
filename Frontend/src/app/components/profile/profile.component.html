@@ -1,1 +1,33 @@
-<p>profile works!</p>
+<app-navbar/>
+
+<app-sidebar-filter/>
+
+<div class="main-container" style="margin-left: 50px;" *ngIf="userFound">
+    <div class="content-container">
+        <div class="profile-card">
+            <div class="profile-data">
+                <img src="{{profile.profilePicture}}">
+
+                <div class="profile-info">
+                    <h5 class="username">{{profile.username}}</h5>
+                    <div>Kővetők: {{profile.followerCount}}</div>
+                    <div>Követések: {{profile.followedCount}}</div>
+                </div>
+            </div>
+
+            <app-follow-button [isFollowed]="profile.followed" (click)="toggleFollow()" *ngIf="!self"/>
+        </div>
+
+        <br>
+
+        <app-post *ngFor="let post of posts" [getPostData]="post"/>
+
+        <app-intersection-observer (intersecting)="fetchData()"/>
+
+        <app-loading *ngIf="isFetching"/>
+    </div>
+</div>
+
+<app-lightbox/>
+
+<app-page-not-found *ngIf="!userFound"/>

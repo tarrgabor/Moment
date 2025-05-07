@@ -1,25 +1,49 @@
-<app-navbar></app-navbar>
+<app-navbar/>
 
-<div class="post" *ngIf="fetchedData">
-    <app-user-content-header [getProfilePicture]="postData.profilePicture" [getUsername]="postData.username" [getCreatedAt]="postData.createdAt"/>
+<div class="content-container">
+    <app-sidebar-filter class="filterSidebar"/>
 
-    <div class="post-body">
-        <h2 class="post-title">{{postData.title}}</h2>
+    <div class="post-container">
+        <div class="post" *ngIf="fetchedData">
+            <div class="post-header">
+                <app-user-content-header [getProfilePicture]="postData.profilePicture" [getUsername]="postData.username" [getCreatedAt]="postData.createdAt"/>
 
-        <p class="post-description" [innerHTML]="postData.description"></p>
+                <app-content-menu *ngIf="postData.owned && !isEditing" (onModify)="modifyPost()" (onDelete)="deletePost()"/>
 
-        <p class="post-category">{{postData.category}}</p>
+                <div class="editor-buttons-container"  *ngIf="isEditing">
+                    <button class="editor-button cancel-button" (click)="cancelUpdate()">Mégse</button>
+                    <button #saveButton class="editor-button save-button" (click)="updatePost()">Mentés</button>
+                </div>
+            </div>     
 
-        <app-lightbox-listener [getImage]="postData.image"/>
+            <div class="post-body">
+                <h2 class="post-title" *ngIf="!isEditing">{{postData.title}}</h2>
+                <p class="post-description" [innerHTML]="postData.description" *ngIf="!isEditing"></p>
+                <p class="post-category" *ngIf="!isEditing">{{postData.category}}</p>
+
+                <div *ngIf="isEditing">
+                    <app-general-textarea #postTitle [getTitle]="'Cím'" [getMaxLength]="120" [getInitialText]="postData.title"/>
+                    <app-general-textarea #postDescription [getTitle]="'Leírás'" [getMaxLength]="600" [getInitialText]="postData.description"/>
+                    <br>
+                    <app-general-dropdown #categoryOptions/>
+                    <br>
+                </div>
+        
+                <app-lightbox-listener [getImage]="postData.image"/>
+            </div>
+        
+            <div class="post-footer">
+                <app-like-button [getType]="'posts'" [getID]="postData.postID" [getLikes]="postData.likes" [getIsLiked]="postData.liked"/>
+                <app-copy (click)="copyURL()" title="URL másolása"/>
+            </div>
+        
+            <app-comment-container [getPostID]="postData.postID"/>
+        </div>
     </div>
-
-    <div class="post-footer">
-        <app-like-button [getType]="'posts'" [getID]="postData.postID" [getLikes]="postData.likes" [getIsLiked]="postData.liked"/>
-    </div>
-
-    <app-comment-container [getPostID]="postData.postID"/>
 </div>
 
 <app-lightbox/>
+
+<app-dialog/>
 
 <app-page-not-found *ngIf="!postFound"/>

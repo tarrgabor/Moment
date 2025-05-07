@@ -1,0 +1,41 @@
+<div class="search-container" (leftBoundary)="hideResults()" (click)="showResults()">
+    <div class="searchbar" [ngClass]="{'open': isFocused && data}">
+        <i class="bi bi-search"></i>
+        <input #searchbar type="text" placeholder="Keresés" maxlength="120" spellcheck="false" (input)="updateSearchbar()">
+    </div>
+
+    <div class="results" *ngIf="isFocused && searchbarText">
+        <a class="search-result" href="{{queryString}}">
+            <div class="icon">
+                <i class="bi bi-search"></i>
+            </div>
+            <div class="text">
+                <p>{{searchbarText}}</p>
+            </div>
+        </a>
+
+        <p class="results-type" *ngIf="data?.[0].length">Posztok</p>
+
+        <a class="search-result" *ngFor="let post of data?.[0]" href="/post/{{post.id}}/{{post.title}}">
+            <div class="icon">
+                <i class="bi bi-search"></i>
+            </div>
+            <div class="text">
+                <p class="title">{{post.title}}</p>
+                <p class="info">{{post.likes}} kedvelés</p>
+            </div>
+        </a>
+    
+        <p class="results-type" *ngIf="data?.[1].length">Felhasználók</p>
+    
+        <a class="search-result" *ngFor="let user of data?.[1]" href="/user/{{user.username}}">
+            <div class="icon">
+                <img src="{{user.profilePicture}}">
+            </div>
+            <div class="text">
+                <p class="title">{{user.username}}</p>
+                <p class="info">{{user.followerCount}} követő</p>
+            </div>
+        </a>
+    </div>
+</div>

@@ -1,0 +1,52 @@
+@use "../../../styles.scss" as *;
+
+.user-container{
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    min-height: 5rem;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    transition: .2s;
+    color: $dark-text-color;
+    background-color: $dark-content-background-color;
+}
+
+.user-container:hover{
+    background-color: $dark-content-hover-background-color;
+}
+
+.user-container a{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+.user-data{
+    display: flex;
+    padding: 5px;
+}
+
+.user-data img{
+    width: 3.5em;
+    height: 3.5em;
+    margin-right: 10px;
+    border-radius: 100%;
+}
+
+.user-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.user-info .username{
+    font-size: 1em;
+}
+
+.user-info .user-followerCount{
+    font-size: .8em;
+    color: lightgrey;
+}

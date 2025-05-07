@@ -15,11 +15,6 @@ Content-Type: application/json
     "password": "Titkosjelszo123"
 }
 
-### get few posts with pagination
-GET {{serverURL}}/posts?oldestPost=2025-03-17+17:45:34|f65d79b9-78fa-4e39-a4d2-6475f9135e24&categories=Megbeszélés|Tájkép
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
 ### get all posts
 # @name posts
 GET {{serverURL}}/posts/get/all

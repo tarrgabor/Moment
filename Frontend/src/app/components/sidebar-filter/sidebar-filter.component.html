@@ -1,26 +1,19 @@
-<aside>
-    <i class="bi bi-funnel-fill openFilterButton" (click)="openFilterSidebar()"></i>
+<div #filterSidebar class="sidebar" [ngClass]="{'open': isOpen}" (leftBoundary)="closeSidebar()" (click)="openSidebarFilter()">
+    <div class="sidebar-header">
+        <i class="bi bi-funnel-fill"></i>
+        <p class="text">Kategória szűrő</p>
 
-    <div class="sidebarContainer">
-        <i class="bi bi-x-lg closeFilterButton" (click)="closeFilterSidebar()"></i>
-
-        <div class="searchBar">
-            <i class="bi bi-search"></i>
-            <input type="text" placeholder="Kategória keresése" [(ngModel)]="categoryFilterText" #filter>
-        </div>
-    
-        <div class="selectedCategoriesContainer">
-            <label *ngIf="selectedCategories.length == 0">Nincs kiválasztva kategória</label>
-    
-            <label class="category" *ngFor="let category of selectedCategories" id="{{category.id}}" (click)="toggleCategory(category)">{{category.name}}</label>
-    
-            <button class="filterButton">Szűrés</button>
-        </div>
-    
-        <hr>
-    
-        <div class="categoryContainer">
-            <label class="category" *ngFor="let category of categories | filterCategory: categoryFilterText" id="{{category.id}}" (click)="toggleCategory(category)">{{category.name}}</label>
-        </div>
+        <i class="bi bi-chevron-right toggle" (click)="toggleSidebarFilter($event)"></i>
     </div>
-</aside>
+
+    <div class="categoryFilter" (click)="focusFilter()">
+        <i class="bi bi-search"></i>
+        <input #filter type="text" placeholder="Kategória keresése" maxlength="20" [(ngModel)]="categoryFilterText">
+    </div>
+
+    <div class="category-list">
+        <label class="category" *ngFor="let category of categories | filterCategory: categoryFilterText">
+            <input type="checkbox" name="{{category.name}}" [checked]="category.isSelected" (click)="toggleCategorySelection(category.id)"> {{category.name}}
+        </label>
+    </div>
+</div>
