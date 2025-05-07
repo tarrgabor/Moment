@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 
 export class GeneralInputComponent{
   @Input("getType") inputType: string = "";
+  @Input("getMaxLength") maxLength: number = -1;
   @Input("getPlaceholder") inputPlaceholder: string = "";
 
   inputValue: string = "";

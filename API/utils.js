@@ -55,9 +55,14 @@ function validatePassword(res, password, confirm)
 
 function verifyToken(token)
 {
-    if (!token) return sendMessage(res, 200, false, "Hiányzó token!");
+    if (!token) return;
 
-    return jwt.verify(token, process.env.JWT_SECRET);
+    try{
+        return jwt.verify(token, process.env.JWT_SECRET);
+    }
+    catch{
+        return;
+    }
 }
 
 function tokenCheck(req, res, next){
