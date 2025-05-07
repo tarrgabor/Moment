@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { SidebarFilterComponent } from '../sidebar-filter/sidebar-filter.component';
-import { ToplistComponent } from '../toplist/toplist.component';
 import { LightboxComponent } from '../lightbox/lightbox.component';
 import { ApiService } from '../../services/api.service';
 import { PostComponent } from '../post/post.component';
@@ -13,7 +12,7 @@ import { UserComponent } from '../user/user.component';
 
 @Component({
   selector: 'app-main-page',
-  imports: [NavbarComponent, SidebarFilterComponent, ToplistComponent, LightboxComponent, PostComponent, CommonModule, IntersectionObserverComponent, LoadingComponent, UserComponent],
+  imports: [NavbarComponent, SidebarFilterComponent, LightboxComponent, PostComponent, CommonModule, IntersectionObserverComponent, LoadingComponent, UserComponent],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
 })
