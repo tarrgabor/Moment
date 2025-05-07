@@ -8,6 +8,7 @@ import { UserAuthGuard } from './guards/user-auth-guard';
 import { MainPageComponent } from './components/main-page/main-page.component';
 import { OpenPostComponent } from './components/open-post/open-post.component';
 import { UploadPostComponent } from './components/upload-post/upload-post.component';
+import { AdminPageComponent } from './components/admin-page/admin-page.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { LoginGuard } from './guards/login.guard';
 
@@ -27,6 +28,9 @@ export const routes: Routes = [
     },
     {
         path: "postupload", component: UploadPostComponent, canActivate: [UserAuthGuard]
+    },
+    {
+        path: "admin", component: AdminPageComponent
     },
 
     // Possible pages to visit after logging in

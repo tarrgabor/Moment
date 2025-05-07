@@ -1,0 +1,63 @@
+<app-navbar></app-navbar>
+
+<div class="tab-container">
+  <ul class="tab-header">
+    <li
+      [class.active]="activeTabId === 'general'"
+      (click)="activeTabId = 'general'"
+    >
+      Kategória felvétel
+    </li>
+    <li
+      [class.active]="activeTabId === 'users'"
+      (click)="activeTabId = 'users'"
+    >
+      Reportok 
+    </li>
+    <li
+      [class.active]="activeTabId === 'stats'"
+      (click)="activeTabId = 'stats'"
+    >
+      Felhasználók lista
+    </li>
+  </ul>
+
+  <div class="tab-body">
+    <div *ngIf="activeTabId === 'general'">
+        
+        <app-category-upload></app-category-upload>
+    </div>
+    <div *ngIf="activeTabId === 'users'">
+        <app-reports></app-reports>
+    </div>
+    <div *ngIf="activeTabId === 'stats'" class="user-table-container">
+  <h2>Felhasználók listája</h2>
+
+  <table class="user-table" *ngIf="users.length > 0">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Felhasználónév</th>
+        <th>Email</th>
+        <th>Szerepkör</th>
+        <th>Státusz</th>
+        <th>Követők</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users; index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.role }}</td>
+        <td>{{ user.status }}</td>
+        <td>{{ user.followerCount }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="users.length === 0">Nincs megjeleníthető felhasználó.</p>
+</div>
+
+  </div>
+</div>
