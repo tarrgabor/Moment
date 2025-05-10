@@ -3,7 +3,6 @@ const db = require("./database");
 const { User } = require("./Models/User");
 const { Post } = require("./Models/Post");
 const { Comment } = require("./Models/Comment");
-const { PostReport } = require("./Models/PostReport");
 const { Category } = require("./Models/Category");
 const { PostLike } = require("./Models/PostLike");
 const { CommentLike } = require("./Models/CommentLike");
@@ -26,9 +25,6 @@ function ConnectModels()
 
     User.hasMany(CommentLike, {foreignKey: "userID"});
     Comment.hasMany(CommentLike, {foreignKey: "commentID"});
-
-    User.hasMany(PostReport, {foreignKey: "userID"});
-    Post.hasMany(PostReport, {foreignKey: "postID"});
 
     Comment.hasMany(Reply, {foreignKey: "commentID"});
     Comment.hasMany(Reply, {foreignKey: "replyID"});

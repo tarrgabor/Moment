@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
 
@@ -18,21 +18,12 @@ export class LikeButtonComponent implements OnInit {
 
   @Input("getLikes") likes: number = 0;
 
-  @Input("getIsLiked") liked: Boolean = false;
+  @Input("getIsLiked") liked: boolean = false;
 
   formattedLikes: string = "";
 
-  @ViewChild("svg") svg!: ElementRef;
-
   ngOnInit()
   {
-    setTimeout(() => {
-      if (this.liked)
-      {
-        this.svg.nativeElement.classList.add("liked");
-      }
-    }, 0);
-
     this.formatLike();
   }
 
@@ -61,12 +52,13 @@ export class LikeButtonComponent implements OnInit {
       {
         this.likes += 1;
         this.formatLike();
-        return this.svg.nativeElement.classList.add("liked");;
+        this.liked = true;
+        return;
       }
 
       this.likes -= 1;
       this.formatLike()
-      this.svg.nativeElement.classList.remove("liked");;
+      this.liked = false;
     });
   }
 

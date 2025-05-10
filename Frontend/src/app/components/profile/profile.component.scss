@@ -47,6 +47,17 @@
     max-width: 700px;
 }
 
+.interaction-buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.banned{
+    color: red;
+}
+
 @media screen and (max-width: 440px){
     .profile-card{
         flex-direction: column;
@@ -55,5 +66,10 @@
 
     .follow-data{
         margin-top: 10px;
+    }
+
+    .interaction-buttons{
+        margin-top: 5px;
+        flex-direction: row;
     }
 }

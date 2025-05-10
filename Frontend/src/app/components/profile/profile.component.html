@@ -9,13 +9,16 @@
                 <img src="{{profile.profilePicture}}">
 
                 <div class="profile-info">
-                    <h5 class="username">{{profile.username}}</h5>
-                    <div>Kővetők: {{profile.followerCount}}</div>
+                    <h5 class="username" [class.banned]="profile.banned">{{profile.username}}</h5>
+                    <div>Követők: {{profile.followerCount}}</div>
                     <div>Követések: {{profile.followedCount}}</div>
                 </div>
             </div>
 
-            <app-follow-button [isFollowed]="profile.followed" (click)="toggleFollow()" *ngIf="!self"/>
+            <div class="interaction-buttons">
+                <app-follow-button [isFollowed]="profile.followed" (click)="toggleFollow()" *ngIf="!self"/>
+                <app-ban-button [isBanned]="profile.banned" (click)="toggleBan()" *ngIf="!self && auth.getLoggedInUser().role == 'admin'"/>
+            </div>
         </div>
 
         <br>
@@ -29,5 +32,7 @@
 </div>
 
 <app-lightbox/>
+
+<app-dialog/>
 
 <app-page-not-found *ngIf="!userFound"/>

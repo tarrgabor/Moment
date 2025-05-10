@@ -55,7 +55,7 @@ export class AdminPageComponent implements OnInit {
 
   deleteCategoryByID(id: string)
   {
-    this.dialog.showDialog(() => {
+    this.dialog.showDialog("Biztosan törölni szeretné?", "Törlés", () => {
       this.api.deleteCategory("categories", id).subscribe((res: any) => {
         if (res.success)
         {

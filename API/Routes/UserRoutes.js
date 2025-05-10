@@ -3,7 +3,7 @@ const { Op, QueryTypes } = require("sequelize");
 const CryptoJS = require("crypto-js");
 const uuid = require("uuid");
 const db = require("../Database/database");
-const { sendMessage, tokenCheck, sendResetEmail, verifyToken, validateEmail, validatePassword, validateUsername } = require("../utils");
+const { sendMessage, tokenCheck, sendResetEmail, verifyToken, validateEmail, validatePassword, validateUsername, adminCheck } = require("../utils");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
@@ -46,6 +46,7 @@ router.post("/registration", async (req, res) => {
             username: req.body.username,
             email: req.body.email,
             password: String(CryptoJS.SHA1(req.body.password)),
+            profilePicture: "defaultpfp.jpg",
             restoreCode: uuid.v4()
         });
 
@@ -83,7 +84,7 @@ router.post("/login", async (req, res) => {
             return sendMessage(res, 200, false, "Hibás belépési adatok!");
         }
 
-        if (user.status == "banned")
+        if (user.banned)
         {
             return sendMessage(res, 200, false, "A felhasználó ki van tiltva!");
         }
@@ -106,7 +107,8 @@ router.get("/profile/:username", tokenCheck, async (req, res) => {
         u.profilePicture,
         u.followerCount,
         u.followedCount,
-        IF(uf.followerID = :userID, 1, 0) as "followed"
+        IF(uf.followerID = :userID, 1, 0) as "followed",
+        u.banned
         FROM users u
         LEFT JOIN userfollows uf ON u.id = uf.followedID
         WHERE u.username = :username`;
@@ -317,5 +319,37 @@ router.patch('/reset/password', async (req, res) => {
         sendMessage(res, 200, false, "Hiba az adatbázis művelet közben!");
     }
 });
+
+// Toggle ban by username
+router.post("/toggleban/:username", tokenCheck, adminCheck, async (req, res) => {
+    try
+    {
+        const user = await User.findOne({where: {username: req.params.username}})
+    
+        if (!user || user.id == req.user.id)
+        {
+            return sendMessage(res, 200, false, "Felhasználó nem található!");
+        }
+
+        if (user.banned)
+        {
+            await User.update({
+                banned: 0
+            }, {where: {username: req.params.username}});
+
+            return res.status(200).send({success: true, banned: false, message: "Felhasználó kitiltása feloldva!"});
+        }
+
+        await User.update({
+            banned: 1
+        }, {where: {username: req.params.username}});
+
+        res.status(200).send({success: true, banned: true, message: "Felhasználó kitiltva!"});
+    }
+    catch
+    {
+        sendMessage(res, 200, false, "Hiba az adatbázis művelet közben!");
+    }
+})
 
 module.exports = router;

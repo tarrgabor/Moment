@@ -1,10 +1,10 @@
 <div class="popup-container" (click)="dialog.hideDialog()" *ngIf="dialog.visible.value">
     <div class="popup-box" (click)="preventDefault($event)">
-        <p>Biztosan törölni szeretné?</p>
+        <p>{{dialog.label}}</p>
 
         <div class="popup-buttons">
             <button class="cancel-button" (click)="dialog.hideDialog()">Mégse</button>
-            <button class="confirm-button" (click)="dialog.confirm()">Törlés</button>
+            <button class="confirm-button" (click)="dialog.confirm()">{{dialog.confirmText}}</button>
         </div>
     </div>
 </div>

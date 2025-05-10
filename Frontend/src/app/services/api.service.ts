@@ -145,4 +145,9 @@ export class ApiService {
   {
     return this.http.patch(`${this.serverURL}/users/reset/password${token}`, passwords, this.tokenHeader());
   }
+
+  toggleBan(username: string)
+  {
+    return this.http.post(`${this.serverURL}/users/toggleban/${username}`, {}, this.tokenHeader());
+  }
 }

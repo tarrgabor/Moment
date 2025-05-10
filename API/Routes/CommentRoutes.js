@@ -46,13 +46,13 @@ router.get("/post/:postID", tokenCheck, async (req, res) => {
             LEFT JOIN comments rc ON rc.id = r.replyID
             LEFT JOIN posts rp on rp.id = rc.postID
             LEFT JOIN users ru ON rc.userID = ru.id
-            LEFT JOIN commentlikes rl ON rc.id = rl.commentID
+            LEFT JOIN commentlikes rl ON rc.id = rl.commentID AND rl.userID = :userID
             WHERE r.commentID = c.id
         ) AS "replies"
         FROM comments c
         LEFT JOIN posts p on p.id = c.postID
         LEFT JOIN users u ON c.userID = u.id
-        LEFT JOIN commentlikes cl ON c.id = cl.commentID
+        LEFT JOIN commentlikes cl ON c.id = cl.commentID AND cl.userID = :userID
         WHERE p.id = :postID AND c.id NOT IN (SELECT replyID FROM replies)
         ORDER BY c.createdAt DESC`
 
@@ -65,6 +65,12 @@ router.get("/post/:postID", tokenCheck, async (req, res) => {
             if (comment.replies)
             {
                 comment.replies = JSON.parse(`[${comment.replies}]`); 
+                
+                comment.replies.forEach(reply => {
+                    reply.likes = parseInt(reply.likes);
+                    reply.liked = parseInt(reply.liked);
+                    reply.owned = parseInt(reply.owned);
+                })
             }
         });
 
@@ -174,17 +180,24 @@ router.patch("/update/:commentID", tokenCheck, async (req, res) => {
 
     try
     {
-        if (!await Comment.findOne({where: {id: req.params.commentID, userID: req.user.id}}))
+        const comment = await Comment.findOne({where: {id: req.params.commentID}});
+
+        if (!comment)
         {
             return sendMessage(res, 200, false, "Komment nem található!");
         }
 
-        await Comment.update(
-            {message: req.body.message},
-            {where: {id: req.params.commentID}}
-        );
+        if (comment.userID == req.user.id || req.user.role == "admin")
+        {
+            await Comment.update(
+                {message: req.body.message},
+                {where: {id: req.params.commentID}}
+            );
+    
+            return sendMessage(res, 200, true, "Komment módosítva!");
+        }
 
-        sendMessage(res, 200, true, "Komment módosítva!");
+        sendMessage(res, 200, false, "Nincs jogosultságod ehhez!");
     }
     catch
     {
@@ -203,40 +216,49 @@ router.delete("/delete/:commentID", tokenCheck, async (req, res) => {
 
     try
     {
-        if (!await Comment.findOne({where: {id: req.params.commentID, userID: req.user.id}}))
+        const comment = await Comment.findOne({where: {id: req.params.commentID}});
+
+        if (!comment)
         {
             return sendMessage(res, 200, false, "Komment nem található!");
         }
 
-        const replies = await Reply.findAll({
-            where: {commentID: req.params.commentID},
-            transaction: transaction
-        })
+        if (comment.userID == req.user.id || req.user.role == "admin")
+        {
+            const replies = await Reply.findAll({
+                where: {commentID: req.params.commentID},
+                transaction: transaction
+            })
+    
+            await CommentLike.destroy({
+                where: {[Op.or]: [
+                    {commentID: req.params.commentID},
+                    {commentID: {[Op.in]: replies.map(reply => reply.commentID)}}
+                ]},
+                transaction: transaction
+            });
+    
+            await Reply.destroy({
+                where: {commentID: req.params.commentID},
+                transaction: transaction
+            });
+    
+            await Comment.destroy({
+                where: {[Op.or]: [
+                    {id: req.params.commentID},
+                    {id: {[Op.in]: replies.map(reply => reply.replyID)}}
+                ]},
+                transaction: transaction
+            });
+    
+            await transaction.commit();
+    
+            return sendMessage(res, 200, true, "Komment törölve!");
+        }
 
-        await CommentLike.destroy({
-            where: {[Op.or]: [
-                {commentID: req.params.commentID},
-                {commentID: {[Op.in]: replies.map(reply => reply.commentID)}}
-            ]},
-            transaction: transaction
-        });
-
-        await Reply.destroy({
-            where: {commentID: req.params.commentID},
-            transaction: transaction
-        });
-
-        await Comment.destroy({
-            where: {[Op.or]: [
-                {id: req.params.commentID},
-                {id: {[Op.in]: replies.map(reply => reply.replyID)}}
-            ]},
-            transaction: transaction
-        });
-
-        await transaction.commit();
-
-        sendMessage(res, 200, true, "Komment törölve!");
+        transaction.rollback();
+        
+        sendMessage(res, 200, false, "Nincs jogosultságod ehhez!");
     }
     catch
     {

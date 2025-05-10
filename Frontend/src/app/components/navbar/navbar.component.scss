@@ -84,7 +84,7 @@ nav{
     background-color: white;
 }
 
-.linksContainer span{
+.linksContainer .link{
     display: flex;
     align-items: center;
     border-radius: 5px;
@@ -98,16 +98,16 @@ nav{
     color: $dark-link-color;
 }
 
-.linksContainer span i{
+.linksContainer .link i{
     margin-left: 2px;
     margin-right: 8px;
 }
   
-span:hover{
+.link:hover{
     background-color: $dark-link-hover-color;
 }
 
-span:active{
+.link:active{
     background-color: $dark-link-active-background-color;
 }
 

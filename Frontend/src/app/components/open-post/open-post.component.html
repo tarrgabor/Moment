@@ -8,7 +8,7 @@
             <div class="post-header">
                 <app-user-content-header [getProfilePicture]="postData.profilePicture" [getUsername]="postData.username" [getCreatedAt]="postData.createdAt"/>
 
-                <app-content-menu *ngIf="postData.owned && !isEditing" (onModify)="modifyPost()" (onDelete)="deletePost()"/>
+                <app-content-menu *ngIf="(postData.owned || auth.getLoggedInUser().role == 'admin') && !isEditing" (onModify)="modifyPost()" (onDelete)="deletePost()"/>
 
                 <div class="editor-buttons-container"  *ngIf="isEditing">
                     <button class="editor-button cancel-button" (click)="cancelUpdate()">Mégse</button>

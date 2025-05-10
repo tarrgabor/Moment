@@ -8,7 +8,6 @@ const cloudinary = require("cloudinary").v2;
 
 const { Post } = require("../Database/Models/Post");
 const { Comment } = require("../Database/Models/Comment");
-const { PostReport } = require("../Database/Models/PostReport");
 const { PostLike } = require("../Database/Models/PostLike");
 
 cloudinary.config({ 
@@ -163,21 +162,28 @@ router.patch("/update/:postID", tokenCheck, async (req, res) => {
 
     try
     {
-        if (!await Post.findOne({where: {userID: req.user.id, id: req.params.postID}}))
+        const post = await Post.findOne({where: {id: req.params.postID}});
+
+        if (!post)
         {
             return sendMessage(res, 200, false, "Poszt nem található!");
         }
 
-        await Post.update({
+        if (post.userID == req.user.id || req.user.role == "admin")
+        {
+            await Post.update({
                 title: req.body.title,
                 description: req.body.description,
                 categoryID: req.body.categoryID
-            }, {
-                where: {id: req.params.postID}
-            }
-        );
+                }, {
+                    where: {id: req.params.postID}
+                }
+            );
 
-        sendMessage(res, 200, true, "Poszt frissítve!");
+            return sendMessage(res, 200, true, "Poszt frissítve!");
+        }
+
+        sendMessage(res, 200, false, "Nincs jogosultságod ehhez!");
     }
     catch
     {
@@ -196,43 +202,47 @@ router.delete("/delete/:postID", tokenCheck, async (req, res) => {
 
     try
     {
-        if (!await Post.findOne({where: {userID: req.user.id, id: req.params.postID}}))
+        const post = await Post.findOne({where: {id: req.params.postID}});
+
+        if (!post)
         {
             return sendMessage(res, 200, false, "Poszt nem található!");
         }
-        
-        await PostLike.destroy({
-            where: {postID: req.params.postID},
-            transaction: transaction
-        });
 
-        await PostReport.destroy({
-            where: {postID: req.params.postID},
-            transaction: transaction
-        });
+        if (post.userID == req.user.id || req.user.role == "admin")
+        {
+            await PostLike.destroy({
+                where: {postID: req.params.postID},
+                transaction: transaction
+            });
+    
+            await db.query(
+                `DELETE cl
+                FROM commentlikes cl
+                JOIN comments c ON cl.commentID = c.id
+                WHERE c.postID = :postID`, {
+                replacements: {postID: req.params.postID},
+                transaction: transaction
+            });
+    
+            await Comment.destroy({
+                where: {postID: req.params.postID},
+                transaction: transaction
+            });
+    
+            await Post.destroy({
+                where: {id: req.params.postID},
+                transaction: transaction
+            });
+            
+            await transaction.commit();
+    
+            return sendMessage(res, 200, true, "Poszt törölve!");
+        }
 
-        await db.query(
-            `DELETE cl
-            FROM commentlikes cl
-            JOIN comments c ON cl.commentID = c.id
-            WHERE c.postID = :postID`, {
-            replacements: {postID: req.params.postID},
-            transaction: transaction
-        });
+        transaction.rollback();
 
-        await Comment.destroy({
-            where: {postID: req.params.postID},
-            transaction: transaction
-        });
-
-        await Post.destroy({
-            where: {id: req.params.postID},
-            transaction: transaction
-        });
-        
-        await transaction.commit();
-
-        sendMessage(res, 200, true, "Poszt törölve!");
+        sendMessage(res, 200, false, "Nincs jogosultságod ehhez!");
     }
     catch
     {
