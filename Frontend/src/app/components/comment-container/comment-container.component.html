@@ -5,8 +5,8 @@
         <app-message-input *ngIf="isCommenting" [getButtonText]="'Hozzáad'" (onCancel)="closeCommenting()" (onSave)="createComment($event)"/>
     </div>
 
-    <app-comment [getCommentData]="comment" *ngFor="let comment of comments" (onReply)="appendReply($event)" (onDelete)="removeComment($event)">
-        <app-comment [getParentID]="comment.id" [getCommentData]="reply" *ngFor="let reply of comment.replies" (onReply)="appendReply($event)" (onDelete)="removeComment($event)"></app-comment>
+    <app-comment [getCommentData]="comment" *ngFor="let comment of comments">
+        <app-comment [getCommentData]="reply" *ngFor="let reply of comment.replies"/>
     </app-comment>
 
     <app-loading *ngIf="fetching"/>

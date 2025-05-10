@@ -18,6 +18,7 @@ import { Router } from '@angular/router';
 import { GeneralTextareaComponent } from '../general-textarea/general-textarea.component';
 import { GeneralDropdownComponent } from '../general-dropdown/general-dropdown.component';
 import { CopyComponent } from '../copy/copy.component';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-open-post',
@@ -33,6 +34,7 @@ export class OpenPostComponent implements OnInit{
 
   constructor(
     private api: ApiService,
+    public auth: AuthService,
     private dialog: DialogService,
     private message: MessageService,
     private router: Router
@@ -119,7 +121,7 @@ export class OpenPostComponent implements OnInit{
 
   deletePost()
   {
-    this.dialog.showDialog(() => {
+    this.dialog.showDialog("Biztosan törölni szeretné?", "Törlés", () => {
       this.api.deletePost("posts", this.postData.postID).subscribe((res: any) => {
         if (res.success)
         {

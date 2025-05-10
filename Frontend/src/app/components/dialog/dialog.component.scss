@@ -16,6 +16,8 @@
 .popup-box{
     width: fit-content;
     height: fit-content;
+    max-width: 300px;
+    text-align: center;
     padding: 8px;
     border-radius: 10px;
     color: $dark-text-color;

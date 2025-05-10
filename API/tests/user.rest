@@ -45,3 +45,8 @@ Authorization: Bearer {{token}}
 POST {{serverURL}}/users/followed/Jani
 Content-Type: application/json
 Authorization: Bearer {{token}}
+
+### 
+POST {{serverURL}}/users/toggleban/Jani2
+Content-Type: application/json
+Authorization: Bearer {{token}}

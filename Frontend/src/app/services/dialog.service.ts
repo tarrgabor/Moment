@@ -9,11 +9,15 @@ export class DialogService {
   visible = new BehaviorSubject<boolean>(false);
   visible$ = this.visible.asObservable();
   callback: Function = () => {};
+  label: string = "";
+  confirmText: string = "";
 
-  showDialog(cb: Function)
+  showDialog(label: string, confirmText: string, cb: Function)
   {
     this.visible.next(true);
     document.body.style.overflow = "hidden";
+    this.label = label || "Dialog label";
+    this.confirmText = confirmText || "Ok";
     this.callback = cb;
   }
 

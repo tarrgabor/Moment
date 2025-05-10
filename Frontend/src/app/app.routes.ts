@@ -11,6 +11,7 @@ import { UploadPostComponent } from './components/upload-post/upload-post.compon
 import { AdminPageComponent } from './components/admin-page/admin-page.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { LoginGuard } from './guards/login.guard';
+import { AdminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
     // Possible pages to visit before logging in
@@ -30,7 +31,7 @@ export const routes: Routes = [
         path: "postupload", component: UploadPostComponent, canActivate: [UserAuthGuard]
     },
     {
-        path: "admin", component: AdminPageComponent
+        path: "admin", component: AdminPageComponent, canActivate: [UserAuthGuard, AdminGuard]
     },
 
     // Possible pages to visit after logging in

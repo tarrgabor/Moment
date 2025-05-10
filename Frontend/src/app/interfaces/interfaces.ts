@@ -14,8 +14,8 @@ export interface Post {
     image: string,
     likes: number,
     createdAt: Date,
-    liked: Boolean,
-    owned: Boolean
+    liked: boolean,
+    owned: boolean
 }
 
 export interface User {
@@ -32,8 +32,8 @@ export interface Comment {
     message: string,
     replies: Comment[],
     likes: number,
-    liked: Boolean,
-    owned: Boolean,
+    liked: boolean,
+    owned: boolean,
     createdAt: Date
 }
 

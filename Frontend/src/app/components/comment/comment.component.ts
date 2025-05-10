@@ -1,14 +1,14 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { LikeButtonComponent } from '../like-button/like-button.component';
 import { UserContentHeaderComponent } from '../user-content-header/user-content-header.component';
 import { CommonModule } from '@angular/common';
 import { Comment } from '../../interfaces/interfaces';
 import { FormsModule } from '@angular/forms';
-import { ApiService } from '../../services/api.service';
 import { MessageInputComponent } from '../message-input/message-input.component';
 import { AuthService } from '../../services/auth.service';
 import { ContentMenuComponent } from '../content-menu/content-menu.component';
 import { DialogService } from '../../services/dialog.service';
+import { CommentService } from '../../services/comment.service';
 
 @Component({
   selector: 'app-comment',
@@ -17,11 +17,11 @@ import { DialogService } from '../../services/dialog.service';
   styleUrl: './comment.component.scss'
 })
 
-export class CommentComponent implements OnInit {
+export class CommentComponent {
   constructor(
-    private api: ApiService,
-    private auth: AuthService,
-    private dialog: DialogService
+    public auth: AuthService,
+    private dialog: DialogService,
+    private comment: CommentService
   ){}
   
   @Input("getCommentData") commentData: Comment = {
@@ -37,24 +37,40 @@ export class CommentComponent implements OnInit {
     createdAt: new Date()
   }
 
-  @Input("getParentID") parentID: string = "";
-
-  @Output() onReply = new EventEmitter();
-  @Output() onDelete = new EventEmitter();
-
   isEditing: Boolean = false;
 
   isReplying: Boolean = false;
 
   showReplies: Boolean = false;
 
-  ngOnInit()
+  updateComment(e: Event)
   {
-    if (!this.parentID)
-    {
-      this.parentID = this.commentData.id;
-    }
+    this.comment.updateComment(this.commentData.id, e.toString(), (success: boolean) => {
+      if (success)
+      {
+        this.closeUpdate();
+      }
+    });
   }
+
+  replyToComment(e: Event)
+  {
+    this.comment.replyToComment(this.commentData.postID, this.commentData.id, e.toString(), (success: boolean) => {
+      if (success)
+      {
+        this.closeReply();
+        this.showReplies = true;
+      }
+    });
+  }
+  
+  deleteComment()
+  {
+    this.dialog.showDialog("Biztosan törölni szeretné?", "Törlés", () => {
+      this.comment.deleteComment(this.commentData.id);
+    })
+  }
+
 
   openUpdate()
   {
@@ -64,15 +80,6 @@ export class CommentComponent implements OnInit {
   closeUpdate()
   {
     this.isEditing = false;
-  }
-
-  updateComment(e: Event)
-  {
-    this.commentData.message = e.toString();
-
-    this.api.updateComment("comments", this.parentID, e.toString()).subscribe();
-
-    this.closeUpdate();
   }
 
   toggleShowReplies()
@@ -88,42 +95,5 @@ export class CommentComponent implements OnInit {
   closeReply()
   {
     this.isReplying = false;
-  }
-
-  replyToComment(e: Event)
-  {
-    this.api.replyToComment("comments", this.commentData.postID, this.parentID, e.toString()).subscribe((res: any) => {
-      if (res.success)
-      {
-        this.onReply.emit({
-          reply: {
-            id: res.comment.id,
-            postID: res.comment.postID,
-            message: res.comment.message,
-            createdAt: res.comment.createdAt,
-            likes: res.comment.likes,
-            owned: res.comment.owned,
-            profilePicture: this.auth.getLoggedInUser().profilePicture,
-            username: this.auth.getLoggedInUser().username
-          },
-          parentID: this.parentID});
-
-        this.showReplies = true;
-
-        this.closeReply();
-      }
-    });
-  }
-  
-  deleteComment()
-  {
-    this.dialog.showDialog(() => {
-      this.api.deleteComment("comments", this.commentData.id).subscribe((res: any) => {
-        if (res.success)
-        {
-          this.onDelete.emit({id: this.commentData.id, parentID: this.parentID});
-        }
-      })
-    })
   }
 }

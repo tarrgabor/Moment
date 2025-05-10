@@ -2,13 +2,13 @@
     <div class="comment-header">
         <app-user-content-header [getProfilePicture]="commentData.profilePicture" [getUsername]="commentData.username" [getCreatedAt]="commentData.createdAt"/>
 
-        <app-content-menu *ngIf="commentData.owned" (onModify)="openUpdate()" (onDelete)="deleteComment()"/>
+        <app-content-menu *ngIf="(commentData.owned == true || auth.getLoggedInUser().role == 'admin') && !isEditing" (onModify)="openUpdate()" (onDelete)="deleteComment()"/>
     </div>
 
     <div class="comment-content">
         <div class="comment-message" *ngIf="!isEditing" [innerHTML]="commentData.message"></div>
 
-        <app-message-input *ngIf="isEditing && commentData.owned" [getButtonText]="'Mentés'" [getInitialText]="commentData.message" (onSave)="updateComment($event)" (onCancel)="closeUpdate()"/>
+        <app-message-input *ngIf="isEditing && (commentData.owned || auth.getLoggedInUser().role == 'admin')" [getButtonText]="'Mentés'" [getInitialText]="commentData.message" (onSave)="updateComment($event)" (onCancel)="closeUpdate()"/>
 
         <div class="comment-actions">
             <app-like-button [getType]="'comments'" [getID]="commentData.id" [getLikes]="commentData.likes" [getIsLiked]="commentData.liked"/>

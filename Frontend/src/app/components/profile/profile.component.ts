@@ -11,10 +11,14 @@ import { FollowButtonComponent } from '../follow-button/follow-button.component'
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
+import { BanButtonComponent } from '../ban-button/ban-button.component';
+import { DialogService } from '../../services/dialog.service';
+import { DialogComponent } from '../dialog/dialog.component';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-profile',
-  imports: [CommonModule, NavbarComponent, SidebarFilterComponent, LightboxComponent, PostComponent, IntersectionObserverComponent, LoadingComponent, FollowButtonComponent, PageNotFoundComponent],
+  imports: [CommonModule, NavbarComponent, SidebarFilterComponent, LightboxComponent, PostComponent, IntersectionObserverComponent, LoadingComponent, FollowButtonComponent, PageNotFoundComponent, BanButtonComponent, DialogComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
@@ -22,17 +26,17 @@ import { PageNotFoundComponent } from '../page-not-found/page-not-found.componen
 export class ProfileComponent implements OnInit{
   constructor(
     private api: ApiService,
-    private auth: AuthService
+    public auth: AuthService,
+    private dialog: DialogService,
+    private message: MessageService
   ){}
 
   profile: any = {
     username: "",
-    email: "",
-    role: "",
     profilePicture: "",
     followerCount: 0,
     followedCount: 0,
-    status: ""
+    banned: 0
   }
 
   posts: Post[] = [];
@@ -43,16 +47,14 @@ export class ProfileComponent implements OnInit{
 
   cursor: string = "";
 
-  username: string = "";
-
   self: boolean = false;
 
   ngOnInit()
   {
-    this.username = window.location.pathname.split('/')[2];
+    this.profile.username = window.location.pathname.split('/')[2];
     this.getUserData();
 
-    if (this.auth.getLoggedInUser().username == this.username)
+    if (this.auth.getLoggedInUser().username == this.profile.username)
     {
       this.self = true;
     }
@@ -60,7 +62,7 @@ export class ProfileComponent implements OnInit{
 
   getUserData()
   {
-    this.api.getProfile(this.username).subscribe((res: any) => {
+    this.api.getProfile(this.profile.username).subscribe((res: any) => {
       this.profile = res.user;
 
       if (!res.success)
@@ -80,7 +82,7 @@ export class ProfileComponent implements OnInit{
     {
       this.isFetching = true;
 
-      this.api.getUsersPosts("posts", this.username, searchParams.toString()).subscribe((res: any) => {
+      this.api.getUsersPosts("posts", this.profile.username, searchParams.toString()).subscribe((res: any) => {
         this.posts.push(...res.posts as Post[]);
 
         this.cursor = String(res.nextCursor).replace(' ', '+');
@@ -97,7 +99,7 @@ export class ProfileComponent implements OnInit{
 
   toggleFollow()
   {
-    this.api.toggleFollow("users", this.username).subscribe((res: any) => {
+    this.api.toggleFollow("users", this.profile.username).subscribe((res: any) => {
       if (res.success)
       {
         this.profile.followed = res.followed;
@@ -110,6 +112,26 @@ export class ProfileComponent implements OnInit{
 
         this.profile.followerCount--;
       }
+    });
+  }
+
+  toggleBan()
+  {
+    this.dialog.showDialog(
+      this.profile.banned ? "Biztosan feloldja a felhasználó tiltását?" : "Biztosan ki akarja tiltani ezt a felhasználót?",
+      this.profile.banned ? "Feloldás" : "Tiltás",
+    () => {
+      this.api.toggleBan(this.profile.username).subscribe((res: any) => {
+        if (res.success)
+        {
+          console.log(res);
+          this.message.success(res.message);
+          this.profile.banned = res.banned;
+          return;
+        }
+
+        this.message.error(res.message);
+      });
     });
   }
 }
