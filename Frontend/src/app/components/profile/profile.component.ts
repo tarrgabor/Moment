@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { SidebarFilterComponent } from '../sidebar-filter/sidebar-filter.component';
 import { LightboxComponent } from '../lightbox/lightbox.component';
@@ -48,6 +48,13 @@ export class ProfileComponent implements OnInit{
   cursor: string = "";
 
   self: boolean = false;
+
+  @ViewChild("profilePicture") profilePicture!: ElementRef;
+  @ViewChild("imageInput") imageInput!: ElementRef;
+  @ViewChild("imagePreview") imagePreview!: ElementRef;
+
+  imageHovered: boolean = false;
+  hasImage: boolean = false;
 
   ngOnInit()
   {
@@ -133,5 +140,80 @@ export class ProfileComponent implements OnInit{
         this.message.error(res.message);
       });
     });
+  }
+
+  showOverlay()
+  {
+    this.imageHovered = true;
+  }
+
+  hideOverlay()
+  {
+    this.imageHovered = false;
+  }
+
+  onDragOver(event: Event)
+  {
+    event.preventDefault();
+  }
+
+  onDrop(event: any)
+  {
+    event.preventDefault();
+
+    this.setImage({target: {files: event.dataTransfer.files}});
+  }
+
+  setImage(event: any)
+  {
+    if (!event.target.files) return;
+
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"]
+
+    if (!allowedTypes.includes(event.target.files[0]?.type))
+    {
+      return this.message.error("Nem megfelelő fájl formátum!");
+    }
+
+    if (event.target.files[0]?.size > 8 * 1024 * 1024)
+    {
+      return this.message.error("A fájl mérete maximum 8 MB lehet!");
+    }
+
+    this.imageInput.nativeElement.files = event.target.files;
+
+    this.imagePreview.nativeElement.src = URL.createObjectURL(event.target.files[0]);
+
+    this.hasImage = true;
+  }
+
+  uploadProfilePicture()
+  {
+    const formData = new FormData();
+    formData.append("file", this.imageInput.nativeElement.files[0]);
+
+    this.api.uploadProfilePicture(this.profile.username, formData).subscribe((res: any) => {
+      if (res.success)
+      {
+        this.api.requestRefreshedToken().subscribe((result: any) => {
+          if (result.success)
+          {
+            this.auth.saveNewToken(result.token);
+            window.location.reload();
+          }
+        });
+
+        return;
+      }
+
+      this.message.error(res.message);
+    });
+  }
+
+  cancelUpload()
+  {
+    this.imageInput.nativeElement.value = null;
+    this.imagePreview.nativeElement.src = this.auth.getLoggedInUser().profilePicture;
+    this.hasImage = false;
   }
 }

@@ -1,6 +1,6 @@
 <div class="messsage-input-container">
     <div class="message-input">
-        <img src="{{profilePicture}}">
+        <img src="{{profilePicture}}" *ngIf="showProfile">
         <textarea #textArea (input)="resizeTextArea($event)" maxlength="400">{{convertBrToNewlines(initialText)}}</textarea>
     </div>
 

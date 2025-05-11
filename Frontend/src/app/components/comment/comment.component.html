@@ -8,7 +8,7 @@
     <div class="comment-content">
         <div class="comment-message" *ngIf="!isEditing" [innerHTML]="commentData.message"></div>
 
-        <app-message-input *ngIf="isEditing && (commentData.owned || auth.getLoggedInUser().role == 'admin')" [getButtonText]="'Mentés'" [getInitialText]="commentData.message" (onSave)="updateComment($event)" (onCancel)="closeUpdate()"/>
+        <app-message-input *ngIf="isEditing && (commentData.owned || auth.getLoggedInUser().role == 'admin')" [showProfile]="false" [getButtonText]="'Mentés'" [getInitialText]="commentData.message" (onSave)="updateComment($event)" (onCancel)="closeUpdate()"/>
 
         <div class="comment-actions">
             <app-like-button [getType]="'comments'" [getID]="commentData.id" [getLikes]="commentData.likes" [getIsLiked]="commentData.liked"/>

@@ -1,6 +1,6 @@
 <div class="search-container" (leftBoundary)="hideResults()" (click)="showResults()">
     <div class="searchbar" [ngClass]="{'open': isFocused && data}">
-        <i class="bi bi-search"></i>
+        <i class="bi bi-search" (click)="search()"></i>
         <input #searchbar type="text" placeholder="Keresés" maxlength="120" spellcheck="false" (input)="updateSearchbar()">
     </div>
 

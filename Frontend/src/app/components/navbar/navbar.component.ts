@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { SearchbarComponent } from '../searchbar/searchbar.component';
 import { BoundaryCheckDirective } from '../../directives/boundary-check.directive';
@@ -11,16 +11,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './navbar.component.scss'
 })
 
-export class NavbarComponent implements OnInit{
+export class NavbarComponent {
   constructor(public auth: AuthService){}
-
-  username: string = "";
-  profilePicture: string = "";
-
-  ngOnInit() {
-    this.username = this.auth.getLoggedInUser().username;
-    this.profilePicture = this.auth.getLoggedInUser().profilePicture;
-  }
 
   openSidebarMenu(event: Event)
   {

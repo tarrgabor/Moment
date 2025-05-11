@@ -24,6 +24,11 @@ export class AuthService {
     this.router.navigate(["/"]);
   }
 
+  saveNewToken(token: string)
+  {
+    localStorage.setItem(environment.tokenName, token);
+  }
+
   deleteTokenAndLogout()
   {
     localStorage.removeItem(environment.tokenName);
@@ -37,9 +42,9 @@ export class AuthService {
 
     if (token)
     {
-      const decodedUTF8Payload = new TextDecoder('utf-8').decode(
-        new Uint8Array(atob(token.split('.')[1]).split('').map(char => char.charCodeAt(0)))
-      );
+      const base64Url = token.split(".")[1];
+      const base64 = base64Url.replace("-", "+").replace("_", "/");
+      const decodedUTF8Payload = window.atob(base64);
 
       if (Date.now() > JSON.parse(decodedUTF8Payload).exp * 1000)
       {

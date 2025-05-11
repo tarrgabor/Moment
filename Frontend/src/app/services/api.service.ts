@@ -150,4 +150,14 @@ export class ApiService {
   {
     return this.http.post(`${this.serverURL}/users/toggleban/${username}`, {}, this.tokenHeader());
   }
+
+  uploadProfilePicture(username: string, data: object)
+  {
+    return this.http.patch(`${this.serverURL}/users/profile/picture/${username}`, data, this.tokenHeader());
+  }
+
+  requestRefreshedToken()
+  {
+    return this.http.post(`${this.serverURL}/users/refresh`, {}, this.tokenHeader());
+  }
 }

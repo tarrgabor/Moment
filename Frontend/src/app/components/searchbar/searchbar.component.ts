@@ -62,13 +62,9 @@ export class SearchbarComponent implements AfterViewInit{
     this.searchbar.nativeElement.value = new URLSearchParams(window.location.search).get("q");
 
     this.searchbar.nativeElement.addEventListener("keydown", (event: any) => {
-      if (event.key == "Enter" && this.searchbar.nativeElement.value)
+      if (event.key == "Enter")
       {
-        this.searchbarText = this.searchbar.nativeElement.value;
-
-        this.setSearchParams();
-
-        window.location.href = `${this.queryString}`;
+        this.search();
       }
     })
   }
@@ -81,6 +77,15 @@ export class SearchbarComponent implements AfterViewInit{
     this.selectedCategories ? this.queryParams.append("categories", this.selectedCategories) : null;
 
     this.queryString = "?" + this.queryParams.toString();
+  }
+
+  search()
+  {
+    this.searchbarText = this.searchbar.nativeElement.value;
+
+    this.setSearchParams();
+
+    window.location.href = `${this.queryString}`;
   }
 
   updateSearchbar()
@@ -114,8 +119,6 @@ export class SearchbarComponent implements AfterViewInit{
   showResults()
   {
     this.isFocused = true;
-
-    this.searchbar.nativeElement != document.activeElement ? this.searchbar.nativeElement.focus() : null;
 
     !this.data ? this.updateSearchbar() : null;
   }
