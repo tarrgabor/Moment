@@ -52,6 +52,7 @@ nav{
     height: 3rem;
     border-radius: 100%;
     border: 1px solid $dark-border-color;
+    object-fit: cover;
     cursor: pointer;
 }
 
@@ -129,6 +130,7 @@ nav{
     border-radius: 100%;
     border: 1px solid $dark-border-color;
     margin-left: -2px;
+    object-fit: cover;
 }
 
 .user-data #username{

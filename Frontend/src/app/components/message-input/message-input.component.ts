@@ -1,9 +1,10 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-message-input',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './message-input.component.html',
   styleUrl: './message-input.component.scss'
 })
@@ -14,6 +15,7 @@ export class MessageInputComponent implements AfterViewInit {
 
   @Input("getButtonText") buttonText: string = "";
   @Input("getInitialText") initialText: string = "";
+  @Input("showProfile") showProfile: boolean = true;
 
   @Output("sendOutputText") outputText: string = "";
 

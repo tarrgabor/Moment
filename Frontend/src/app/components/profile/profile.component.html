@@ -6,7 +6,21 @@
     <div class="content-container">
         <div class="profile-card">
             <div class="profile-data">
-                <img src="{{profile.profilePicture}}">
+                <img src="{{profile.profilePicture}}" *ngIf="!self">
+
+                <label #dropArea for="image-input" *ngIf="self" (mouseenter)="showOverlay()" (mouseleave)="hideOverlay()" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
+                    <input #imageInput type="file" accept="image/*" id="image-input" hidden (change)="setImage($event)">
+                    
+                    <div class="profile-image-container">
+                        <img #imagePreview class="image-preview" src="{{profile.profilePicture}}">
+
+                        <div class="upload-overlay" [class.show-overlay]="imageHovered">
+                            <svg width="50px" height="50px" viewBox="0 -960 960 960" fill="#e3e3e3">
+                                <path d="M450-313v-371L330-564l-43-43 193-193 193 193-43 43-120-120v371h-60ZM220-160q-24 0-42-18t-18-42v-143h60v143h520v-143h60v143q0 24-18 42t-42 18H220Z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </label>
 
                 <div class="profile-info">
                     <h5 class="username" [class.banned]="profile.banned">{{profile.username}}</h5>
@@ -18,6 +32,9 @@
             <div class="interaction-buttons">
                 <app-follow-button [isFollowed]="profile.followed" (click)="toggleFollow()" *ngIf="!self"/>
                 <app-ban-button [isBanned]="profile.banned" (click)="toggleBan()" *ngIf="!self && auth.getLoggedInUser().role == 'admin'"/>
+
+                <button class="editor-button cancel-button" *ngIf="self && hasImage" (click)="cancelUpload()">Mégse</button>
+                <button class="editor-button save-button" *ngIf="self && hasImage" (click)="uploadProfilePicture()">Mentés</button>
             </div>
         </div>
 

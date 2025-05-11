@@ -1,14 +1,18 @@
 const router = require("express").Router();
 const { Op, QueryTypes } = require("sequelize");
 const CryptoJS = require("crypto-js");
+const multer  = require('multer');
+const cloudinary = require("cloudinary").v2;
 const uuid = require("uuid");
 const db = require("../Database/database");
-const { sendMessage, tokenCheck, sendResetEmail, verifyToken, validateEmail, validatePassword, validateUsername, adminCheck } = require("../utils");
+const { sendMessage, tokenCheck, sendResetEmail, verifyToken, validateEmail, validatePassword, validateUsername, adminCheck, uploadImage } = require("../utils");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
 const { User } = require("../Database/Models/User");
 const { UserFollow } = require("../Database/Models/UserFollow");
+
+const upload = multer({ storage: multer.memoryStorage() });
 
 // Create a user
 router.post("/registration", async (req, res) => {
@@ -349,6 +353,62 @@ router.post("/toggleban/:username", tokenCheck, adminCheck, async (req, res) => 
     catch
     {
         sendMessage(res, 200, false, "Hiba az adatbázis művelet közben!");
+    }
+})
+
+// Reset password by token
+router.patch('/profile/picture/:username', tokenCheck, upload.single('file'), async (req, res) => {
+    if (!req.file)
+    {
+        return sendMessage(res, 200, false, "Hiányzó profilkép!");
+    }
+
+    try
+    {
+        const uploadResults = await uploadImage(req.file.originalname, req.file.buffer);
+
+        const user = await User.update({
+            profilePicture: cloudinary.url(uploadResults.public_id, {
+                transformation: [{
+                    quality: "auto",
+                    fetch_format: "auto"
+                }]
+            })
+        }, {where: {username: req.params.username}});
+
+        return res.status(200).send({success: true, profilePicture: user.profilePicture, message: "Profilkép beállítva!"});
+    }
+    catch
+    {
+        sendMessage(res, 200, false, "Profilkép beállítása sikertelen!");
+    }
+});
+
+// Get new token
+router.post("/refresh", tokenCheck, async (req, res) => {
+    try
+    {
+        const user = await User.findOne({
+            where: 
+            {
+                email: req.user.email
+            },
+            attributes:
+            {
+                exclude: ["password", "followerCount", "followedCount", "createdAt", "restoreCode"]
+            }
+        });
+
+        if (user == null)
+        {
+            return sendMessage(res, 200, false, "Érvénytelen adatok!");
+        }
+
+        res.status(200).json({success: true, token: jwt.sign(JSON.parse(JSON.stringify(user)), process.env.JWT_SECRET, {expiresIn: "2h"})});
+    }
+    catch
+    {
+        sendMessage(res, 500, false, "Hiba az adatbázis művelet közben!");
     }
 })
 
