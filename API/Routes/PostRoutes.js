@@ -11,7 +11,7 @@ const { Comment } = require("../Database/Models/Comment");
 const { PostLike } = require("../Database/Models/PostLike");
 
 cloudinary.config({ 
-    cloud_name: 'dntjplkcp',
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET
 });

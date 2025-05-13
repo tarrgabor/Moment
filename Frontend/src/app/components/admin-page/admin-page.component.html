@@ -1,12 +1,14 @@
 <app-navbar></app-navbar>
 
+<app-sidebar-filter/>
+
 <div class="tab-container">
 
   <div class="tab-body">
     <div class="category-upload">
       <h2>Kategória létrehozása</h2>
     
-      <input type="text" [(ngModel)]="newCategoryName" placeholder="Kategórianév" class="createField"/>
+      <input type="text" [(ngModel)]="newCategoryName" placeholder="Kategórianév" maxlength="30" class="createField"/>
       
       <button (click)="createCategory()" class="createButton">Létrehozás</button>
 

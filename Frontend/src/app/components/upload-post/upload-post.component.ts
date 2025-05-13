@@ -8,10 +8,11 @@ import { GeneralButtonComponent } from '../general-button/general-button.compone
 import { ApiService } from '../../services/api.service';
 import { Option } from '../../interfaces/interfaces';
 import { Router } from '@angular/router';
+import { SidebarFilterComponent } from '../sidebar-filter/sidebar-filter.component';
 
 @Component({
   selector: 'app-upload-post',
-  imports: [NavbarComponent, CommonModule, GeneralTextareaComponent, GeneralDropdownComponent, GeneralButtonComponent],
+  imports: [NavbarComponent, CommonModule, GeneralTextareaComponent, GeneralDropdownComponent, GeneralButtonComponent, SidebarFilterComponent],
   templateUrl: './upload-post.component.html',
   styleUrl: './upload-post.component.scss'
 })

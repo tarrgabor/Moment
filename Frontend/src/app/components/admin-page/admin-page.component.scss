@@ -1,10 +1,11 @@
 @use "../../../styles.scss" as *;
 
 .tab-container {
-  width: 100%;
-  max-width: 800px;
-  margin: 30px auto;
-    
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 65px;
+  margin-right: 5px;
   color: $dark-text-color;
 }
   
@@ -39,6 +40,8 @@ li {
 }
   
 .tab-body {
+  width: 100%;
+  max-width: 800px;
   padding: 20px;
   border: 1px solid $dark-border-color;
   border-radius: 6px;
@@ -103,6 +106,10 @@ tr:hover {
 
 td{
   padding: 8px 10px;
+}
+
+td:first-child{
+  word-break: break-all;
 }
 
 .delete-button{

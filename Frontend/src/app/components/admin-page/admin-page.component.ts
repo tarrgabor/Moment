@@ -6,11 +6,12 @@ import { FormsModule } from '@angular/forms';
 import { MessageService } from '../../services/message.service';
 import { DialogService } from '../../services/dialog.service';
 import { DialogComponent } from '../dialog/dialog.component';
+import { SidebarFilterComponent } from '../sidebar-filter/sidebar-filter.component';
 
 @Component({
   selector: 'app-admin-page',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, FormsModule, DialogComponent],
+  imports: [CommonModule, NavbarComponent, FormsModule, DialogComponent, SidebarFilterComponent],
   templateUrl: './admin-page.component.html',
   styleUrls: ['./admin-page.component.scss']
 })
