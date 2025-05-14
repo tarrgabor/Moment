@@ -57,4 +57,19 @@ ng serve
 ```
 
 Miután elindította a Frontendet, ezen a linken érheti el: http://localhost:4200/
+
 Megkezdheti az oldalunk használatát!
+
+## Kezdeti felhasználók belépési adatai:
+
+1: (Felhasználó)
+E-mail: teszt1@gmail.com
+Jelszó: Titkosjelszo123
+
+2: (Felhasználó)
+E-mail: teszt2@gmail.com
+Jelszó: Titkosjelszo123
+
+3: (Admin)
+E-mail: admin@gmail.com
+Jelszó: Titkosjelszo123
